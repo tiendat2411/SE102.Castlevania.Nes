@@ -51,6 +51,13 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		else
 			simon->SetState(SIMON_STATE_WALKING_LEFT);
 	}
+	else if (game->IsKeyDown(DIK_UP))
+	{
+		if (game->IsKeyDown(DIK_A))
+			simon->SetState(SIMON_STATE_RUNNING_LEFT);
+		else
+			simon->SetState(SIMON_STATE_WALKING_LEFT);
+	}
 	else
 		simon->SetState(SIMON_STATE_IDLE);
 	

@@ -47,7 +47,6 @@
 #define TEXTURES_DIR L"textures"
 //#define texture_path_mario textures_dir "\\mario1.png"
 #define TEXTURE_PATH_SIMON1 TEXTURES_DIR "\\simon1.png"
-#define TEXTURE_PATH_SIMON2 TEXTURES_DIR "\\simon2.png"
 #define TEXTURE_PATH_MISC TEXTURES_DIR "\\2.png"
 
 #define SIMON_START_X 200.0f

@@ -9,7 +9,7 @@
 
 class CBrick : public CGameObject {
 public:
-	CBrick(float x, float y) : CGameObject(x, y) { vx = 0.1f; }
+	CBrick(float x, float y) : CGameObject(x, y) { vx = 0.1f; vy = 0.1f; }
 	void Render();
 	void Update(DWORD dt);
 };
