@@ -1,3 +1,0 @@
-﻿  Brick.cpp
-D:\SE102\Castlevania\Castlevania\Brick.cpp(14,19): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-  Castlevania.vcxproj -> D:\SE102\Castlevania\x64\Debug\Castlevania.exe

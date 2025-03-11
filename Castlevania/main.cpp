@@ -48,7 +48,7 @@
 //#define texture_path_mario textures_dir "\\mario1.png"
 #define TEXTURE_PATH_SIMON1 TEXTURES_DIR "\\simon1.png"
 #define TEXTURE_PATH_SIMON2 TEXTURES_DIR "\\simon2.png"
-#define TEXTURE_PATH_MISC TEXTURES_DIR "\\misc.png"
+#define TEXTURE_PATH_MISC TEXTURES_DIR "\\2.png"
 
 #define SIMON_START_X 200.0f
 #define SIMON_START_Y 10.0f
@@ -188,7 +188,10 @@ void LoadResources()
 	if (texMisc == nullptr) {
 		DebugOut(L"[ERROR] texMisc is NULL! ID_TEX_MISC chưa được load hoặc không hợp lệ\n");
 	}
-	sprites->Add(ID_SPRITE_BRICK, 372, 153, 372 + 15, 153 + 15, texMisc);
+
+	sprites->Add(ID_SPRITE_BRICK, 0, 0, 32, 32, texMisc);
+
+//	sprites->Add(ID_SPRITE_BRICK, 372, 153, 372 + 15, 153 + 15, texMisc);
 	LPSPRITE testBrickSprite = sprites->Get(ID_SPRITE_BRICK);
 	if (testBrickSprite == nullptr) {
 		DebugOut(L"[ERROR] testBrickSprite is NULL! ID_SPRITE_BRICK có thể chưa được thêm đúng\n");
