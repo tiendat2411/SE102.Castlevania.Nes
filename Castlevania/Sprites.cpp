@@ -34,7 +34,7 @@ void CSprites::CreateSpriteSheet(int gameObjectId)
 	for (int i = 0; i < tex->_totalSprites; ++i)
 	{
 		x = (i % tex->_col) * spriteWidth;
-		y = (i % tex->_row) * spriteHeight;
+		y = (i / tex->_row) * spriteHeight;
 
 		int spritesSize = CSprites::GetInstance()->GetSprites().size();
 		CSprites::Add(spritesSize, x, y, spriteWidth, spriteHeight, tex);

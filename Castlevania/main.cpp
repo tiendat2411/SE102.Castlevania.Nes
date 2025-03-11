@@ -89,7 +89,6 @@ void LoadResources()
 	CTextures* textures = CTextures::GetInstance();
 
 	textures->Add(ID_TEX_SIMON1, TEXTURE_PATH_SIMON1,8,3,24);
-	textures->Add(ID_TEX_SIMON2, TEXTURE_PATH_SIMON2, 8, 3, 24);
 	textures->Add(ID_TEX_MISC, TEXTURE_PATH_MISC);
 
 	CSprites* sprites = CSprites::GetInstance();
@@ -98,72 +97,79 @@ void LoadResources()
 	LPTEXTURE texSimon2 = textures->Get(ID_TEX_SIMON2);
 
 	sprites->CreateSpriteSheet(ID_TEX_SIMON1);
-	sprites->CreateSpriteSheet(ID_TEX_SIMON2);
+
 
 	LPANIMATION ani;
 
 	ani = new CAnimation(100);
-	ani->Add(31);
+	ani->Add(0);
+	ani->SetDirection(-1);
 	animations->Add(ID_ANI_SIMON_IDLE_RIGHT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(0);
+	ani->Add(0); 	ani->SetDirection(1);
 	animations->Add(ID_ANI_SIMON_IDLE_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(31);
-	ani->Add(30);
-	ani->Add(29);
-	animations->Add(ID_ANI_SIMON_WALKING_RIGHT, ani);
 
 	ani = new CAnimation(100);
 	ani->Add(0);
 	ani->Add(1);
 	ani->Add(2);
+	ani->SetDirection(-1);
+	animations->Add(ID_ANI_SIMON_WALKING_RIGHT, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(0);
+	ani->Add(1);
+	ani->Add(2); 	ani->SetDirection(1);
 	animations->Add(ID_ANI_SIMON_WALKING_LEFT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(34);
-	ani->Add(35);
-	ani->Add(36);
+	ani->Add(11);
+	ani->Add(12);
+	ani->Add(13);
+	ani->SetDirection(-1);
 	animations->Add(ID_ANI_SIMON_RUNNING_RIGHT, ani);
 
 	ani = new CAnimation(50);	// Mario runs faster hence animation speed should be faster
 	ani->Add(11);
 	ani->Add(12);
-	ani->Add(13);
+	ani->Add(13);	ani->SetDirection(1);
 	animations->Add(ID_ANI_SIMON_RUNNING_LEFT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(27);
+	ani->Add(4);
+	ani->SetDirection(-1);
 	animations->Add(ID_ANI_SIMON_JUMP_WALK_RIGHT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(4);
+	ani->Add(4);	ani->SetDirection(1);
 	animations->Add(ID_ANI_SIMON_JUMP_WALK_LEFT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(32);
+	ani->Add(15);
+	ani->SetDirection(-1);
 	animations->Add(ID_ANI_SIMON_JUMP_RUN_RIGHT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(15);
+	ani->Add(15);	ani->SetDirection(1);
 	animations->Add(ID_ANI_SIMON_JUMP_RUN_LEFT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(47);
+	ani->Add(16);
+	ani->SetDirection(-1);
 	animations->Add(ID_ANI_SIMON_SIT_RIGHT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(16);
+	ani->Add(16); 	ani->SetDirection(1);
 	animations->Add(ID_ANI_SIMON_SIT_LEFT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(31);
+	ani->Add(8);
+	ani->SetDirection(-1);
 	animations->Add(ID_ANI_SIMON_BRACE_RIGHT, ani);
 
 	ani = new CAnimation(100);
-	ani->Add(8);
+	ani->Add(8);	ani->SetDirection(1);
 	animations->Add(ID_ANI_SIMON_BRACE_LEFT, ani);
 	
 

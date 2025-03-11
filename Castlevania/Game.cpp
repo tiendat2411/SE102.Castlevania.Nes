@@ -1,4 +1,4 @@
-#include "debug.h"
+﻿#include "debug.h"
 #include "Game.h"
 
 CGame* CGame::__instance = NULL;
@@ -123,6 +123,18 @@ void CGame::Init(HWND hWnd, HINSTANCE hInstance)
 
 	DebugOut((wchar_t*)L"[INFO] InitDirectX has been successful\n");
 
+
+	D3D10_RASTERIZER_DESC rasterizerDesc;
+	ZeroMemory(&rasterizerDesc, sizeof(D3D10_RASTERIZER_DESC));
+
+	rasterizerDesc.FillMode = D3D10_FILL_SOLID;  // Vẽ bình thường
+	rasterizerDesc.CullMode = D3D10_CULL_NONE;   // Tắt culling
+	rasterizerDesc.FrontCounterClockwise = false;
+
+
+	pD3DDevice->CreateRasterizerState(&rasterizerDesc, &pRasterState);
+	pD3DDevice->RSSetState(pRasterState);
+
 	return;
 }
 
@@ -140,7 +152,7 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect)
 
 	D3DX10_SPRITE sprite;
 
-	// Set the sprite�s shader resource view
+	// Set the sprite’s shader resource view
 	sprite.pTexture = tex->getShaderResourceView();
 
 	if (rect == NULL)
@@ -188,7 +200,7 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect)
 	D3DXMATRIX matScaling;
 	D3DXMatrixScaling(&matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight, 1.0f);
 
-	// Setting the sprite�s position and size
+	// Setting the sprite’s position and size
 	sprite.matWorld = (matScaling * matTranslation);
 
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
@@ -376,6 +388,7 @@ CGame::~CGame()
 	pRenderTargetView->Release();
 	pSwapChain->Release();
 	pD3DDevice->Release();
+	pRasterState->Release();
 }
 
 CGame* CGame::GetInstance()

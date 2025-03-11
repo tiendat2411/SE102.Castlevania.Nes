@@ -46,8 +46,10 @@ void CAnimation::Render(float x, float y)
 		}
 
 	}
-
-	frames[currentFrame]->GetSprite()->Draw(x, y);
+	if (direction > 0)
+		frames[currentFrame]->GetSprite()->Draw(x, y);
+	else
+		frames[currentFrame]->GetSprite()->FlipXDraw(x, y);
 }
 
 //void CAnimation::Render(float x, float y)

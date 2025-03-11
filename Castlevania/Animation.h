@@ -11,18 +11,18 @@ using namespace std;
 
 class CAnimation
 {
-//	int direction;
+	int direction;
 	ULONGLONG lastFrameTime;
 	int defaultTime;
 	int currentFrame;
 	vector<LPANIMATION_FRAME> frames;
 public:
-	CAnimation(int defaultTime) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; }
+	CAnimation(int defaultTime) { this->defaultTime = defaultTime; lastFrameTime = -1; currentFrame = -1; int direction = 1; }
 	void Add(int spriteId, DWORD time = 0);
 	void SetCurrentFrame(int curFrame = 0);
 	void SetDefaultFrameTime(int startIdx,int endIdx,int time);
 	void Render(float x, float y);
-//	void SetDirection(int direction = 1) { this->direction = direction; };
+	void SetDirection(int direction ) { this->direction = direction; };
 };
 
 typedef CAnimation* LPANIMATION;

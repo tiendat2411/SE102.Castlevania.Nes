@@ -27,7 +27,7 @@ CSprite::CSprite(int id, int srcX, int srcY, int width, int height, LPTEXTURE te
 }
 
 void CSprite::Draw(float x, float y)
-{
+{	
 	CGame* g = CGame::GetInstance();
 
 	D3DXMATRIX matTranslation;
@@ -41,10 +41,11 @@ void CSprite::FlipXDraw(float x, float y)
 {
 	CGame* g = CGame::GetInstance();
 
-	D3DXMATRIX matTranslation, matFlipX;
-	D3DXMatrixTranslation(&matTranslation, x, (g->GetBackBufferHeight() - y), 0.1f);
+	D3DXMATRIX matTranslation, matFlipX ;
+	D3DXMatrixTranslation(&matTranslation, x + sprite.TexSize.x, (g->GetBackBufferHeight() - y), 0.1f);
 	D3DXMatrixScaling(&matFlipX, -1, 1, 1);
-	this->sprite.matWorld = (matFlipX * this->matScaling * matTranslation);
 
+	this->sprite.matWorld = (this->matScaling * matFlipX * matTranslation);
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
+
 }
