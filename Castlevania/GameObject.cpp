@@ -8,6 +8,7 @@ CGameObject::CGameObject()
 {
 	x = y = 0;
 	vx = vy = 0;
-	nx = 1;	
-	state = -1;
+	directionX = DIRECTION_RIGHT;
+	int directionY = -1;
+	int aniState = SIMON_ANI_IDLE;
 }

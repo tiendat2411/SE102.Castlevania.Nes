@@ -14,6 +14,9 @@
 #define KEYBOARD_STATE_SIZE 256
 
 
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
+#define GROUND_Y 100.0f
 /*
 	Our simple game framework
 */
@@ -64,7 +67,7 @@ public:
 		this->Draw(x, y, tex, &rect);
 	}
 
-	LPTEXTURE LoadTexture(LPCWSTR texturePath, int col = 1, int row = 1, int totalSprites = 1,int R = 255, int G = 0, int B = 255);
+	LPTEXTURE LoadTexture(LPCWSTR texturePath, int col = 1, int row = 1, int totalSprites = 1);
 
 	// Keyboard related functions 
 	void InitKeyboard(LPKEYEVENTHANDLER handler);
