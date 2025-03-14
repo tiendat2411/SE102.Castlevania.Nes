@@ -13,7 +13,7 @@ void CBrick::Update(DWORD dt)
 
 	int backBufferWidth = CGame::GetInstance()->GetBackBufferWidth();
 	float right_edge = backBufferWidth - BRICK_WIDTH;
-	float right_edgeY = CGame::GetInstance()->GetBackBufferHeight(); - BRICK_WIDTH;
+	float right_edgeY = CGame::GetInstance()->GetBackBufferHeight() - BRICK_WIDTH;
 	if (x < 0 || x > right_edge) {
 
 		vx = -vx;

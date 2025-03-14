@@ -5,7 +5,10 @@
 
 
 
-
+void CAnimation::CreateNewAnimation(int startSpriteId, int EndSpriteId , DWORD time) {
+	for (int i = startSpriteId; i <= EndSpriteId; ++i)
+		Add(i, time);
+}
 
 void CAnimation::Add(int spriteId, DWORD time)
 {
@@ -26,7 +29,9 @@ void CAnimation::SetDefaultFrameTime(int startIdx, int endIdx, int time) {
 	}
 }
 
-void CAnimation::Render(float x, float y)
+
+
+void CAnimation::Render(float x, float y,int direction)
 {
 	ULONGLONG now = GetTickCount64();
 	if (currentFrame == -1)
@@ -46,35 +51,13 @@ void CAnimation::Render(float x, float y)
 		}
 
 	}
-	if (direction > 0)
+	if (direction < 0)
 		frames[currentFrame]->GetSprite()->Draw(x, y);
 	else
 		frames[currentFrame]->GetSprite()->FlipXDraw(x, y);
 }
-
-//void CAnimation::Render(float x, float y)
-//{
-//	ULONGLONG now = GetTickCount64();
-//	if (currentFrame == -1)
-//	{
-//		currentFrame = 0;
-//		lastFrameTime = now;
-//	}
-//	else
-//	{
-//		DWORD t = frames[currentFrame]->GetTime();
-//		if (now - lastFrameTime > t)
-//		{
-//			currentFrame++;
-//			lastFrameTime = now;
-//			if (currentFrame == frames.size()) currentFrame = 0;
-//			//DebugOut(L"now: %d, lastFrameTime: %d, t: %d\n", now, lastFrameTime, t);
-//		}
-//
-//	}
-//	if (direction > 0)
-//		frames[currentFrame]->GetSprite()->Draw(x, y);
-//	else
-//		frames[currentFrame]->GetSprite()->FlipXDraw(x, y);
-//}
-//
+BOOLEAN CAnimation::isAniFinished() {
+	if (currentFrame == frames.size() - 1)
+		return true;
+	return false;
+}

@@ -4,6 +4,8 @@
 #include <d3dx10.h>
 #include <vector>
 
+#include"GameDefines.h"
+
 using namespace std;
 
 class CGameObject
@@ -14,16 +16,21 @@ protected:
 
 	float vx;
 	float vy;
-
-	int nx;	 
-
-	int state;									
+	int directionX;	
+	int directionY;
+	int aniState;
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 
-	void SetState(int state) { this->state = state; }
-	int GetState() { return this->state; }
+	float GetVelocityX() { return vx; }
+	int GetPosX() { return x; }
+	int GetPosY() { return y; }
+	int GetDirectionX() { return directionX; }
+	int GetDirectionY() { return directionY; }
+
+	void SetAniState(int state) { this->aniState = state; }
+	int GetAniState() { return this->aniState; }
 
 	CGameObject();
 	CGameObject(float x, float y):CGameObject() { this->x = x; this->y = y; }
