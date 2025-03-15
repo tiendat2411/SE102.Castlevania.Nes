@@ -4,11 +4,11 @@
 
 BOOLEAN CWalkingState::StateTransition(CSimon* simon, sType prevState) {
 
-	if (prevState == sType::SIMON_STATE_IDLE || prevState == sType::SIMON_STATE_WALKING)
+	if (prevState == sType::SIMON_STATE_DUCKING || (prevState == sType::SIMON_STATE_JUMPING && simon->GetPosY()<GROUND_Y))
 	{
-		return true;
+		return false;
 	}
-	return false;
+	return true;
 }
 
 void CWalkingState::Enter(CSimon* simon) {
