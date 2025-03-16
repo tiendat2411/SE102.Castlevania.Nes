@@ -4,7 +4,7 @@
 
 BOOLEAN CWalkingState::StateTransition(CSimon* simon, sType prevState) {
 
-	if (prevState == sType::SIMON_STATE_DUCKING || (prevState == sType::SIMON_STATE_JUMPING && simon->GetPosY()<GROUND_Y))
+	if (prevState == sType::SIMON_STATE_DUCKING || (prevState == sType::SIMON_STATE_JUMPING && /*simon->GetPosY()<GROUND_Y*/!simon->IsOnPlatform()))
 	{
 		return false;
 	}

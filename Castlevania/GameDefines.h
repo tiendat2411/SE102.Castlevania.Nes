@@ -65,10 +65,11 @@
 
 /*******************************************/
 
+//Ani Brick
 #pragma endregion 
 
 
-#define SIMON_GRAVITY 0.0015f 
+#define SIMON_GRAVITY 0.002f 
 
 #define SIMON_WALKING_SPEED 0.1f 
 #define SIMON_SPEED_ONSTAIR 0.09f 
@@ -97,7 +98,6 @@
 enum class Type {
 
 	SIMON = 1000,
-
 	// Enemy
 	GHOST = 110,
 	LEOPARD = 111,

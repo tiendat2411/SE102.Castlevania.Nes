@@ -11,4 +11,10 @@ CGameObject::CGameObject()
 	directionX = DIRECTION_RIGHT;
 	int directionY = -1;
 	int aniState = SIMON_ANI_IDLE;
+	isDeleted = false;
+}
+
+CGameObject::~CGameObject()
+{
+
 }

@@ -1,40 +1,49 @@
 #include "Simon.h"
 #include "StateMachine.h"
-
-void CSimon::Update(DWORD dt)
+void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	x += vx * dt;
-	y += vy * dt;
 	// simple fall down
-	vy += SIMON_GRAVITY * dt;
+	vy += ay * dt;
 	vx += ax * dt;
 
-
-
-	if (y > 100) {
-		y = 100;
-	}
-	if (y < 0) y = 0;
-	if (abs(vx) > abs(maxVx)) vx = maxVx * directionX;
-
-	if (abs(vy) > abs(maxVy)) vy = maxVy * directionY;
+	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	DebugOutTitle(L"vx = %0.5f", this->vx);
 
-
-	// BAD & sinful platform collision handling, see next sample for correct collision handling
-	
-
-	// simple screen edge collision!!!
-	if (vx > 0 && x > 290) x = 290;
-	if (vx < 0 && x < 0) x = 0;
-
-	if (vy > 0 && y > 290) y = 1000;
-	if (vy < 0 && y < 0) y = 0;
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 
 }
 
+void CSimon::OnNoCollision(DWORD dt)
+{
+	x += vx * dt;
+	y += vy * dt;
+	isOnPlatform = false;
+}
+
+void CSimon::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (e->ny != 0 && e->obj->IsBlocking())
+	{
+		vy = 0;
+		if (e->ny < 0) isOnPlatform = true;
+	}
+	else
+		if (e->nx != 0 && e->obj->IsBlocking())
+		{
+			vx = 0;
+		}
+}
+
+void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	Width = tex->getWidth() / tex->_col;
+	Height = tex->getHeight() / tex->_row;
+	left = x - Width / 2;
+	top = y - Height / 2;
+	right = left + Width;
+	bottom = top + Height;
+}
 void CSimon::Render()
 {
 	// SIMON is still on air check, this will not work when SIMON is just stand up

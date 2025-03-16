@@ -41,7 +41,9 @@ void CAnimations::LoadResource() {
 	ani->CreateNewAnimation(SIMON_ANI_STANDING_ATTACKING_BEGIN, SIMON_ANI_STANDING_ATTACKING_END);
 	Add(SIMON_ANI_STANDING_ATTACKING_BEGIN, ani);
 
-
+	ani = new CAnimation(100);
+	ani->CreateNewAnimation(3000, 3000);
+	Add(3000, ani);
 
 }
 

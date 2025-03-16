@@ -13,6 +13,7 @@ CSprites* CSprites::GetInstance()
 }
 void CSprites::LoadResource(){
 	CreateSpriteSheet(Type::SIMON);
+	CreateSpriteSheet(Type::BRICK);
 }
 
 void CSprites::CreateSpriteSheet(Type id)

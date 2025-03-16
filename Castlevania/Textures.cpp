@@ -21,7 +21,7 @@ CTextures* CTextures::GetInstance()
 void CTextures::LoadResource()
 {
 	Add(Type::SIMON, TEXTURE_PATH_SIMON1, 8, 3, 24);
-
+	Add(Type::BRICK, TEXTURE_PATH_MISC, 1, 1, 1);
 
 	if (textures[Type::SIMON]==nullptr) {
 		DebugOut(L"[ERROR] testBrickSprite is NULL! ID_SPRITE_BRICK có thể chưa được thêm đúng\n");

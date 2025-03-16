@@ -32,17 +32,17 @@
 
 
 #define SIMON_START_X 50.0f
-#define SIMON_START_Y 100.0f
+#define SIMON_START_Y 10.0f
 
 #define BRICK_X 0.0f
-#define BRICK_Y /*GROUND_Y* +*/ 20.0f
+#define BRICK_Y /*GROUND_Y* +*/ 150.0f
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
 
 CSampleKeyHandler* keyHandler;
 
-vector<LPGAMEOBJECT> objects;
+list<LPGAMEOBJECT> objects;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -80,6 +80,17 @@ void LoadResources()
 	simon = new CSimon(SIMON_START_X, SIMON_START_Y);
 	objects.push_back(simon);
 
+	for (int i = 0; i < NUM_BRICKS; i++)
+	{
+		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y);
+		objects.push_back(b);
+	}
+
+	for (int i = 1; i < 3; i++)
+	{
+		CBrick* b = new CBrick(BRICK_X + 300.0f, BRICK_Y - i * BRICK_WIDTH);
+		objects.push_back(b);
+	}
 //	ani = animations->Get(0);
 	
 //	ani = new CAnimation(100);
@@ -91,16 +102,45 @@ void LoadResources()
 
 }
 
+bool IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+
+void PurgeDeletedObjects()
+{
+	list<LPGAMEOBJECT>::iterator it;
+	for (it = objects.begin(); it != objects.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	objects.erase(
+		std::remove_if(objects.begin(), objects.end(), IsGameObjectDeleted),
+		objects.end());
+}
+
+
 /*
 	Update world status for this frame
 	dt: time period between beginning of last frame and beginning of this frame
 */
 void Update(DWORD dt)
 {
-	for (int i = 0; i < (int)objects.size(); i++)
+	vector<LPGAMEOBJECT> coObjects;
+	list<LPGAMEOBJECT>::iterator i;
+	for (i = objects.begin(); i != objects.end(); ++i)
 	{
-		objects[i]->Update(dt);
+		coObjects.push_back(*i);
 	}
+
+	for (i = objects.begin(); i != objects.end(); ++i)
+	{
+		(*i)->Update(dt, &coObjects);
+	}
+
+	PurgeDeletedObjects();
 }
 
 void Render()
@@ -119,9 +159,10 @@ void Render()
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
-	for (int i = 0; i < (int)objects.size(); i++)
+	list<LPGAMEOBJECT>::iterator i;
+	for (i = objects.begin(); i != objects.end(); ++i)
 	{
-		objects[i]->Render();
+		(*i)->Render();
 	}
 
 	spriteHandler->End();
