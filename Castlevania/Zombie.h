@@ -10,7 +10,7 @@ class CZombie:public CGameObject
 private:
 
 public:
-	CZombie(float x, float y, int directionX) : CGameObject(x, y) { this->directionX = directionX; aniState = ZOMBIE_ANI_BEGIN; }
+	CZombie(float x, float y, int directionX);
 	void Update(DWORD dt);
 	void Render();
 };

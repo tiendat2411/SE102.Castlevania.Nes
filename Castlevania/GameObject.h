@@ -16,12 +16,19 @@ protected:
 
 	float vx;
 	float vy;
+
 	int directionX;	
 	int directionY;
+
+	int health;
+	Type type;
 	int aniState;
+
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
+	void SetAniState(int state) { this->aniState = state; }
+	int GetAniState() { return this->aniState; }
 
 	float GetVelocityX() { return vx; }
 	float GetVelocityY() { return vy; }
@@ -29,9 +36,8 @@ public:
 	float GetPosY() { return y; }
 	int GetDirectionX() { return directionX; }
 	int GetDirectionY() { return directionY; }
-
-	void SetAniState(int state) { this->aniState = state; }
-	int GetAniState() { return this->aniState; }
+	int GetHealth() { return health; }
+	Type GetType() { return type; }
 
 	CGameObject();
 	CGameObject(float x, float y):CGameObject() { this->x = x; this->y = y; }
