@@ -40,20 +40,20 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
 		if (game->IsKeyDown(DIK_UP))
-			simon->SetState(sType::SIMON_STATE_UPSTAIRS,DIRECTION_RIGHT);
+			simon->SetState(sType::SIMON_STATE_WALKING_ONSTAIRS,DIRECTION_POSITIVE, DIRECTION_NEGATIVE);
 		else if (game->IsKeyDown(DIK_DOWN))
-				simon->SetState(sType::SIMON_STATE_DOWNSTAIRS, DIRECTION_RIGHT);		
+				simon->SetState(sType::SIMON_STATE_WALKING_ONSTAIRS, DIRECTION_POSITIVE);
 		else
-			simon->SetState(sType::SIMON_STATE_WALKING, DIRECTION_RIGHT);
+			simon->SetState(sType::SIMON_STATE_WALKING, DIRECTION_POSITIVE);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
 		if (game->IsKeyDown(DIK_UP))
-			simon->SetState(sType::SIMON_STATE_UPSTAIRS, DIRECTION_LEFT);
+			simon->SetState(sType::SIMON_STATE_WALKING_ONSTAIRS, DIRECTION_NEGATIVE, DIRECTION_NEGATIVE);
 		else if (game->IsKeyDown(DIK_DOWN))
-			simon->SetState(sType::SIMON_STATE_DOWNSTAIRS, DIRECTION_LEFT);
+			simon->SetState(sType::SIMON_STATE_WALKING_ONSTAIRS, DIRECTION_NEGATIVE);
 		else
-			simon->SetState(sType::SIMON_STATE_WALKING, DIRECTION_LEFT);
+			simon->SetState(sType::SIMON_STATE_WALKING, DIRECTION_NEGATIVE);
 	}
 	else
 		simon->SetState(sType::SIMON_STATE_IDLE, DIRECTION_DEFAULT);

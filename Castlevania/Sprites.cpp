@@ -13,6 +13,19 @@ CSprites* CSprites::GetInstance()
 }
 void CSprites::LoadResource(){
 	CreateSpriteSheet(Type::SIMON);
+	CreateSpriteSheet(Type::FISHMAN);
+	CreateSpriteSheet(Type::EAGLE);
+	CreateSpriteSheet(Type::CANON);
+	CreateSpriteSheet(Type::KNIGHT);
+	CreateSpriteSheet(Type::AXEMAN);
+	CreateSpriteSheet(Type::GHOST);
+	CreateSpriteSheet(Type::FLEAMAN);
+	CreateSpriteSheet(Type::LEOPARD);
+	CreateSpriteSheet(Type::MEDUSA);
+	CreateSpriteSheet(Type::RAVEN);
+	CreateSpriteSheet(Type::SKELETON);
+	CreateSpriteSheet(Type::BAT);
+	CreateSpriteSheet(Type::ZOMBIE);
 }
 
 void CSprites::CreateSpriteSheet(Type id)

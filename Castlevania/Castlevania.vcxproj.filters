@@ -16,6 +16,9 @@
     <Filter Include="Header Files\SimonStates">
       <UniqueIdentifier>{dac15fa5-456a-421d-813f-cee0892dddad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Enemies">
+      <UniqueIdentifier>{99515e49-07d7-45ce-a96b-52e59f26d593}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -81,14 +84,14 @@
     <ClInclude Include="JumpingState.h">
       <Filter>Header Files\SimonStates</Filter>
     </ClInclude>
-    <ClInclude Include="UpStairsState.h">
-      <Filter>Header Files\SimonStates</Filter>
-    </ClInclude>
-    <ClInclude Include="DownStairsState.h">
+    <ClInclude Include="WalkingOnStairState.h">
       <Filter>Header Files\SimonStates</Filter>
     </ClInclude>
     <ClInclude Include="StateMachine.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Header Files\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,9 +140,6 @@
     <ClCompile Include="JumpingState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DownStairsState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IdleState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -147,6 +147,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DuckingState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StandingOnStairsState.h">
+      <Filter>Header Files\SimonStates</Filter>
+    </ClCompile>
+    <ClCompile Include="StandingOnStairsState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WalkkingOnStairState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,6 +176,8 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

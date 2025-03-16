@@ -24,8 +24,9 @@ public:
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 
 	float GetVelocityX() { return vx; }
-	int GetPosX() { return x; }
-	int GetPosY() { return y; }
+	float GetVelocityY() { return vy; }
+	float GetPosX() { return x; }
+	float GetPosY() { return y; }
 	int GetDirectionX() { return directionX; }
 	int GetDirectionY() { return directionY; }
 
@@ -37,7 +38,7 @@ public:
 
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0;
-	~CGameObject();
+	~CGameObject() {};
 };
 
 typedef CGameObject* LPGAMEOBJECT;

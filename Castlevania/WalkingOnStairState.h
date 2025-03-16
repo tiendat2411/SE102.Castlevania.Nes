@@ -2,9 +2,10 @@
 
 #include "State.h"
 
-class CWalkingState: public CState
+class CWalkingOnStairState : public CState
 {
-public :
+public:
+
 	virtual void Enter(CSimon* simon);
 
 };

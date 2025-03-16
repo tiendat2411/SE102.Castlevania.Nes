@@ -1,11 +1,10 @@
 #pragma once
 
 #include "State.h"
-
-class CWalkingState: public CState
+#include "Simon.h"
+class CStandingOnStairsState: public CState
 {
-public :
+public:
 	virtual void Enter(CSimon* simon);
 
 };
-

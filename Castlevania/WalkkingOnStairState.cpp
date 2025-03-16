@@ -1,8 +1,10 @@
-#include "WalkingState.h"
+#include "WalkingOnStairState.h"
 #include "StateMachine.h"
 
 
-void CWalkingState::Enter(CSimon* simon) {
+
+
+void CWalkingOnStairState::Enter(CSimon* simon) {
 	if (simon->isAttacking) 
 		SetStaticState(simon);
 	else  
