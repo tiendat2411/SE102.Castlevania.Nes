@@ -16,7 +16,7 @@ public:
 protected: 
 	void SetStaticState(CSimon* simon) 
 	{
-		simon->SetSpeed(0, 1);
+		simon->SetSpeed(0, 0);
 		simon->SetAcceleration(0);
 	}
 

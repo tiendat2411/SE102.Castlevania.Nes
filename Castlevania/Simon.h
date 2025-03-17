@@ -31,12 +31,13 @@ public:
 	int Width;
 	int Height;
 	LPTEXTURE tex;
-	BOOLEAN  isAttacking, isOnStair;
+	BOOLEAN  isAttacking, isOnStair,isFalling;
 
 	CSimon(float x, float y) : CGameObject(x, y)
 	{
 		isAttacking = false;
 		isOnStair = false;
+		isFalling = true;
 		maxVx = SIMON_WALKING_SPEED;
 		ax = 0.0f;
 
@@ -47,6 +48,7 @@ public:
 		directionY = DIRECTION_POSITIVE;
 
 		aniState = SIMON_ANI_JUMPING;
+		type = Type::SIMON;
 		isOnPlatform = false;
 
 		tex = CTextures::GetInstance()->Get(Type::SIMON);
@@ -59,7 +61,7 @@ public:
 	void Render();
 
 	//Trả về 0 nếu nhân vật không thể va chạm (state = SIMON_STATE_DIE...)
-	int IsCollidable(){	return 1;}
+	int IsCollidable();
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);

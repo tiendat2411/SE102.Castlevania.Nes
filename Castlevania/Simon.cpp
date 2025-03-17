@@ -23,11 +23,11 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	int maxX = CGame::GetInstance()->GetBackBufferWidth(), maxY = CGame::GetInstance()->GetBackBufferHeight();
 	// simple screen edge collision!!!
-	/*if (vx > 0 && x > maxX) x = maxX;
+	if (vx > 0 && x > maxX) x = maxX;
 	if (vx < 0 && x < 0) x = 0;
 
 	if (vy > 0 && y > maxY) y = maxY;
-	if (vy < 0 && y < 0) y = 0;*/
+	if (vy < 0 && y < 0) y = 0;
 }
 
 void CSimon::OnNoCollision(DWORD dt)
@@ -64,7 +64,7 @@ void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CSimon::Render()
 {
 	int d = 0;
-	if (aniState == SIMON_ANI_DUCKING_ATTACKING_BEGIN || aniState == SIMON_ANI_DUCKING || aniState == SIMON_ANI_JUMPING)
+	if (aniState == SIMON_ANI_DUCKING_ATTACKING_BEGIN || aniState == SIMON_ANI_DUCKING )
 		d = SIMON_HEIGHT_ADJUST;
 	CAnimations::GetInstance()->Get(aniState)->Render(x, y + d, directionX);
 }
@@ -78,3 +78,7 @@ void CSimon::SetState(sType state, int _directionX, int _directionY)
 	CStateMachine::GetInstance()->SetState(this, state);
 }
 
+int CSimon:: IsCollidable() 
+{
+	return (CStateMachine::GetInstance()->GetCurrentState() != sType::SIMON_STATE_DIE);
+}

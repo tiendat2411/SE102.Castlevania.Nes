@@ -3,7 +3,7 @@
 
 
 BOOLEAN  CWalkingState::StateTransition(CSimon* simon, sType prevState) {
-	if (!simon->IsOnPlatform() ||prevState == sType::SIMON_STATE_DUCKING )
+	if (prevState == sType::SIMON_STATE_DUCKING )
 	{
 		return false;
 	}
@@ -15,6 +15,5 @@ void CWalkingState::Enter(CSimon* simon) {
 		SetStaticState(simon);
 	else  
 		simon->SetAcceleration(simon->GetDirectionX() * SIMON_ACCEL_WALK_X);
-
 	simon->SetAniState((simon->isAttacking) ? SIMON_ANI_STANDING_ATTACKING_BEGIN : SIMON_ANI_WALKING_BEGIN);
 }

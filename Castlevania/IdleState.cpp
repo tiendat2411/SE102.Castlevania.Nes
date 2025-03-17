@@ -5,7 +5,7 @@
 
 BOOLEAN CIdleState::StateTransition(CSimon* simon,sType prevState) {
 
-	if (!simon->IsOnPlatform() && prevState == sType::SIMON_STATE_JUMPING)	
+	if (prevState == sType::SIMON_STATE_JUMPING)	
 		return false;
 	return true;
 }
