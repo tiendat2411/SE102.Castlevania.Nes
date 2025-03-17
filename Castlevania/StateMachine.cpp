@@ -8,10 +8,21 @@ void CStateMachine::SetState(CSimon* simon, sType newState) {
     }
     simon->isAttacking = false;
 
+    //check if attacking
     if (newState == sType::DEFAULT_STATE) {
         simon->isAttacking = true;
         newState = currentState;
     }
+
+    //set gravity state for simon
+    if (!simon->IsOnPlatform()) {
+        newState = sType::SIMON_STATE_JUMPING;
+        simon->isFalling = true;
+    }
+    else
+        simon->isFalling =false;
+
+    //state transition
     if (states[newState] != nullptr) {
         if (states[newState]->StateTransition(simon, currentState)) {
             currentState = newState;

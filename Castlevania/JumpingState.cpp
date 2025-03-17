@@ -8,7 +8,8 @@ BOOLEAN CJumpingState::StateTransition(CSimon* simon, sType prevState)
 
 	if (prevState == sType::SIMON_STATE_DUCKING || prevState == sType::SIMON_STATE_ONSTAIRS )	return false;
 
-	if (!simon->isAttacking && (prevState == sType::SIMON_STATE_JUMPING && !simon->IsOnPlatform())) {
+	if (!simon->isAttacking && prevState == sType::SIMON_STATE_JUMPING) 
+	{
 
 		return false;
 	}
@@ -16,8 +17,9 @@ BOOLEAN CJumpingState::StateTransition(CSimon* simon, sType prevState)
 
 }
 
-void CJumpingState::Enter(CSimon* simon) {
-	if (!simon->isAttacking) 
+void CJumpingState::Enter(CSimon* simon) 
+{
+	if (!simon->isAttacking && !simon->isFalling) 
 		simon->SetSpeed(simon->GetVelocityX(), -SIMON_JUMP_SPEED_Y);
 
 	simon->SetAniState((simon->isAttacking) ? SIMON_ANI_STANDING_ATTACKING_BEGIN : SIMON_ANI_JUMPING);

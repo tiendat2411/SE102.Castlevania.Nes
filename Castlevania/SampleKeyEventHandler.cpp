@@ -55,8 +55,11 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		else
 			simon->SetState(sType::SIMON_STATE_WALKING, DIRECTION_NEGATIVE);
 	}
-	else
+	else 
+	{
 		simon->SetState(sType::SIMON_STATE_IDLE, DIRECTION_DEFAULT);
+
+	}
 
 	// Sitting state has higher priority 
 	if (game->IsKeyDown(DIK_DOWN))
