@@ -3,6 +3,8 @@
 ================================================================ */
 
 #include <windows.h>
+#include <iostream>
+
 
 #include "debug.h"
 #include"GameDefines.h"
@@ -14,6 +16,7 @@
 #include "Animations.h"
 #include "Sprite.h"
 
+#include "Scene.h"
 #include "Simon.h"
 #include "Zombie.h"
 #include "Brick.h"
@@ -29,8 +32,6 @@
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255, 0.0f)
 
 
-#define ID_SPRITE_BRICK 20001
-
 
 #define SIMON_START_X 50.0f
 #define SIMON_START_Y 10.0f
@@ -40,6 +41,7 @@
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
+CScene* scene = NULL;
 
 CSampleKeyHandler* keyHandler;
 
@@ -54,7 +56,6 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
-
 	return 0;
 }
 

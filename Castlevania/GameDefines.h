@@ -13,6 +13,8 @@
 
 #define TEXTURE_PATH_SIMON TEXTURES_DIR "\\simon.png"
 
+#define TEXTURE_PATH_MAP1 TEXTURES_DIR "\\map1.png"
+
 
 #define TEXTURE_PATH_FISHMAN TEXTURES_DIR ENEMYSTEX_DIR  "\\FishMan.png"
 #define TEXTURE_PATH_EAGLE TEXTURES_DIR ENEMYSTEX_DIR  "\\Eagle.png"
@@ -156,6 +158,9 @@ enum class Type {
 
 	//BRICK
 	BRICK = 3000,
+
+	//SCENE
+	MAP1 = 4100,
 };
 
 enum class sType {

@@ -70,6 +70,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -132,13 +136,10 @@
     <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Brick.h" />
-
     <ClInclude Include="Collision.h" />
-
     <ClInclude Include="FishMan.h" />
     <ClInclude Include="Leopard.h" />
     <ClInclude Include="WalkingOnStairState.h" />
-
     <ClInclude Include="debug.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameDefines.h" />
@@ -148,6 +149,7 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SampleKeyEventHandler.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="Simon.h" />
     <ClInclude Include="DuckingState.h" />
     <ClInclude Include="Sprite.h" />
@@ -162,9 +164,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Brick.cpp" />
-
     <ClCompile Include="Collision.cpp" />
-
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="DuckingState.cpp" />
     <ClCompile Include="FishMan.cpp" />
@@ -175,6 +175,7 @@
     <ClCompile Include="Leopard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
