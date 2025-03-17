@@ -10,21 +10,16 @@
 
 class CState { 
 public:
-	virtual void Render(CSimon* simon) {
-		float x = simon->GetPosX();
-		float y = simon->GetPosY();
-		float nx = simon->GetDirectionX();
-
-		int aniID = simon->GetAniState();
-		int d = 0;
-		if (aniID == SIMON_ANI_DUCKING_ATTACKING_BEGIN || aniID == SIMON_ANI_DUCKING)
-			d = SIMON_DUCK_HEIGHT_ADJUST;
-		CAnimations::GetInstance()->Get(aniID)->Render(x, y+d, nx);
-
-	}
-
-	virtual  BOOLEAN StateTransition(CSimon* simon, sType state) = 0;
+	virtual  BOOLEAN StateTransition(CSimon* simon, sType prevState) = 0;
 	virtual void Enter(CSimon* simon) = 0;
+
+protected: 
+	void SetStaticState(CSimon* simon) 
+	{
+		simon->SetSpeed(0, 0);
+		simon->SetAcceleration(0);
+	}
 
 };
 typedef CState* LPSTATE;
+

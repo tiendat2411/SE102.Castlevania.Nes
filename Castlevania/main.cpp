@@ -15,6 +15,7 @@
 #include "Sprite.h"
 
 #include "Simon.h"
+#include "Zombie.h"
 #include "Brick.h"
 
 #include "SampleKeyEventHandler.h"
@@ -35,7 +36,7 @@
 #define SIMON_START_Y 10.0f
 
 #define BRICK_X 0.0f
-#define BRICK_Y /*GROUND_Y* +*/ 150.0f
+#define BRICK_Y /*GROUND_Y* +*/ 300.0f
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
@@ -71,12 +72,6 @@ void LoadResources()
 	animations->LoadResource();
 
 
-//	ani = new CAnimation(100);
-//	ani->CreateFrameSheet(ID_TEX_SIMON);
-//	ani->SetDefaultFrameTime(ID_ANI_SIMON_RUNNING_RIGHT, ID_ANI_SIMON_BRACE_RIGHT, 50);
-//	ani->SetDefaultFrameTime(ID_ANI_SIMON_RUNNING_LEFT, ID_ANI_SIMON_IDLE_LEFT, 50);
-//	animations->Add(ID_TEX_SIMON, ani);
-
 	simon = new CSimon(SIMON_START_X, SIMON_START_Y);
 	objects.push_back(simon);
 
@@ -91,14 +86,9 @@ void LoadResources()
 		CBrick* b = new CBrick(BRICK_X + 300.0f, BRICK_Y - i * BRICK_WIDTH);
 		objects.push_back(b);
 	}
-//	ani = animations->Get(0);
-	
-//	ani = new CAnimation(100);
-//	ani->CreateFrameSheet(ID_TEX_MISC);
-//	animations->Add(ID_TEX_MISC, ani);
 
-//	ani = animations->Get(0);
-
+	//CZombie* zom = new CZombie(SIMON_START_X, SIMON_START_Y, DIRECTION_POSITIVE);
+	//objects.push_back(zom);
 
 }
 
@@ -269,7 +259,7 @@ int WINAPI WinMain(
 	keyHandler = new CSampleKeyHandler();
 	game->InitKeyboard(keyHandler);
 
-	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH *2 , SCREEN_HEIGHT * 2  , SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH  , SCREEN_HEIGHT , SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	LoadResources();
 

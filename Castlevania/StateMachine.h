@@ -5,8 +5,6 @@
 #include "IdleState.h"
 #include "JumpingState.h"
 #include "WalkingState.h"
-#include "UpStairsState.h"
-#include "DownStairsState.h"
 #include "DuckingState.h"
 
 
@@ -19,7 +17,6 @@ private:
 public:
     CStateMachine() :currentState(sType::SIMON_STATE_IDLE) { }
     void SetState(CSimon* simon, sType newState);
-    void Render(CSimon* simon);
     static CStateMachine* GetInstance();
     void Init();
     ~CStateMachine();

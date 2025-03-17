@@ -8,13 +8,14 @@ CGameObject::CGameObject()
 {
 	x = y = 0;
 	vx = vy = 0;
-	directionX = DIRECTION_RIGHT;
-	int directionY = -1;
-	int aniState = SIMON_ANI_IDLE;
+
+	directionX = DIRECTION_POSITIVE;
+	directionY = DIRECTION_POSITIVE;
+	health = 1;
+
 	isDeleted = false;
 }
 
 CGameObject::~CGameObject()
 {
-
 }

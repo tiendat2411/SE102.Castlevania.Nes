@@ -132,10 +132,14 @@
     <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Brick.h" />
+
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="DownStairsState.h" />
+
+    <ClInclude Include="FishMan.h" />
+    <ClInclude Include="Leopard.h" />
+    <ClInclude Include="WalkingOnStairState.h" />
+
     <ClInclude Include="debug.h" />
-    <ClInclude Include="framework.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameDefines.h" />
     <ClInclude Include="GameObject.h" />
@@ -149,32 +153,39 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="StateMachine.h" />
-    <ClInclude Include="UpStairsState.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="WalkingState.h" />
+    <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Brick.cpp" />
+
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="DownStairsState.cpp" />
+
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="DuckingState.cpp" />
+    <ClCompile Include="FishMan.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="JumpingState.cpp" />
+    <ClCompile Include="Leopard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
+    <ClCompile Include="StandingOnStairsState.cpp" />
+    <ClCompile Include="StandingOnStairsState.h" />
     <ClCompile Include="State.h" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="WalkingState.cpp" />
+    <ClCompile Include="WalkkingOnStairState.cpp" />
+    <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Castlevania.rc" />

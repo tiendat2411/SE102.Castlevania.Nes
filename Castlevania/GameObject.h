@@ -7,6 +7,7 @@
 #include"GameDefines.h"
 #include "Collision.h"
 
+
 using namespace std;
 
 class CGameObject
@@ -17,9 +18,14 @@ protected:
 
 	float vx;
 	float vy;
+
 	int directionX;	
 	int directionY;
+
+	int health;
+	Type type;
 	int aniState;
+
 	bool isDeleted;
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
@@ -32,14 +38,20 @@ public:
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 
-	float GetVelocityX() { return vx; }
-	int GetPosX() { return x; }
-	int GetPosY() { return y; }
+
+	float GetPosX() { return x; }
+	float GetPosY() { return y; }
 	int GetDirectionX() { return directionX; }
 	int GetDirectionY() { return directionY; }
 
 	void SetAniState(int state) { this->aniState = state; }
 	int GetAniState() { return this->aniState; }
+
+	float GetVelocityX() { return vx; }
+	float GetVelocityY() { return vy; }
+
+	int GetHealth() { return health; }
+	Type GetType() { return type; }
 
 	CGameObject();
 	CGameObject(float x, float y):CGameObject() { this->x = x; this->y = y; }
@@ -67,6 +79,7 @@ public:
 	~CGameObject();
 
 	static bool IsDeleted(const LPGAMEOBJECT& o) { return o->isDeleted; }
+
 };
 
 typedef CGameObject* LPGAMEOBJECT;

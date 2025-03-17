@@ -20,12 +20,6 @@ void CStateMachine::SetState(CSimon* simon, sType newState) {
     }
 }
 
-void CStateMachine::Render(CSimon* simon) {
-    if (states[currentState] != nullptr) {
-        states[currentState]->Render(simon);
-    }
-}
-
 CStateMachine* CStateMachine::GetInstance() {
     if (__instance == NULL) {
         __instance = new CStateMachine();
@@ -41,7 +35,7 @@ void CStateMachine::Init() {
     states[sType::SIMON_STATE_DUCKING] = new CDuckingState();
     // states[sType::SIMON_STATE_UPSTAIRS] = new CIdleState();
      //states[sType::SIMON_STATE_DOWNSTAIRS] = new CIdleState();
-    currentState = sType::SIMON_STATE_IDLE;
+    currentState = sType::SIMON_STATE_JUMPING;
 }
 CStateMachine::~CStateMachine() {
     for (auto& state : states) {
