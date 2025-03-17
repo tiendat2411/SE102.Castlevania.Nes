@@ -10,6 +10,8 @@
 ================================================================ */
 
 #include <windows.h>
+#include <iostream>
+
 
 #include "debug.h"
 #include "Game.h"
@@ -20,6 +22,7 @@
 #include "Animations.h"
 #include "Sprite.h"
 
+#include "Scene.h"
 #include "Simon.h"
 //#include "Mario.h"
 #include "Brick.h"
@@ -41,6 +44,7 @@
 #define ID_TEX_SIMON2 1
 #define ID_TEX_ENEMY 10
 #define ID_TEX_MISC 20
+#define ID_TEX_MAP1 30
 
 #define ID_SPRITE_BRICK 20001
 
@@ -48,6 +52,7 @@
 //#define texture_path_mario textures_dir "\\mario1.png"
 #define TEXTURE_PATH_SIMON1 TEXTURES_DIR "\\simon1.png"
 #define TEXTURE_PATH_MISC TEXTURES_DIR "\\2.png"
+#define TEXTURE_PATH_MAP1 TEXTURES_DIR "\\map1.png"
 
 #define SIMON_START_X 200.0f
 #define SIMON_START_Y 10.0f
@@ -61,6 +66,7 @@
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
+CScene* scene = NULL;
 
 CSampleKeyHandler* keyHandler;
 
@@ -75,7 +81,6 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
-
 	return 0;
 }
 
@@ -87,8 +92,9 @@ void LoadResources()
 {
 	CTextures* textures = CTextures::GetInstance();
 
-	textures->Add(ID_TEX_SIMON1, TEXTURE_PATH_SIMON1,8,3,24);
+	textures->Add(ID_TEX_SIMON1, TEXTURE_PATH_SIMON1, 8, 3, 24);
 	textures->Add(ID_TEX_MISC, TEXTURE_PATH_MISC);
+	textures->Add(ID_TEX_MAP1, TEXTURE_PATH_MAP1);
 
 	CSprites* sprites = CSprites::GetInstance();
 	CAnimations* animations = CAnimations::GetInstance();
@@ -96,7 +102,6 @@ void LoadResources()
 	LPTEXTURE texSimon2 = textures->Get(ID_TEX_SIMON2);
 
 	sprites->CreateSpriteSheet(ID_TEX_SIMON1);
-
 
 	LPANIMATION ani;
 
@@ -170,24 +175,25 @@ void LoadResources()
 	ani = new CAnimation(100);
 	ani->Add(8);	ani->SetDirection(1);
 	animations->Add(ID_ANI_SIMON_BRACE_LEFT, ani);
-	
 
-//	ani = new CAnimation(100);
-//	ani->CreateFrameSheet(ID_TEX_SIMON);
-//	ani->SetDefaultFrameTime(ID_ANI_SIMON_RUNNING_RIGHT, ID_ANI_SIMON_BRACE_RIGHT, 50);
-//	ani->SetDefaultFrameTime(ID_ANI_SIMON_RUNNING_LEFT, ID_ANI_SIMON_IDLE_LEFT, 50);
-//	animations->Add(ID_TEX_SIMON, ani);
+
+	//	ani = new CAnimation(100);
+	//	ani->CreateFrameSheet(ID_TEX_SIMON);
+	//	ani->SetDefaultFrameTime(ID_ANI_SIMON_RUNNING_RIGHT, ID_ANI_SIMON_BRACE_RIGHT, 50);
+	//	ani->SetDefaultFrameTime(ID_ANI_SIMON_RUNNING_LEFT, ID_ANI_SIMON_IDLE_LEFT, 50);
+	//	animations->Add(ID_TEX_SIMON, ani);
 
 	simon = new CSimon(SIMON_START_X, SIMON_START_Y);
 	objects.push_back(simon);
 
-//	ani = animations->Get(0);
-	
-//	ani = new CAnimation(100);
-//	ani->CreateFrameSheet(ID_TEX_MISC);
-//	animations->Add(ID_TEX_MISC, ani);
+	scene = new CScene(1536, 384, 0.5f, ID_TEX_MAP1, simon);
+	//	ani = animations->Get(0);
 
-//	ani = animations->Get(0);
+	//	ani = new CAnimation(100);
+	//	ani->CreateFrameSheet(ID_TEX_MISC);
+	//	animations->Add(ID_TEX_MISC, ani);
+
+	//	ani = animations->Get(0);
 
 	LPTEXTURE texMisc = textures->Get(ID_TEX_MISC);
 	if (texMisc == nullptr) {
@@ -196,7 +202,7 @@ void LoadResources()
 
 	sprites->Add(ID_SPRITE_BRICK, 0, 0, 32, 32, texMisc);
 
-//	sprites->Add(ID_SPRITE_BRICK, 372, 153, 372 + 15, 153 + 15, texMisc);
+	//	sprites->Add(ID_SPRITE_BRICK, 372, 153, 372 + 15, 153 + 15, texMisc);
 	LPSPRITE testBrickSprite = sprites->Get(ID_SPRITE_BRICK);
 	if (testBrickSprite == nullptr) {
 		DebugOut(L"[ERROR] testBrickSprite is NULL! ID_SPRITE_BRICK có thể chưa được thêm đúng\n");
@@ -218,6 +224,7 @@ void LoadResources()
 */
 void Update(DWORD dt)
 {
+	scene->Update();
 	for (int i = 0; i < (int)objects.size(); i++)
 	{
 		objects[i]->Update(dt);
@@ -239,6 +246,8 @@ void Render()
 
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
+
+	scene->Render();
 
 	for (int i = 0; i < (int)objects.size(); i++)
 	{
