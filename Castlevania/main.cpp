@@ -87,6 +87,11 @@ void LoadResources()
 		objects.push_back(b);
 	}
 
+	for (int i = 0; i < 5; i++)
+	{
+		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y-200);
+		objects.push_back(b);
+	}
 	//CZombie* zom = new CZombie(SIMON_START_X, SIMON_START_Y, DIRECTION_POSITIVE);
 	//objects.push_back(zom);
 

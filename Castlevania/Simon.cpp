@@ -23,11 +23,11 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	int maxX = CGame::GetInstance()->GetBackBufferWidth(), maxY = CGame::GetInstance()->GetBackBufferHeight();
 	// simple screen edge collision!!!
-	if (vx > 0 && x > maxX) x = maxX;
+	/*if (vx > 0 && x > maxX) x = maxX;
 	if (vx < 0 && x < 0) x = 0;
 
 	if (vy > 0 && y > maxY) y = maxY;
-	if (vy < 0 && y < 0) y = 0;
+	if (vy < 0 && y < 0) y = 0;*/
 }
 
 void CSimon::OnNoCollision(DWORD dt)
