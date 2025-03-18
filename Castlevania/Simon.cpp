@@ -69,7 +69,7 @@ void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom
 void CSimon::Render()
 {
 	int d = 0;
-	if (aniState == SIMON_ANI_DUCKING_ATTACKING_BEGIN || aniState == SIMON_ANI_DUCKING || aniState == SIMON_ANI_JUMPING)
+	if (aniState == SIMON_ANI_DUCKING_ATTACKING_BEGIN || aniState == SIMON_ANI_DUCKING )
 		d = SIMON_HEIGHT_ADJUST;
 	CAnimations::GetInstance()->Get(aniState)->Render(x, y + d, directionX);
 }

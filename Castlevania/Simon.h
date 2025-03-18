@@ -30,13 +30,16 @@ class CSimon : public CGameObject
 	
 	BOOLEAN isOnPlatform;
 public:
+
 	BOOLEAN  isAttacking, isOnStair,isHurting;
 
 	CSimon(float x, float y) : CGameObject(x, y)
 	{
 		isAttacking = false;
 		isOnStair = false;
+
 		isHurting = false;
+
 		maxVx = SIMON_WALKING_SPEED;
 		ax = 0.0f;
 
