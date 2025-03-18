@@ -41,7 +41,7 @@
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
-CScene* scene = NULL;
+CScene* map1 = NULL;
 
 CSampleKeyHandler* keyHandler;
 
@@ -74,6 +74,8 @@ void LoadResources()
 
 
 	simon = new CSimon(SIMON_START_X, SIMON_START_Y);
+	map1 = new CScene(1536, 384, 0.5f, Type::MAP1, simon);
+
 	objects.push_back(simon);
 
 	for (int i = 0; i < NUM_BRICKS; i++)
@@ -126,6 +128,9 @@ void Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT> coObjects;
 	list<LPGAMEOBJECT>::iterator i;
+
+	map1->Update();
+
 	for (i = objects.begin(); i != objects.end(); ++i)
 	{
 		coObjects.push_back(*i);
@@ -154,6 +159,8 @@ void Render()
 
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
+
+	map1->Render();
 
 	list<LPGAMEOBJECT>::iterator i;
 	for (i = objects.begin(); i != objects.end(); ++i)

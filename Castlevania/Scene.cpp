@@ -2,12 +2,13 @@
 #include "Game.h"
 #include "Textures.h"
 #include "Simon.h"
+#include "GameDefines.h"
 
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#define SCREEN_WIDTH 648
+#define SCREEN_HEIGHT 506
 #define TITLE_BAR_HEIGHT 38
 
-CScene::CScene(float w, float h, float speed, int idTexture, CSimon* simon)
+CScene::CScene(float w, float h, float speed, Type idTexture, CSimon* simon)
 {
     CTextures* cTextures = CTextures::GetInstance();
 
@@ -16,7 +17,7 @@ CScene::CScene(float w, float h, float speed, int idTexture, CSimon* simon)
     this->speedX = speed;
     this->x = 0;
     this->y = 0;
-    //this->texture = cTextures->Get(idTexture);
+    this->texture = cTextures->Get(idTexture);
     this->simon = simon;
 }
 
@@ -31,7 +32,7 @@ void CScene::Update()
 {
 
     // Di chuyển background khi nhân vật di chuyển
-    //x = -simon->GetX() * speedX;
+    x = -simon->GetPosX() * speedX;
 
     if (x < -896) x = -896;
     if (x > 0) x = 0;  // Không cho background chạy quá giới hạn bên trái

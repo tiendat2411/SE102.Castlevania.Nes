@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "Sprite.h"
 #include "Simon.h"
+#include "GameDefines.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ private:
     float speedX;                // Tốc độ di chuyển của background
 
 public:
-    CScene(float width, float height, float speed, int idTexture, CSimon* simon);
+    CScene(float width, float height, float speed, Type idTexture, CSimon* simon);
     void LoadResource();  // Tải background từ file ảnh
     void Update();             // Cập nhật vị trí background theo nhân vật
     void Render();
