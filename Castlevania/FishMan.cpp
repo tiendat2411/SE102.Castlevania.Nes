@@ -11,9 +11,6 @@ void CFishMan::Update(DWORD dt) {
 
 	/*vx = ZOMBIE_SPEED_X * this->directionX;
 	vy += ZOMBIE_GRAVITY * dt;*/
-	if (y > GROUND_Y) {
-		y = GROUND_Y; vy = 0;
-	}
 
 	int maxX = CGame::GetInstance()->GetBackBufferWidth(), maxY = CGame::GetInstance()->GetBackBufferHeight();
 	// simple screen edge collision!!!

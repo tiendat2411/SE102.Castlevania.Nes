@@ -2,6 +2,8 @@
 #include "StateMachine.h"
 
 #include "Game.h"
+#include "Zombie.h"
+#include "Brick.h"
 
 void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -39,17 +41,20 @@ void CSimon::OnNoCollision(DWORD dt)
 
 void CSimon::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny != 0 && e->obj->IsBlocking())
+
+	 if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
-		if (e->ny < 0)
+		if (e->ny < 0 && dynamic_cast<CBrick*>(e->obj))
 			isOnPlatform = true;
 	}
-	else
-		if (e->nx != 0 && e->obj->IsBlocking())
-		{
+	else if (e->nx != 0 && e->obj->IsBlocking())
+	{
 			vx = 0;
-		}
+	}
+	/* if (dynamic_cast<CZombie*>(e->obj)) {
+		 SetState(sType::SIMON_STATE_HURTING, -directionX);
+	 }*/
 }
 
 void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -71,10 +76,16 @@ void CSimon::Render()
 
 void CSimon::SetState(sType state, int _directionX, int _directionY)
 {
-	if (_directionX != DIRECTION_DEFAULT)
-		this->directionX = _directionX;
-	if (_directionY != DIRECTION_DEFAULT)
-		this->directionY = 1;
+	if(CStateMachine::GetInstance()->GetCurrentState()==sType::SIMON_STATE_HURTING)
+		isHurting = true;
+
+	else
+	{
+		if (_directionX != DIRECTION_DEFAULT)
+			this->directionX = _directionX;
+		if (_directionY != DIRECTION_DEFAULT)
+			this->directionY = DIRECTION_POSITIVE;
+	}
 	CStateMachine::GetInstance()->SetState(this, state);
 }
 

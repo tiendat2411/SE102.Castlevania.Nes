@@ -5,7 +5,7 @@
 BOOLEAN CDuckingState::StateTransition(CSimon* simon, sType prevState) {
 
 
-	if (prevState == sType::SIMON_STATE_JUMPING || prevState == sType::SIMON_STATE_ONSTAIRS) {
+	if (prevState == sType::SIMON_STATE_JUMPING || prevState == sType::SIMON_STATE_ONSTAIRS || simon->isHurting) {
 		return false;
 	}
 	return true;

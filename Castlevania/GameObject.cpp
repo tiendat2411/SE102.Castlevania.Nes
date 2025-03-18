@@ -9,6 +9,9 @@ CGameObject::CGameObject()
 	x = y = 0;
 	vx = vy = 0;
 
+	Width = 0;
+	Height = 0;
+
 	directionX = DIRECTION_POSITIVE;
 	directionY = DIRECTION_POSITIVE;
 	health = 1;

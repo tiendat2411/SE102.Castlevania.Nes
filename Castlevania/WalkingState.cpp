@@ -3,7 +3,8 @@
 
 
 BOOLEAN  CWalkingState::StateTransition(CSimon* simon, sType prevState) {
-	if (prevState == sType::SIMON_STATE_DUCKING )
+
+	if (prevState == sType::SIMON_STATE_DUCKING || !simon->IsOnPlatform() || simon->isHurting)
 	{
 		return false;
 	}

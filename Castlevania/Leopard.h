@@ -16,7 +16,11 @@ private:
 
 public:
 	CLeopard(float x, float y, int directionX);
-	void Update(DWORD dt);
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void OnNoCollision(DWORD dt);
+	int IsCollidable();
+	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 };
 

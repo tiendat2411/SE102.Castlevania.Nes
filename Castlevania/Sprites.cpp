@@ -30,6 +30,7 @@ void CSprites::LoadResource(){
 	CreateSpriteSheet(Type::SKELETON);
 	CreateSpriteSheet(Type::BAT);
 	CreateSpriteSheet(Type::ZOMBIE);
+	CreateSpriteSheet(Type::WHIP);
 
 }
 

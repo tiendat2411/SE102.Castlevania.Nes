@@ -34,6 +34,9 @@ void CAnimations::LoadResource() {
 	ani->CreateNewAnimation(SIMON_ANI_DUCKING, SIMON_ANI_DUCKING);
 	Add(SIMON_ANI_DUCKING, ani);
 
+	ani = new CAnimation(100);
+	ani->CreateNewAnimation(SIMON_ANI_HURTING, SIMON_ANI_HURTING);
+	Add(SIMON_ANI_HURTING, ani);
 	/******************ATTAKING********************/
 
 	ani = new CAnimation(100);
@@ -56,6 +59,10 @@ void CAnimations::LoadResource() {
 	ani = new CAnimation(500);
 	ani->CreateNewAnimation(ZOMBIE_ANI_BEGIN,ZOMBIE_ANI_END);
 	Add(ZOMBIE_ANI_BEGIN, ani);
+
+	ani = new CAnimation(100);
+	ani->CreateNewAnimation(WHIP_ANI_ATTACKING_BEGIN,WHIP_ANI_ATTACKING_END);
+	Add(WHIP_ANI_ATTACKING_BEGIN, ani);
 
 	
 	#pragma endregion

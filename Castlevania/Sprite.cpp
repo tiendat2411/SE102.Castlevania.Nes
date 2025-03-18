@@ -40,9 +40,8 @@ void CSprite::Draw(float x, float y)
 void CSprite::FlipXDraw(float x, float y)
 {
 	CGame* g = CGame::GetInstance();
-
 	D3DXMATRIX matTranslation, matFlipX ;
-	D3DXMatrixTranslation(&matTranslation, x + sprite.TexSize.x, (g->GetBackBufferHeight() - y), 0.1f);
+	D3DXMatrixTranslation(&matTranslation, x, (g->GetBackBufferHeight() - y), 0.1f);
 	D3DXMatrixScaling(&matFlipX, -1, 1, 1);
 
 	this->sprite.matWorld = (this->matScaling * matFlipX * matTranslation);

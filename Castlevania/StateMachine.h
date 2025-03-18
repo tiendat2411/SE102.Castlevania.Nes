@@ -6,6 +6,8 @@
 #include "JumpingState.h"
 #include "WalkingState.h"
 #include "DuckingState.h"
+#include "HurtingState.h"
+#include "FallingState.h"
 
 
 class CStateMachine {
