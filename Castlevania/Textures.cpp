@@ -25,6 +25,8 @@ void CTextures::LoadResource()
 {
 	Add(Type::BRICK, TEXTURE_PATH_MISC, 1, 1, 1);
 
+	Add(Type::MAP1, TEXTURE_PATH_MAP1, 1, 1, 1);
+
 	Add(Type::SIMON, TEXTURE_PATH_SIMON, 8, 3, 24);
 	Add(Type::FISHMAN, TEXTURE_PATH_FISHMAN, 4, 1, 4);
 	Add(Type::EAGLE, TEXTURE_PATH_EAGLE, 2, 1, 2);

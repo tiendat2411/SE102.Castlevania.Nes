@@ -14,6 +14,7 @@ CSprites* CSprites::GetInstance()
 void CSprites::LoadResource(){
 	CreateSpriteSheet(Type::SIMON);
 
+	//CreateSpriteSheet(Type::MAP1);
 	CreateSpriteSheet(Type::BRICK);
 
 	CreateSpriteSheet(Type::FISHMAN);

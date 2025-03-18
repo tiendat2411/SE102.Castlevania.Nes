@@ -3,6 +3,8 @@
 ================================================================ */
 
 #include <windows.h>
+#include <iostream>
+
 
 #include "debug.h"
 #include"GameDefines.h"
@@ -14,6 +16,7 @@
 #include "Animations.h"
 #include "Sprite.h"
 
+#include "Scene.h"
 #include "Simon.h"
 #include "Zombie.h"
 #include "Brick.h"
@@ -30,8 +33,6 @@
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255, 0.0f)
 
 
-#define ID_SPRITE_BRICK 20001
-
 
 #define SIMON_START_X 50.0f
 #define SIMON_START_Y 10.0f
@@ -41,6 +42,7 @@
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
+CScene* map1 = NULL;
 
 CSampleKeyHandler* keyHandler;
 
@@ -55,7 +57,6 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
-
 	return 0;
 }
 
@@ -74,6 +75,8 @@ void LoadResources()
 
 
 	simon = new CSimon(SIMON_START_X, SIMON_START_Y);
+	map1 = new CScene(1536, 384, 0.5f, Type::MAP1, simon);
+
 	objects.push_back(simon);
 
 	for (int i = 0; i < NUM_BRICKS; i++)
@@ -127,6 +130,9 @@ void Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT> coObjects;
 	list<LPGAMEOBJECT>::iterator i;
+
+	map1->Update();
+
 	for (i = objects.begin(); i != objects.end(); ++i)
 	{
 		coObjects.push_back(*i);
@@ -155,6 +161,8 @@ void Render()
 
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
+
+	map1->Render();
 
 	list<LPGAMEOBJECT>::iterator i;
 	for (i = objects.begin(); i != objects.end(); ++i)
