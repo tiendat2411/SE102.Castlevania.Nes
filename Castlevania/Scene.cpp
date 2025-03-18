@@ -5,6 +5,7 @@
 
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
+#define TITLE_BAR_HEIGHT 38
 
 CScene::CScene(float w, float h, float speed, int idTexture, CSimon* simon)
 {
@@ -39,53 +40,26 @@ void CScene::Update()
 void CScene::Render()
 {
      CGame* game = CGame::GetInstance();
-     /*
-    float scaleY = SCREEN_HEIGHT / height;
-    float scaleX = scaleY;
-   
-    float offsetX = simon->GetX() / (1536.0f - 640.0f);
-    offsetX = max(0.0f, min(offsetX, 1.0f - (640.0f / 1536.0f)));
-
-    sprite.pTexture = texture->getShaderResourceView();
-    sprite.TexCoord.x = offsetX;
-    sprite.TexCoord.y = 0;
-    sprite.TexSize.x = 640.0f / 1536.0f;
-    sprite.TexSize.y = 1.0f;
-    sprite.TextureIndex = 0;
-    sprite.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-    D3DXMATRIX matTranslation, matScaling;
-    D3DXMatrixTranslation(&matTranslation, x, 0, 0.1f);
-    D3DXMatrixScaling(&matScaling, scaleX, scaleY, 1.0f);
-    sprite.matWorld = matTranslation * matScaling;
-
-
-    game->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0); */
-    /*RECT rect;
-    rect.left = 0;
-    rect.top = 0;
-    rect.right = width;  // Sử dụng kích thước ảnh PNG gốc
-    rect.bottom = height;
-    
-    game->Draw(x, y, texture, NULL); */
 
 	 int spriteWidth = 0;
 	 int spriteHeight = 0;
+
+     float scaleY = SCREEN_HEIGHT / height;
+     float scaleX = scaleY;
 
 	 D3DX10_SPRITE sprite;
 
 	 // Set the sprite’s shader resource view
 	 sprite.pTexture = texture->getShaderResourceView();
-
 	 
-		 sprite.TexCoord.x = 0 / (float)texture->getWidth();
-		 sprite.TexCoord.y = 0 / (float)texture->getHeight();
+	 sprite.TexCoord.x = 0;
+     sprite.TexCoord.y = 0;
 
-		 spriteWidth = (width - 0 + 1);
-		 spriteHeight = (height - 0 + 1);
+	 spriteWidth = (width - 0 + 1);
+     spriteHeight = (height - 0 + 1);
 
-		 sprite.TexSize.x = 1.0f;//640.0f / 1536.0f;
-		 sprite.TexSize.y = 1.0f;
+     sprite.TexSize.x = 1.0f;//640.0f / 1536.0f;
+	 sprite.TexSize.y = 1.0f;
 	 
 
 	 // Set the texture index. Single textures will use 0
@@ -102,11 +76,11 @@ void CScene::Render()
 	 D3DXMATRIX matTranslation;
 
 	 // Create the translation matrix
-	 D3DXMatrixTranslation(&matTranslation, x, (101), 0.1f);
+	 D3DXMatrixTranslation(&matTranslation, x, (SCREEN_HEIGHT - TITLE_BAR_HEIGHT)/2, 0.1f);
 
 	 // Scale the sprite to its correct width and height because by default, DirectX draws it with width = height = 1.0f 
 	 D3DXMATRIX matScaling;
-	 D3DXMatrixScaling(&matScaling, (FLOAT)960, (FLOAT)202, 1.0f);
+	 D3DXMatrixScaling(&matScaling, (FLOAT)(width * scaleX), (FLOAT)(SCREEN_HEIGHT - TITLE_BAR_HEIGHT), 1.0f);
 
 	 // Setting the sprite’s position and size
 	 sprite.matWorld = (matScaling * matTranslation);
