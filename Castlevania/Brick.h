@@ -11,9 +11,6 @@
 
 class CBrick : public CGameObject {
 public:
-	int Width;
-	int Height;
-	LPTEXTURE tex;
 	CBrick(float x, float y) : CGameObject(x, y) {
 		tex = CTextures::GetInstance()->Get(Type::BRICK);
 	}

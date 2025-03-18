@@ -5,6 +5,7 @@
 #include <vector>
 
 #include"GameDefines.h"
+#include "Texture.h"
 #include "Collision.h"
 
 
@@ -22,10 +23,14 @@ protected:
 	int directionX;	
 	int directionY;
 
+	int Width;
+	int Height;
+
 	int health;
 	Type type;
 	int aniState;
 
+	LPTEXTURE tex;
 	bool isDeleted;
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }

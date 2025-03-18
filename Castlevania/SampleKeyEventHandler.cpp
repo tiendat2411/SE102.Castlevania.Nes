@@ -15,8 +15,11 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_Z:
 		simon->SetState(sType::DEFAULT_STATE, DIRECTION_DEFAULT);
 		break;
-	case DIK_X:
+	case DIK_X:	
 		simon->SetState(sType::SIMON_STATE_JUMPING,DIRECTION_DEFAULT);
+		break;
+	case DIK_A:
+		simon->SetState(sType::SIMON_STATE_HURTING, (simon->GetDirectionX()));
 		break;
 	}
 }

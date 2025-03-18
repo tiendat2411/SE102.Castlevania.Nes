@@ -39,6 +39,7 @@ void CTextures::LoadResource()
 	Add(Type::SKELETON, TEXTURE_PATH_SKELETON, 4, 1, 4);
 	Add(Type::BAT, TEXTURE_PATH_BAT, 4, 1, 4);
 	Add(Type::ZOMBIE, TEXTURE_PATH_ZOMBIE, 2, 1, 2);
+	Add(Type::WHIP, TEXTURE_PATH_WHIP, 3, 3, 9);
 
 
 

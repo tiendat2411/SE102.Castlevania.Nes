@@ -17,6 +17,7 @@
 #include "Simon.h"
 #include "Zombie.h"
 #include "Brick.h"
+#include "Whip.h"
 
 #include "SampleKeyEventHandler.h"
 #include "Sprites.h"
@@ -92,8 +93,9 @@ void LoadResources()
 		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y-200);
 		objects.push_back(b);
 	}
-	//CZombie* zom = new CZombie(SIMON_START_X, SIMON_START_Y, DIRECTION_POSITIVE);
-	//objects.push_back(zom);
+	CZombie* zom = new CZombie(SIMON_START_X, 200, DIRECTION_POSITIVE);
+	objects.push_back(zom);
+	objects.push_back(new CWhip(0,0,simon));
 
 }
 

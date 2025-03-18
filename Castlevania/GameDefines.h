@@ -28,6 +28,8 @@
 #define TEXTURE_PATH_BAT TEXTURES_DIR ENEMYSTEX_DIR "\\Vampire_bat.png"
 #define TEXTURE_PATH_ZOMBIE TEXTURES_DIR ENEMYSTEX_DIR "\\Zombie.png"
 
+#define TEXTURE_PATH_WHIP TEXTURES_DIR  "\\Whip.png"
+
 #pragma endregion
 
 #pragma region SIMON_ANIMATION_
@@ -36,6 +38,7 @@
 
 // aniID  = objectID + index of sprite in spriteSheet
 #define SIMON_ANI_IDLE 1000
+#define SIMON_ANI_FALLING 1000
 
 #define SIMON_ANI_WALKING_BEGIN 1001
 #define SIMON_ANI_WALKING_END 1003
@@ -122,6 +125,11 @@
 
 #pragma endregion
 
+#pragma region WEAPON_ANIMATION_
+#define WHIP_ANI_ATTACKING_BEGIN 4000
+#define WHIP_ANI_ATTACKING_END 4002
+#pragma endregion
+
 
 /*******GAME OBJECT ID**********/
 enum class Type {
@@ -141,7 +149,7 @@ enum class Type {
 	FLEAMAN = 1200,
 	RAVEN = 1210,
 	EAGLE = 1220,
-	
+
 
 
 	//BOSS
@@ -156,6 +164,9 @@ enum class Type {
 
 	//BRICK
 	BRICK = 3000,
+
+	//WEAPON
+	WHIP = 4000
 };
 
 enum class sType {
@@ -166,6 +177,8 @@ enum class sType {
 	SIMON_STATE_ONSTAIRS = 104,
 	SIMON_STATE_WALKING_ONSTAIRS = 105,
 	SIMON_STATE_DIE = 106,
+	SIMON_STATE_FALLING = 107,
+	SIMON_STATE_HURTING = 108,
 	DEFAULT_STATE = 0,
 
 };

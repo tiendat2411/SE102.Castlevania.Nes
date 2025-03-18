@@ -12,7 +12,9 @@
 #define SIMON_WALKING_SPEED 0.15f 
 #define SIMON_SPEED_ONSTAIR 0.09f 
 #define SIMON_ACCEL_WALK_X	0.0005f
-#define SIMON_JUMP_SPEED_Y 0.50f
+#define SIMON_JUMP_SPEED_Y 0.55f
+#define SIMON_JUMP_HURT_SPEED_Y 0.30f
+
 
 
 #define SIMON_DEFAULT_HEALTH 16
@@ -25,19 +27,16 @@ class CSimon : public CGameObject
 {
 	float maxVx, maxVy;
 	float ax, ay;
-	// acceleration on x 
+	
 	BOOLEAN isOnPlatform;
 public:
-	int Width;
-	int Height;
-	LPTEXTURE tex;
-	BOOLEAN  isAttacking, isOnStair,isFalling;
+	BOOLEAN  isAttacking, isOnStair,isHurting;
 
 	CSimon(float x, float y) : CGameObject(x, y)
 	{
 		isAttacking = false;
 		isOnStair = false;
-		isFalling = true;
+		isHurting = false;
 		maxVx = SIMON_WALKING_SPEED;
 		ax = 0.0f;
 

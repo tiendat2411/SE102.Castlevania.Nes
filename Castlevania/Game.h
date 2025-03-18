@@ -16,7 +16,6 @@
 
 #define SCREEN_WIDTH 648
 #define SCREEN_HEIGHT 506
-#define GROUND_Y 300.0f
 /*
 	Our simple game framework
 */

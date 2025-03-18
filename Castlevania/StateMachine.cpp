@@ -13,15 +13,13 @@ void CStateMachine::SetState(CSimon* simon, sType newState) {
         simon->isAttacking = true;
         newState = currentState;
     }
-
-    //set gravity state for simon
-    if (!simon->IsOnPlatform()) {
-        newState = sType::SIMON_STATE_JUMPING;
-        simon->isFalling = true;
+    if (simon->IsOnPlatform() && currentState== sType::SIMON_STATE_HURTING) {
+        simon->isHurting = false;
     }
-    else
-        simon->isFalling =false;
 
+    if (!simon->IsOnPlatform() && simon->GetVelocityY()>0 && !(newState == sType::SIMON_STATE_HURTING)){
+        newState = sType::SIMON_STATE_FALLING;
+    }
     //state transition
     if (states[newState] != nullptr) {
         if (states[newState]->StateTransition(simon, currentState)) {
@@ -44,6 +42,8 @@ void CStateMachine::Init() {
     states[sType::SIMON_STATE_JUMPING] = new CJumpingState();
     states[sType::SIMON_STATE_WALKING] = new CWalkingState();
     states[sType::SIMON_STATE_DUCKING] = new CDuckingState();
+    states[sType::SIMON_STATE_FALLING] = new CFallingState();
+    states[sType::SIMON_STATE_HURTING] = new CHurtingState();
     // states[sType::SIMON_STATE_UPSTAIRS] = new CIdleState();
      //states[sType::SIMON_STATE_DOWNSTAIRS] = new CIdleState();
     currentState = sType::SIMON_STATE_JUMPING;
