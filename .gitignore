@@ -1,5 +1,8 @@
 # Bỏ qua thư mục VS tạm thời
-.vs/
-*.opendb
-Castlevania/x64
+# .vs/
+# *.opendb
+# Castlevania/x64
+# x64
+.vs
+packages
 x64

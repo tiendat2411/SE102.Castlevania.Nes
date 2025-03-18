@@ -1,160 +1,84 @@
 #include "Simon.h"
+#include "StateMachine.h"
 
-void CSimon::Update(DWORD dt)
+#include "Game.h"
+
+void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	x += vx * dt;
-	y += vy * dt;
-
 	// simple fall down
-	vy += SIMON_GRAVITY * dt;
-
+	vy += ay * dt;
 	vx += ax * dt;
 
-	if (abs(vx) > abs(maxVx)) vx = maxVx;
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+	if (y < 0) y = 0;
+	if (abs(vx) > abs(maxVx)) vx = maxVx * directionX;
+
+	if (abs(vy) > abs(maxVy)) vy = maxVy * directionY;
 
 	DebugOutTitle(L"vx = %0.5f", this->vx);
 
 
 	// BAD & sinful platform collision handling, see next sample for correct collision handling
-	if (y > GROUND_Y)
-	{
-		vy = 0; y = GROUND_Y;
-	}
-
+	
+	int maxX = CGame::GetInstance()->GetBackBufferWidth(), maxY = CGame::GetInstance()->GetBackBufferHeight();
 	// simple screen edge collision!!!
-	if (vx > 0 && x > 290) x = 290;
+	if (vx > 0 && x > maxX) x = maxX;
 	if (vx < 0 && x < 0) x = 0;
+
+	if (vy > 0 && y > maxY) y = maxY;
+	if (vy < 0 && y < 0) y = 0;
 }
 
-void CSimon::Render()
+void CSimon::OnNoCollision(DWORD dt)
 {
-	CAnimations* animations = CAnimations::GetInstance();
-	int aniId = -1;
+	x += vx * dt;
+	y += vy * dt;
+	isOnPlatform = false;
+}
 
-	// SIMON is still on air check, this will not work when SIMON is just stand up
-	if (y < GROUND_Y)
+void CSimon::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (e->ny != 0 && e->obj->IsBlocking())
 	{
-		if (abs(ax) == SIMON_ACCEL_RUN_X) // TODO: need to optimize this
-		{
-			if (nx >= 0)
-				aniId = ID_ANI_SIMON_JUMP_RUN_RIGHT;
-			else
-				aniId = ID_ANI_SIMON_JUMP_RUN_LEFT;
-		}
-		else
-		{
-			if (nx >= 0)
-				aniId = ID_ANI_SIMON_JUMP_WALK_RIGHT;
-			else
-				aniId = ID_ANI_SIMON_JUMP_WALK_LEFT;
-		}
+		vy = 0;
+		if (e->ny < 0)
+			isOnPlatform = true;
 	}
 	else
-		if (isSitting)
+		if (e->nx != 0 && e->obj->IsBlocking())
 		{
-			if (nx > 0)
-				aniId = ID_ANI_SIMON_SIT_RIGHT;
-			else
-				aniId = ID_ANI_SIMON_SIT_LEFT;
+			vx = 0;
 		}
-		else
-			if (vx == 0)
-			{
-				if (nx > 0) aniId = ID_ANI_SIMON_IDLE_RIGHT;
-				else aniId = ID_ANI_SIMON_IDLE_LEFT;
-			}
-			else if (vx > 0)
-			{
-				if (ax < 0)
-					aniId = ID_ANI_SIMON_BRACE_RIGHT;
-				else if (ax == SIMON_ACCEL_RUN_X)
-					aniId = ID_ANI_SIMON_RUNNING_RIGHT;
-				else if (ax == SIMON_ACCEL_WALK_X)
-					aniId = ID_ANI_SIMON_WALKING_RIGHT;
-			}
-			else // vx < 0
-			{
-				if (ax > 0)
-					aniId = ID_ANI_SIMON_BRACE_LEFT;
-				else if (ax == -SIMON_ACCEL_RUN_X)
-					aniId = ID_ANI_SIMON_RUNNING_LEFT;
-				else if (ax == -SIMON_ACCEL_WALK_X)
-					aniId = ID_ANI_SIMON_WALKING_LEFT;
-			}
-
-	if (aniId == -1) aniId = ID_ANI_SIMON_IDLE_RIGHT;
-
-	float d = 0;
-	if (isSitting) d = SIMON_SIT_HEIGHT_ADJUST;
-
-	animations->Get(aniId)->Render(x, y + d);
 }
 
-void CSimon::SetState(int state)
+void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	switch (state)
-	{
-	case SIMON_STATE_RUNNING_RIGHT:
-		if (isSitting) break;
-		maxVx = SIMON_RUNNING_SPEED;
-		ax = SIMON_ACCEL_RUN_X;
-		nx = 1;
-		break;
-	case SIMON_STATE_RUNNING_LEFT:
-		if (isSitting) break;
-		maxVx = -SIMON_RUNNING_SPEED;
-		ax = -SIMON_ACCEL_RUN_X;
-		nx = -1;
-		break;
-	case SIMON_STATE_WALKING_RIGHT:
-		if (isSitting) break;
-		maxVx = SIMON_WALKING_SPEED;
-		ax = SIMON_ACCEL_WALK_X;
-		nx = 1;
-		break;
-	case SIMON_STATE_WALKING_LEFT:
-		if (isSitting) break;
-		maxVx = -SIMON_WALKING_SPEED;
-		ax = -SIMON_ACCEL_WALK_X;
-		nx = -1;
-		break;
-	case SIMON_STATE_JUMP:
-		if (isSitting) break;
-		if (y == GROUND_Y)
-		{
-			if (abs(this->vx) == SIMON_RUNNING_SPEED)
-				vy = -SIMON_JUMP_RUN_SPEED_Y;
-			else
-				vy = -SIMON_JUMP_SPEED_Y;
-		}
-		break;
-
-	case SIMON_STATE_RELEASE_JUMP:
-		if (vy < 0) vy += SIMON_JUMP_SPEED_Y / 2;
-		break;
-
-	case SIMON_STATE_SIT:
-		if (y == GROUND_Y)
-		{
-			state = SIMON_STATE_IDLE;
-			isSitting = true;
-			vx = 0; vy = 0;
-			//y += SIMON_SIT_HEIGHT_ADJUST;
-		}
-		break;
-
-	case SIMON_STATE_SIT_RELEASE:
-		isSitting = false;
-		state = SIMON_STATE_IDLE;
-		//y -= SIMON_SIT_HEIGHT_ADJUST;
-		break;
-
-	case SIMON_STATE_IDLE:
-		ax = 0.0f;
-		vx = 0.0f;
-		break;
-	}
-
-	CGameObject::SetState(state);
+	Width = tex->getWidth() / tex->_col;
+	Height = tex->getHeight() / tex->_row;
+	left = x - Width / 2;
+	top = y - Height / 2;
+	right = left + Width;
+	bottom = top + Height;
+}
+void CSimon::Render()
+{
+	int d = 0;
+	if (aniState == SIMON_ANI_DUCKING_ATTACKING_BEGIN || aniState == SIMON_ANI_DUCKING )
+		d = SIMON_HEIGHT_ADJUST;
+	CAnimations::GetInstance()->Get(aniState)->Render(x, y + d, directionX);
 }
 
+void CSimon::SetState(sType state, int _directionX, int _directionY)
+{
+	if (_directionX != DIRECTION_DEFAULT)
+		this->directionX = _directionX;
+	if (_directionY != DIRECTION_DEFAULT)
+		this->directionY = 1;
+	CStateMachine::GetInstance()->SetState(this, state);
+}
+
+int CSimon:: IsCollidable() 
+{
+	return (CStateMachine::GetInstance()->GetCurrentState() != sType::SIMON_STATE_DIE);
+}

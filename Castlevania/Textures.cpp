@@ -1,8 +1,10 @@
-#include <Windows.h>
-
+﻿#include <Windows.h>
 #include "debug.h"
 #include "Game.h"
 #include "textures.h"
+#include "Sprite.h"
+
+#define TEXTURE_PATH_MISC L"textures\\2-2.png"
 
 CTextures* CTextures::__instance = NULL;
 
@@ -14,15 +16,56 @@ CTextures::CTextures()
 CTextures* CTextures::GetInstance()
 {
 	if (__instance == NULL) __instance = new CTextures();
+	__instance->LoadResource();
 	return __instance;
 }
 
-void CTextures::Add(int id, LPCWSTR filePath,int col, int row, int totalSprites)
+
+void CTextures::LoadResource()
 {
-	textures[id] = CGame::GetInstance()->LoadTexture(filePath, col, row, totalSprites);
+	Add(Type::BRICK, TEXTURE_PATH_MISC, 1, 1, 1);
+
+	Add(Type::MAP1, TEXTURE_PATH_MAP1, 1, 1, 1);
+
+	Add(Type::SIMON, TEXTURE_PATH_SIMON, 8, 3, 24);
+	Add(Type::FISHMAN, TEXTURE_PATH_FISHMAN, 4, 1, 4);
+	Add(Type::EAGLE, TEXTURE_PATH_EAGLE, 2, 1, 2);
+	Add(Type::CANON, TEXTURE_PATH_CANON, 1, 2, 2);
+	Add(Type::KNIGHT, TEXTURE_PATH_KNIGHT, 4, 1, 4);
+	Add(Type::AXEMAN, TEXTURE_PATH_AXEMAN, 2, 1, 2);
+	Add(Type::GHOST, TEXTURE_PATH_GHOST, 2, 1, 2);
+	Add(Type::FLEAMAN, TEXTURE_PATH_FLEAMAN, 2, 1, 2);
+	Add(Type::LEOPARD, TEXTURE_PATH_LEOPARD, 4, 1, 4);
+	Add(Type::MEDUSA, TEXTURE_PATH_MEDUSA, 2, 1, 2);
+	Add(Type::RAVEN, TEXTURE_PATH_RAVEN, 4, 1, 4);
+	Add(Type::SKELETON, TEXTURE_PATH_SKELETON, 4, 1, 4);
+	Add(Type::BAT, TEXTURE_PATH_BAT, 4, 1, 4);
+	Add(Type::ZOMBIE, TEXTURE_PATH_ZOMBIE, 2, 1, 2);
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 
+  
+ 
+
+	
 }
 
-LPTEXTURE CTextures::Get(unsigned int i)
+void CTextures::Add(Type type_id, LPCWSTR filePath,int col, int row, int totalSprites)
+{
+	textures[type_id] = CGame::GetInstance()->LoadTexture(filePath, col, row, totalSprites);
+}
+
+LPTEXTURE CTextures::Get(Type i)
 {
 	return textures[i];
 }

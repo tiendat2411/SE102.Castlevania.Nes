@@ -2,6 +2,7 @@
 
 #include "Texture.h"
 #include "Game.h"
+#include "d3dx10.h"
 
 class CSprite
 {

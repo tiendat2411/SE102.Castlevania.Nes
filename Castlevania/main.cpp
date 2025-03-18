@@ -1,17 +1,13 @@
 ﻿/* =============================================================
 	INTRODUCTION TO GAME PROGRAMMING SE102
-
-	SAMPLE 03 - KEYBOARD AND OBJECT STATE
-
-	This sample illustrates how to:
-
-		1/ Process keyboard input
-		2/ Control object state with keyboard events
 ================================================================ */
 
 #include <windows.h>
+#include <iostream>
+
 
 #include "debug.h"
+#include"GameDefines.h"
 #include "Game.h"
 #include "GameObject.h"
 #include "Textures.h"
@@ -20,51 +16,36 @@
 #include "Animations.h"
 #include "Sprite.h"
 
+#include "Scene.h"
 #include "Simon.h"
-//#include "Mario.h"
+#include "Zombie.h"
 #include "Brick.h"
 
 #include "SampleKeyEventHandler.h"
 #include "Sprites.h"
 
-#define WINDOW_CLASS_NAME L"SampleWindow"
-#define MAIN_WINDOW_TITLE L"03 - Keyboard and Mario states"
-#define WINDOW_ICON_PATH L"mario.ico"
+#define WINDOW_CLASS_NAME L"Castlevania_GAME_REMAKE"
+#define MAIN_WINDOW_TITLE L"Castlevania"
+#define WINDOW_ICON_PATH L"Castlevania.ico"
 
 
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255, 0.0f)
 
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
 
-#define ID_TEX_SIMON1 0
-#define ID_TEX_SIMON2 1
-#define ID_TEX_ENEMY 10
-#define ID_TEX_MISC 20
 
-#define ID_SPRITE_BRICK 20001
-
-#define TEXTURES_DIR L"textures"
-//#define texture_path_mario textures_dir "\\mario1.png"
-#define TEXTURE_PATH_SIMON1 TEXTURES_DIR "\\simon1.png"
-#define TEXTURE_PATH_MISC TEXTURES_DIR "\\2.png"
-
-#define SIMON_START_X 200.0f
+#define SIMON_START_X 50.0f
 #define SIMON_START_Y 10.0f
 
-//#define BRICK_X 0.0f
-//#define BRICK_Y GROUND_Y + 31.0f
-//#define NUM_BRICKS 50
-
 #define BRICK_X 0.0f
-#define BRICK_Y /*GROUND_Y* +*/ 20.0f
+#define BRICK_Y /*GROUND_Y* +*/ 300.0f
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
+CScene* map1 = NULL;
 
 CSampleKeyHandler* keyHandler;
 
-vector<LPGAMEOBJECT> objects;
+list<LPGAMEOBJECT> objects;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -75,7 +56,6 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
-
 	return 0;
 }
 
@@ -86,131 +66,59 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void LoadResources()
 {
 	CTextures* textures = CTextures::GetInstance();
-
-	textures->Add(ID_TEX_SIMON1, TEXTURE_PATH_SIMON1,8,3,24);
-	textures->Add(ID_TEX_MISC, TEXTURE_PATH_MISC);
-
 	CSprites* sprites = CSprites::GetInstance();
 	CAnimations* animations = CAnimations::GetInstance();
-	LPTEXTURE texSimon1 = textures->Get(ID_TEX_SIMON1);
-	LPTEXTURE texSimon2 = textures->Get(ID_TEX_SIMON2);
+	textures->LoadResource();
+	sprites->LoadResource();
+	animations->LoadResource();
 
-	sprites->CreateSpriteSheet(ID_TEX_SIMON1);
-
-
-	LPANIMATION ani;
-
-	ani = new CAnimation(100);
-	ani->Add(0);
-	ani->SetDirection(-1);
-	animations->Add(ID_ANI_SIMON_IDLE_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(0); 	ani->SetDirection(1);
-	animations->Add(ID_ANI_SIMON_IDLE_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(0);
-	ani->Add(1);
-	ani->Add(2);
-	ani->SetDirection(-1);
-	animations->Add(ID_ANI_SIMON_WALKING_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(0);
-	ani->Add(1);
-	ani->Add(2); 	ani->SetDirection(1);
-	animations->Add(ID_ANI_SIMON_WALKING_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(11);
-	ani->Add(12);
-	ani->Add(13);
-	ani->SetDirection(-1);
-	animations->Add(ID_ANI_SIMON_RUNNING_RIGHT, ani);
-
-	ani = new CAnimation(50);	// Mario runs faster hence animation speed should be faster
-	ani->Add(11);
-	ani->Add(12);
-	ani->Add(13);	ani->SetDirection(1);
-	animations->Add(ID_ANI_SIMON_RUNNING_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(4);
-	ani->SetDirection(-1);
-	animations->Add(ID_ANI_SIMON_JUMP_WALK_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(4);	ani->SetDirection(1);
-	animations->Add(ID_ANI_SIMON_JUMP_WALK_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(15);
-	ani->SetDirection(-1);
-	animations->Add(ID_ANI_SIMON_JUMP_RUN_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(15);	ani->SetDirection(1);
-	animations->Add(ID_ANI_SIMON_JUMP_RUN_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(16);
-	ani->SetDirection(-1);
-	animations->Add(ID_ANI_SIMON_SIT_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(16); 	ani->SetDirection(1);
-	animations->Add(ID_ANI_SIMON_SIT_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(8);
-	ani->SetDirection(-1);
-	animations->Add(ID_ANI_SIMON_BRACE_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(8);	ani->SetDirection(1);
-	animations->Add(ID_ANI_SIMON_BRACE_LEFT, ani);
-	
-
-//	ani = new CAnimation(100);
-//	ani->CreateFrameSheet(ID_TEX_SIMON);
-//	ani->SetDefaultFrameTime(ID_ANI_SIMON_RUNNING_RIGHT, ID_ANI_SIMON_BRACE_RIGHT, 50);
-//	ani->SetDefaultFrameTime(ID_ANI_SIMON_RUNNING_LEFT, ID_ANI_SIMON_IDLE_LEFT, 50);
-//	animations->Add(ID_TEX_SIMON, ani);
 
 	simon = new CSimon(SIMON_START_X, SIMON_START_Y);
+	map1 = new CScene(1536, 384, 0.5f, Type::MAP1, simon);
+
 	objects.push_back(simon);
 
-//	ani = animations->Get(0);
-	
-//	ani = new CAnimation(100);
-//	ani->CreateFrameSheet(ID_TEX_MISC);
-//	animations->Add(ID_TEX_MISC, ani);
-
-//	ani = animations->Get(0);
-
-	LPTEXTURE texMisc = textures->Get(ID_TEX_MISC);
-	if (texMisc == nullptr) {
-		DebugOut(L"[ERROR] texMisc is NULL! ID_TEX_MISC chưa được load hoặc không hợp lệ\n");
+	for (int i = 0; i < NUM_BRICKS; i++)
+	{
+		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y);
+		objects.push_back(b);
 	}
 
-	sprites->Add(ID_SPRITE_BRICK, 0, 0, 32, 32, texMisc);
-
-//	sprites->Add(ID_SPRITE_BRICK, 372, 153, 372 + 15, 153 + 15, texMisc);
-	LPSPRITE testBrickSprite = sprites->Get(ID_SPRITE_BRICK);
-	if (testBrickSprite == nullptr) {
-		DebugOut(L"[ERROR] testBrickSprite is NULL! ID_SPRITE_BRICK có thể chưa được thêm đúng\n");
+	for (int i = 1; i < 3; i++)
+	{
+		CBrick* b = new CBrick(BRICK_X + 300.0f, BRICK_Y - i * BRICK_WIDTH);
+		objects.push_back(b);
 	}
 
-	ani = new CAnimation(100);
-	ani->Add(ID_SPRITE_BRICK);
-	animations->Add(ID_ANI_BRICK, ani);
-
-	CBrick* b = new CBrick(BRICK_X, BRICK_Y);
-	objects.push_back(b);
-
+	for (int i = 0; i < 5; i++)
+	{
+		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y-200);
+		objects.push_back(b);
+	}
+	//CZombie* zom = new CZombie(SIMON_START_X, SIMON_START_Y, DIRECTION_POSITIVE);
+	//objects.push_back(zom);
 
 }
+
+bool IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+
+void PurgeDeletedObjects()
+{
+	list<LPGAMEOBJECT>::iterator it;
+	for (it = objects.begin(); it != objects.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	objects.erase(
+		std::remove_if(objects.begin(), objects.end(), IsGameObjectDeleted),
+		objects.end());
+}
+
 
 /*
 	Update world status for this frame
@@ -218,10 +126,22 @@ void LoadResources()
 */
 void Update(DWORD dt)
 {
-	for (int i = 0; i < (int)objects.size(); i++)
+	vector<LPGAMEOBJECT> coObjects;
+	list<LPGAMEOBJECT>::iterator i;
+
+	map1->Update();
+
+	for (i = objects.begin(); i != objects.end(); ++i)
 	{
-		objects[i]->Update(dt);
+		coObjects.push_back(*i);
 	}
+
+	for (i = objects.begin(); i != objects.end(); ++i)
+	{
+		(*i)->Update(dt, &coObjects);
+	}
+
+	PurgeDeletedObjects();
 }
 
 void Render()
@@ -240,9 +160,12 @@ void Render()
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
-	for (int i = 0; i < (int)objects.size(); i++)
+	map1->Render();
+
+	list<LPGAMEOBJECT>::iterator i;
+	for (i = objects.begin(); i != objects.end(); ++i)
 	{
-		objects[i]->Render();
+		(*i)->Render();
 	}
 
 	spriteHandler->End();
@@ -322,8 +245,8 @@ int Run()
 		if (dt >= tickPerFrame)
 		{
 			frameStart = now;
-			Update((DWORD)dt);
 			CGame::GetInstance()->ProcessKeyboard();
+			Update((DWORD)dt);
 			Render();
 		}
 		else
@@ -349,7 +272,7 @@ int WINAPI WinMain(
 	keyHandler = new CSampleKeyHandler();
 	game->InitKeyboard(keyHandler);
 
-	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH  , SCREEN_HEIGHT , SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	LoadResources();
 

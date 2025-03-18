@@ -2,8 +2,7 @@
 
 #include "debug.h"
 #include "Game.h"
-
-#include "Mario.h"
+#include "GameDefines.h"
 #include "Simon.h"
 
 extern CSimon* simon;
@@ -13,8 +12,11 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	switch (KeyCode)
 	{
-	case DIK_S:
-		simon->SetState(SIMON_STATE_JUMP);
+	case DIK_Z:
+		simon->SetState(sType::DEFAULT_STATE, DIRECTION_DEFAULT);
+		break;
+	case DIK_X:
+		simon->SetState(sType::SIMON_STATE_JUMPING,DIRECTION_DEFAULT);
 		break;
 	}
 }
@@ -24,11 +26,8 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 	switch (KeyCode)
 	{
-	case DIK_S:
-		simon->SetState(SIMON_STATE_RELEASE_JUMP);
-		break;
 	case DIK_DOWN:
-		simon->SetState(SIMON_STATE_SIT_RELEASE);
+		simon->SetState(sType::SIMON_STATE_IDLE, DIRECTION_DEFAULT);
 		break;
 	}
 }
@@ -37,34 +36,34 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 {
 	CGame* game = CGame::GetInstance();
 
+
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if (game->IsKeyDown(DIK_A))
-			simon->SetState(SIMON_STATE_RUNNING_RIGHT);
+		if (game->IsKeyDown(DIK_UP))
+			simon->SetState(sType::SIMON_STATE_WALKING_ONSTAIRS,DIRECTION_POSITIVE, DIRECTION_NEGATIVE);
+		else if (game->IsKeyDown(DIK_DOWN))
+				simon->SetState(sType::SIMON_STATE_WALKING_ONSTAIRS, DIRECTION_POSITIVE);
 		else
-			simon->SetState(SIMON_STATE_WALKING_RIGHT);
+			simon->SetState(sType::SIMON_STATE_WALKING, DIRECTION_POSITIVE);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		if (game->IsKeyDown(DIK_A))
-			simon->SetState(SIMON_STATE_RUNNING_LEFT);
+		if (game->IsKeyDown(DIK_UP))
+			simon->SetState(sType::SIMON_STATE_WALKING_ONSTAIRS, DIRECTION_NEGATIVE, DIRECTION_NEGATIVE);
+		else if (game->IsKeyDown(DIK_DOWN))
+			simon->SetState(sType::SIMON_STATE_WALKING_ONSTAIRS, DIRECTION_NEGATIVE);
 		else
-			simon->SetState(SIMON_STATE_WALKING_LEFT);
+			simon->SetState(sType::SIMON_STATE_WALKING, DIRECTION_NEGATIVE);
 	}
-	else if (game->IsKeyDown(DIK_UP))
+	else 
 	{
-		if (game->IsKeyDown(DIK_A))
-			simon->SetState(SIMON_STATE_RUNNING_LEFT);
-		else
-			simon->SetState(SIMON_STATE_WALKING_LEFT);
+		simon->SetState(sType::SIMON_STATE_IDLE, DIRECTION_DEFAULT);
+
 	}
-	else
-		simon->SetState(SIMON_STATE_IDLE);
-	
+
 	// Sitting state has higher priority 
 	if (game->IsKeyDown(DIK_DOWN))
 	{
-		simon->SetState(SIMON_STATE_SIT);
+		simon->SetState(sType::SIMON_STATE_DUCKING, DIRECTION_DEFAULT);
 	}
-
 }

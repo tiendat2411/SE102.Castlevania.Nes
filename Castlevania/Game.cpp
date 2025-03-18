@@ -209,7 +209,7 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect)
 /*
 	Utility function to wrap D3DXCreateTextureFromFileEx
 */
-LPTEXTURE CGame::LoadTexture(LPCWSTR texturePath, int col , int row , int totalSprites , int R, int G, int B )
+LPTEXTURE CGame::LoadTexture(LPCWSTR texturePath, int col , int row , int totalSprites )
 {
 	ID3D10Resource* pD3D10Resource = NULL;
 	ID3D10Texture2D* tex = NULL;

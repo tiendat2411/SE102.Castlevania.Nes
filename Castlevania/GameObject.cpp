@@ -8,6 +8,14 @@ CGameObject::CGameObject()
 {
 	x = y = 0;
 	vx = vy = 0;
-	nx = 1;	
-	state = -1;
+
+	directionX = DIRECTION_POSITIVE;
+	directionY = DIRECTION_POSITIVE;
+	health = 1;
+
+	isDeleted = false;
+}
+
+CGameObject::~CGameObject()
+{
 }
