@@ -20,6 +20,7 @@
 
 #include "SampleKeyEventHandler.h"
 #include "Sprites.h"
+#include "Camera.h"
 
 #define WINDOW_CLASS_NAME L"Castlevania_GAME_REMAKE"
 #define MAIN_WINDOW_TITLE L"Castlevania"
@@ -143,17 +144,11 @@ void Update(DWORD dt)
 
 	PurgeDeletedObjects();
 
-	// Update camera to follow mario
-	float cx, cy;
-	simon->GetPosition(cx, cy);
+	float x, y;
+	simon->GetPosition(x, y);
 
-	cx -= SCREEN_WIDTH / 2;
-	cy = 0;
-	//cy -= SCREEN_HEIGHT / 2;
+	CCamera::GetInstance()->Update(x, y);
 
-	if (cx < 0) cx = 0;
-
-	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void Render()

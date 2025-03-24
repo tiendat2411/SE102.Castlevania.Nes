@@ -29,18 +29,12 @@ CSprite::CSprite(int id, int srcX, int srcY, int width, int height, LPTEXTURE te
 void CSprite::Draw(float x, float y)
 {	
 	CGame* g = CGame::GetInstance();
-	float cx, cy;
-	g->GetCamPos(cx, cy);
-
-	cx = (FLOAT)floor(cx);
-	cy = (FLOAT)floor(cy);
-
+	CCamera* cam = CCamera::GetInstance();
+	float screenX, screenY;
+	cam->Transform(x, y, screenX, screenY);
+	
 	D3DXMATRIX matTranslation;
-
-	x = (FLOAT)floor(x);
-	y = (FLOAT)floor(y);
-
-	D3DXMatrixTranslation(&matTranslation, x - cx, g->GetBackBufferHeight() - y + cy, 0.1f);
+	D3DXMatrixTranslation(&matTranslation, screenX, screenY, 0.1f);
 	this->sprite.matWorld = (this->matScaling * matTranslation);
 
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);
@@ -49,18 +43,13 @@ void CSprite::Draw(float x, float y)
 void CSprite::FlipXDraw(float x, float y)
 {
 	CGame* g = CGame::GetInstance();
+	CCamera* cam = CCamera::GetInstance();
 
-	float cx, cy;
-	g->GetCamPos(cx, cy);
-
-	cx = (FLOAT)floor(cx);
-	cy = (FLOAT)floor(cy);
-	x = (FLOAT)floor(x);
-	y = (FLOAT)floor(y);
-
+	float screenX, screenY;
+	cam->Transform(x, y, screenX, screenY);
 
 	D3DXMATRIX matTranslation, matFlipX ;
-	D3DXMatrixTranslation(&matTranslation, x - cx + sprite.TexSize.x, (g->GetBackBufferHeight() - y), 0.1f);
+	D3DXMatrixTranslation(&matTranslation, screenX + sprite.TexSize.x, screenY, 0.1f);
 	D3DXMatrixScaling(&matFlipX, -1, 1, 1);
 
 	this->sprite.matWorld = (this->matScaling * matFlipX * matTranslation);
