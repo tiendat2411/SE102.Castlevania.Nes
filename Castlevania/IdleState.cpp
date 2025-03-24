@@ -4,7 +4,11 @@
 
 
 BOOLEAN CIdleState::StateTransition(CSimon* simon,sType prevState) {
+	if (!simon->isAttacking && prevState == sType::SIMON_STATE_IDLE)
+	{
 
+		return false;
+	}
 	return true;
 }
 

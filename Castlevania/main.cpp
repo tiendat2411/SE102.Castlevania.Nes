@@ -92,6 +92,12 @@ void LoadResources()
 		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y-200);
 		objects.push_back(b);
 	}
+
+	for (int i = 7; i < 10; i++)
+	{
+		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y - 200);
+		objects.push_back(b);
+	}
 	//CZombie* zom = new CZombie(SIMON_START_X, SIMON_START_Y, DIRECTION_POSITIVE);
 	//objects.push_back(zom);
 
@@ -136,6 +142,18 @@ void Update(DWORD dt)
 	}
 
 	PurgeDeletedObjects();
+
+	// Update camera to follow mario
+	float cx, cy;
+	simon->GetPosition(cx, cy);
+
+	cx -= SCREEN_WIDTH / 2;
+	cy = 0;
+	//cy -= SCREEN_HEIGHT / 2;
+
+	if (cx < 0) cx = 0;
+
+	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void Render()

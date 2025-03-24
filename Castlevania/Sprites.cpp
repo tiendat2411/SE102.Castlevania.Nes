@@ -8,7 +8,7 @@ CSprites* CSprites::__instance = NULL;
 CSprites* CSprites::GetInstance()
 {
 	if (__instance == NULL) __instance = new CSprites();
-	__instance->LoadResource();
+	//__instance->LoadResource();
 	return __instance;
 }
 void CSprites::LoadResource(){
