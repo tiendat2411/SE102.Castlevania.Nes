@@ -26,9 +26,13 @@
     <ClCompile Include="WalkingState.cpp" />
     <ClCompile Include="WalkkingOnStairState.cpp" />
     <ClCompile Include="Zombie.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="HurtingState.cpp" />
     <ClCompile Include="FallingState.cpp" />
     <ClCompile Include="Whip.cpp" />
+=======
+    <ClCompile Include="Camera.cpp" />
+>>>>>>> 0e83a2fa1aa96dcb88e66acd9b0305d50cec1e84
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -57,9 +61,13 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="WalkingState.h" />
     <ClInclude Include="Zombie.h" />
+<<<<<<< HEAD
     <ClInclude Include="HurtingState.h" />
     <ClInclude Include="FallingState.h" />
     <ClInclude Include="Whip.h" />
+=======
+    <ClInclude Include="Camera.h" />
+>>>>>>> 0e83a2fa1aa96dcb88e66acd9b0305d50cec1e84
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Castlevania.rc" />

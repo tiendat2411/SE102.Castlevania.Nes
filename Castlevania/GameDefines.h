@@ -29,6 +29,9 @@
 #define TEXTURE_PATH_ZOMBIE TEXTURES_DIR ENEMYSTEX_DIR "\\Zombie.png"
 
 #define TEXTURE_PATH_WHIP TEXTURES_DIR  "\\Whip.png"
+#define TEXTURE_PATH_TILESET1 TEXTURES_DIR  "\\tileset_map1.png"
+#define TEXTURE_PATH_BLACKBOARD TEXTURES_DIR  "\\blackboard.png"
+#define TEXTURE_PATH_MISC TEXTURES_DIR "\\2.png"
 
 #pragma endregion
 
@@ -134,7 +137,12 @@
 /*******GAME OBJECT ID**********/
 enum class Type {
 
+	//MAPTILES SET
+	TILESET_LEVEL1 = 0,
+	BLACKBOARD = 900,
+
 	SIMON = 1000,
+
 	// Enemy
 	GHOST = 1100,
 	LEOPARD = 1110,
@@ -166,7 +174,8 @@ enum class Type {
 	BRICK = 3000,
 
 	//WEAPON
-	WHIP = 4000
+	WHIP = 4000,
+
 };
 
 enum class sType {

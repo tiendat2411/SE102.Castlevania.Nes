@@ -4,7 +4,7 @@
 #include "textures.h"
 #include "Sprite.h"
 
-#define TEXTURE_PATH_MISC L"textures\\2-2.png"
+
 
 CTextures* CTextures::__instance = NULL;
 
@@ -16,7 +16,7 @@ CTextures::CTextures()
 CTextures* CTextures::GetInstance()
 {
 	if (__instance == NULL) __instance = new CTextures();
-	__instance->LoadResource();
+	//__instance->LoadResource();
 	return __instance;
 }
 
@@ -40,22 +40,9 @@ void CTextures::LoadResource()
 	Add(Type::BAT, TEXTURE_PATH_BAT, 4, 1, 4);
 	Add(Type::ZOMBIE, TEXTURE_PATH_ZOMBIE, 2, 1, 2);
 	Add(Type::WHIP, TEXTURE_PATH_WHIP, 3, 3, 9);
-
-
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
- 
-  
- 
-
+	
+	Add(Type::TILESET_LEVEL1, TEXTURE_PATH_TILESET1, 8, 4, 24);
+	Add(Type::BLACKBOARD, TEXTURE_PATH_BLACKBOARD);
 	
 }
 
