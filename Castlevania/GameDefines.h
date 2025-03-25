@@ -38,9 +38,11 @@
 #define TEXTURE_PATH_ZOMBIE TEXTURES_DIR ENEMYSTEX_DIR "\\Zombie.png"
 
 #define TEXTURE_PATH_WHIP TEXTURES_DIR  "\\Whip.png"
+
 #define TEXTURE_PATH_TILESET1 TEXTURES_DIR  "\\tileset_map1.png"
 #define TEXTURE_PATH_BLACKBOARD TEXTURES_DIR  "\\blackboard.png"
 #define TEXTURE_PATH_MISC TEXTURES_DIR "\\2.png"
+
 
 #pragma endregion
 
@@ -182,8 +184,10 @@ enum class Type {
 	//BRICK
 	BRICK = 3000,
 
+
 	//WEAPON
 	WHIP = 4000,
+
 
 };
 
@@ -195,8 +199,10 @@ enum class sType {
 	SIMON_STATE_ONSTAIRS = 104,
 	SIMON_STATE_WALKING_ONSTAIRS = 105,
 	SIMON_STATE_DIE = 106,
+
 	SIMON_STATE_FALLING = 107,
 	SIMON_STATE_HURTING = 108,
+
 	DEFAULT_STATE = 0,
 
 };

@@ -13,8 +13,10 @@ void CStateMachine::SetState(CSimon* simon, sType newState) {
         simon->isAttacking = true;
         newState = currentState;
     }
+
     if (simon->IsOnPlatform() && currentState== sType::SIMON_STATE_HURTING) {
         simon->isHurting = false;
+
     }
 
     if (!simon->IsOnPlatform() && simon->GetVelocityY()>0 && !(newState == sType::SIMON_STATE_HURTING)){

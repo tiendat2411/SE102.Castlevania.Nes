@@ -26,11 +26,9 @@
     <ClCompile Include="WalkingState.cpp" />
     <ClCompile Include="WalkkingOnStairState.cpp" />
     <ClCompile Include="Zombie.cpp" />
-<<<<<<< HEAD
     <ClCompile Include="HurtingState.cpp" />
     <ClCompile Include="FallingState.cpp" />
     <ClCompile Include="Whip.cpp" />
-=======
     <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>

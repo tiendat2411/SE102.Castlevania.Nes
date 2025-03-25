@@ -8,7 +8,7 @@ CSprite::CSprite(int id, int srcX, int srcY, int width, int height, LPTEXTURE te
 	this->right = srcX + width;
 	this->bottom = srcY + height;
 
-	// Set the sprite’s shader resource view
+	// Set the spriteâ€™s shader resource view
 	sprite.pTexture = tex->getShaderResourceView();
 
 	sprite.TexCoord.x = this->left / (float)tex->getWidth();
@@ -44,6 +44,7 @@ void CSprite::FlipXDraw(float x, float y)
 {
 	CGame* g = CGame::GetInstance();
 
+
 	CCamera* cam = CCamera::GetInstance();
 
 	float screenX, screenY;
@@ -51,6 +52,7 @@ void CSprite::FlipXDraw(float x, float y)
 
 	D3DXMATRIX matTranslation, matFlipX ;
 	D3DXMatrixTranslation(&matTranslation, screenX + sprite.TexSize.x, screenY, 0.1f);
+
 
 	D3DXMatrixScaling(&matFlipX, -1, 1, 1);
 

@@ -23,6 +23,7 @@
 #include "Whip.h"
 #include "Map.h"
 
+
 #include "SampleKeyEventHandler.h"
 #include "Sprites.h"
 #include "Camera.h"
@@ -109,6 +110,7 @@ void LoadResources()
 	}
 	 map1 = new CMap(Type::TILESET_LEVEL1, textures->Get(Type::TILESET_LEVEL1));
 	 map1->LoadMapFromFile(L"textures/readfile_map_1.txt");
+
 
 }
 

@@ -43,6 +43,7 @@ void CTextures::LoadResource()
 	
 	Add(Type::TILESET_LEVEL1, TEXTURE_PATH_TILESET1, 8, 4, 32);
 	Add(Type::BLACKBOARD, TEXTURE_PATH_BLACKBOARD);
+
 	
 }
 
