@@ -16,13 +16,13 @@ void CCamera::Update(float targetX, float targetY)
     if (cy < 0) cy = 0;
 }
 
-void CCamera::Transform(float worldX, float worldY, float& screenX, float& screenY)
+void CCamera::Transform(float screenX, float screenY, float& worldX, float& worldY)
 {
     CGame* g = CGame::GetInstance();
     int screenHeight = g->GetBackBufferHeight();
 
-    screenX = worldX - cx;
-    screenY = screenHeight - (worldY - cy);
+    worldX = screenX - cx;
+    worldY = screenHeight - (screenY - cy);
 }
 
 CCamera* CCamera::GetInstance()

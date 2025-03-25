@@ -50,9 +50,9 @@ void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom
 {
 	Width = tex->getWidth() / tex->_col;
 	Height = tex->getHeight() / tex->_row;
-	left = x - Width / 2;
+	left = x - Width / 2 + 12;
 	top = y - Height / 2;
-	right = left + Width;
+	right = left + Width - 24;
 	bottom = top + Height;
 }
 void CSimon::Render()

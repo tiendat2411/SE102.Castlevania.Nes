@@ -84,7 +84,7 @@ void LoadResources()
 		objects.push_back(b);
 	}
 
-	for (int i = 1; i < 3; i++)
+	for (int i = 1; i < 2; i++)
 	{
 		CBrick* b = new CBrick(BRICK_X + BRICK_WIDTH*10, BRICK_Y - i * BRICK_WIDTH);
 		objects.push_back(b);

@@ -1,9 +1,16 @@
 ﻿#pragma once
 
+#include "stdio.h"
 
 #define DIRECTION_POSITIVE 1	//right,down
 #define DIRECTION_DEFAULT 0    //using current direction of obj
 #define DIRECTION_NEGATIVE -1	//left,up
+
+#define BOARD_WIDTH 640 
+#define BOARD_HEIGHT 98
+
+#define MAP1_TILE_WIDTH 64
+#define MAP1_TILE_HEIGHT 64
 
 #pragma region TEXTURE_PATHS
 
@@ -191,3 +198,4 @@ enum class sType {
 	DEFAULT_STATE = 0,
 
 };
+

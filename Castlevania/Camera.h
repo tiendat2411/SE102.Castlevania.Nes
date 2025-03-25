@@ -1,5 +1,7 @@
 #pragma once
 #include "Game.h"
+#include "debug.h"
+#include "GameDefines.h"
 
 class CCamera
 {
@@ -14,5 +16,5 @@ public:
     static CCamera* GetInstance();
     void GetCameraPos(float& cx, float& cy) { cx = this->cx, cy = this->cy; }
     void Update(float targetX, float targetY);
-    void Transform(float worldX, float worldY, float& screenX, float& screenY);
+    void Transform(float screenX, float screenY, float& worldX, float& worldY);
 };

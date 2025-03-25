@@ -30,11 +30,11 @@ void CSprite::Draw(float x, float y)
 {	
 	CGame* g = CGame::GetInstance();
 	CCamera* cam = CCamera::GetInstance();
-	float screenX, screenY;
-	cam->Transform(x, y, screenX, screenY);
+	float worldX, worldY;
+	cam->Transform(x, y, worldX, worldY);
 	
 	D3DXMATRIX matTranslation;
-	D3DXMatrixTranslation(&matTranslation, screenX, screenY, 0.1f);
+	D3DXMatrixTranslation(&matTranslation, worldX, worldY, 0.1f);
 	this->sprite.matWorld = (this->matScaling * matTranslation);
 
 	g->GetSpriteHandler()->DrawSpritesImmediate(&sprite, 1, 0, 0);

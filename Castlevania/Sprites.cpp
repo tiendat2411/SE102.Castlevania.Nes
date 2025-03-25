@@ -3,6 +3,7 @@
 #include "debug.h"
 #include "Textures.h"
 
+
 CSprites* CSprites::__instance = NULL;
 
 CSprites* CSprites::GetInstance()
@@ -45,6 +46,9 @@ void CSprites::CreateSpriteSheet(Type id)
 	int _id = static_cast<int>(id);
 	int spriteWidth = tex->getWidth() / tex->_col;
 	int spriteHeight = tex->getHeight() / tex->_row;
+
+	DebugLog("spriteWidth", spriteWidth);
+	DebugLog("spriteHeight", spriteHeight);
 	
 
 	for (int i = 0; i < tex->_row; ++i)
@@ -53,7 +57,7 @@ void CSprites::CreateSpriteSheet(Type id)
 		for (int j = 0; j < tex->_col; ++j) {
 			x = j * spriteWidth;
 			int offset = i * tex->_col + j;
-			CSprites::Add(_id,offset, x, y, spriteWidth, spriteHeight, tex);
+			CSprites::Add(_id,offset, x, y, spriteWidth - 1, spriteHeight - 1, tex);
 		}
 	}
 }
@@ -68,3 +72,4 @@ LPSPRITE CSprites::Get(int id)
 {
 	return sprites[id];
 }
+
