@@ -21,29 +21,32 @@
 #include "Zombie.h"
 #include "Brick.h"
 #include "Whip.h"
+#include "Map.h"
+
 
 #include "SampleKeyEventHandler.h"
 #include "Sprites.h"
+#include "Camera.h"
 
 #define WINDOW_CLASS_NAME L"Castlevania_GAME_REMAKE"
 #define MAIN_WINDOW_TITLE L"Castlevania"
 #define WINDOW_ICON_PATH L"Castlevania.ico"
 
 
-#define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255, 0.0f)
+#define BACKGROUND_COLOR D3DXCOLOR(0.0f,0.0f,0.0f, 0.0f)
 
 
 
-#define SIMON_START_X 50.0f
-#define SIMON_START_Y 10.0f
+
+#define SIMON_START_X 0.0f
+#define SIMON_START_Y 200.0f
 
 #define BRICK_X 0.0f
-#define BRICK_Y /*GROUND_Y* +*/ 300.0f
+#define BRICK_Y /*GROUND_Y* +*/ 480-51
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
-CScene* map1 = NULL;
-
+CMap* map1;
 CSampleKeyHandler* keyHandler;
 
 list<LPGAMEOBJECT> objects;
@@ -75,8 +78,6 @@ void LoadResources()
 
 
 	simon = new CSimon(SIMON_START_X, SIMON_START_Y);
-	map1 = new CScene(1536, 384, 0.5f, Type::MAP1, simon);
-
 	objects.push_back(simon);
 
 	for (int i = 0; i < NUM_BRICKS; i++)
@@ -85,9 +86,9 @@ void LoadResources()
 		objects.push_back(b);
 	}
 
-	for (int i = 1; i < 3; i++)
+	for (int i = 1; i < 2; i++)
 	{
-		CBrick* b = new CBrick(BRICK_X + 300.0f, BRICK_Y - i * BRICK_WIDTH);
+		CBrick* b = new CBrick(BRICK_X + BRICK_WIDTH*10, BRICK_Y - i * BRICK_WIDTH);
 		objects.push_back(b);
 	}
 
@@ -96,9 +97,20 @@ void LoadResources()
 		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y-200);
 		objects.push_back(b);
 	}
+
 	CZombie* zom = new CZombie(SIMON_START_X, 200, DIRECTION_POSITIVE);
 	objects.push_back(zom);
 	objects.push_back(new CWhip(0,0,simon));
+
+
+	for (int i = 7; i < 10; i++)
+	{
+		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y - 200);
+		objects.push_back(b);
+	}
+	 map1 = new CMap(Type::TILESET_LEVEL1, textures->Get(Type::TILESET_LEVEL1));
+	 map1->LoadMapFromFile(L"textures/readfile_map_1.txt");
+
 
 }
 
@@ -130,9 +142,6 @@ void Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT> coObjects;
 	list<LPGAMEOBJECT>::iterator i;
-
-	map1->Update();
-
 	for (i = objects.begin(); i != objects.end(); ++i)
 	{
 		coObjects.push_back(*i);
@@ -144,6 +153,12 @@ void Update(DWORD dt)
 	}
 
 	PurgeDeletedObjects();
+
+	float x, y;
+	simon->GetPosition(x, y);
+
+	CCamera::GetInstance()->Update(x, y);
+
 }
 
 void Render()
@@ -162,9 +177,9 @@ void Render()
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
-	map1->Render();
-
 	list<LPGAMEOBJECT>::iterator i;
+
+	map1->DrawMap();
 	for (i = objects.begin(); i != objects.end(); ++i)
 	{
 		(*i)->Render();

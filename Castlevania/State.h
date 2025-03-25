@@ -14,6 +14,7 @@ public:
 	virtual void Enter(CSimon* simon) = 0;
 
 protected: 
+
 	void SetStaticState(CSimon* simon) 
 	{
 		simon->SetSpeed(0, 0);

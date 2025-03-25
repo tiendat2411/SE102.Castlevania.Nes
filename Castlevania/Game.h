@@ -14,8 +14,9 @@
 #define KEYBOARD_STATE_SIZE 256
 
 
-#define SCREEN_WIDTH 648
-#define SCREEN_HEIGHT 506
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480
+
 /*
 	Our simple game framework
 */

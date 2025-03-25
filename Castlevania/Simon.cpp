@@ -19,17 +19,6 @@ void CSimon::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (abs(vy) > abs(maxVy)) vy = maxVy * directionY;
 
 	DebugOutTitle(L"vx = %0.5f", this->vx);
-
-
-	// BAD & sinful platform collision handling, see next sample for correct collision handling
-	
-	int maxX = CGame::GetInstance()->GetBackBufferWidth(), maxY = CGame::GetInstance()->GetBackBufferHeight();
-	// simple screen edge collision!!!
-	if (vx > 0 && x > maxX) x = maxX;
-	if (vx < 0 && x < 0) x = 0;
-
-	if (vy > 0 && y > maxY) y = maxY;
-	if (vy < 0 && y < 0) y = 0;
 }
 
 void CSimon::OnNoCollision(DWORD dt)
@@ -61,15 +50,15 @@ void CSimon::GetBoundingBox(float& left, float& top, float& right, float& bottom
 {
 	Width = tex->getWidth() / tex->_col;
 	Height = tex->getHeight() / tex->_row;
-	left = x - Width / 2;
+	left = x - Width / 2 + 12;
 	top = y - Height / 2;
-	right = left + Width;
+	right = left + Width - 24;
 	bottom = top + Height;
 }
 void CSimon::Render()
 {
 	int d = 0;
-	if (aniState == SIMON_ANI_DUCKING_ATTACKING_BEGIN || aniState == SIMON_ANI_DUCKING )
+	if (aniState == SIMON_ANI_DUCKING_ATTACKING_BEGIN || (aniState == SIMON_ANI_DUCKING && isOnPlatform) )
 		d = SIMON_HEIGHT_ADJUST;
 	CAnimations::GetInstance()->Get(aniState)->Render(x, y + d, directionX);
 }

@@ -29,6 +29,7 @@
     <ClCompile Include="HurtingState.cpp" />
     <ClCompile Include="FallingState.cpp" />
     <ClCompile Include="Whip.cpp" />
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -60,6 +61,7 @@
     <ClInclude Include="HurtingState.h" />
     <ClInclude Include="FallingState.h" />
     <ClInclude Include="Whip.h" />
+    <ClInclude Include="Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Castlevania.rc" />

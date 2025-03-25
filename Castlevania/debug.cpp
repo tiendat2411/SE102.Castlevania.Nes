@@ -24,3 +24,10 @@ void SetDebugWindow(HWND hwnd)
 {
 	_hwnd = hwnd;
 }
+
+void DebugLog(const char* message, int value) {
+	char buffer[100];
+	sprintf_s(buffer, sizeof(buffer), "%s: %d\n", message, value);
+
+	OutputDebugStringA(buffer);
+}
