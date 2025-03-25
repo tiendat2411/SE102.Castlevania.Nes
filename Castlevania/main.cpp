@@ -3,6 +3,8 @@
 ================================================================ */
 
 #include <windows.h>
+#include <iostream>
+
 
 #include "debug.h"
 #include"GameDefines.h"
@@ -14,6 +16,7 @@
 #include "Animations.h"
 #include "Sprite.h"
 
+#include "Scene.h"
 #include "Simon.h"
 #include "Zombie.h"
 #include "Brick.h"
@@ -32,7 +35,6 @@
 #define BACKGROUND_COLOR D3DXCOLOR(0.0f,0.0f,0.0f, 0.0f)
 
 
-#define ID_SPRITE_BRICK 20001
 
 
 #define SIMON_START_X 0.0f
@@ -57,7 +59,6 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
-
 	return 0;
 }
 
