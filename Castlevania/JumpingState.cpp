@@ -19,6 +19,7 @@ BOOLEAN CJumpingState::StateTransition(CSimon* simon, sType prevState)
 
 void CJumpingState::Enter(CSimon* simon) 
 {
+
 	if (!simon->isAttacking) 
 		simon->SetSpeed(simon->GetVelocityX(), -SIMON_JUMP_SPEED_Y);
 	simon->SetAniState((simon->isAttacking) ? SIMON_ANI_STANDING_ATTACKING_BEGIN : SIMON_ANI_JUMPING);

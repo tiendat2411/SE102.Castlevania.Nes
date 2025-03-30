@@ -6,6 +6,7 @@
 BOOLEAN CIdleState::StateTransition(CSimon* simon,sType prevState) {
 
 	if (!simon->IsOnPlatform()|| simon->isHurting) return false;
+
 	return true;
 }
 

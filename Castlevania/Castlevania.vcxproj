@@ -139,6 +139,7 @@
     <ClInclude Include="FallingState.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="FallingState.h" />
     <ClInclude Include="FishMan.h" />
     <ClInclude Include="HurtingState.h" />
     <ClInclude Include="Leopard.h" />
