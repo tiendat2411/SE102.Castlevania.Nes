@@ -8,10 +8,12 @@
 #include "Simon.h"
 
 
+
 class CState { 
 public:
 	virtual  BOOLEAN StateTransition(CSimon* simon, sType prevState) = 0;
 	virtual void Enter(CSimon* simon) = 0;
+
 
 protected: 
 

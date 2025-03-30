@@ -2,6 +2,7 @@
 
 CStateMachine* CStateMachine::__instance = NULL;
 void CStateMachine::SetState(CSimon* simon, sType newState) {
+    ULONGLONG now = GetTickCount64();
     LPANIMATION ani = CAnimations::GetInstance()->Get(simon->GetAniState());
     if (!ani->isAniFinished() && simon->isAttacking == true) {
         return;
@@ -22,6 +23,7 @@ void CStateMachine::SetState(CSimon* simon, sType newState) {
     if (!simon->IsOnPlatform() && simon->GetVelocityY()>0 && !(newState == sType::SIMON_STATE_HURTING)){
         newState = sType::SIMON_STATE_FALLING;
     }
+
     //state transition
     if (states[newState] != nullptr) {
         if (states[newState]->StateTransition(simon, currentState)) {

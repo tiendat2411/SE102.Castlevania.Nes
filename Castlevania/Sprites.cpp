@@ -47,9 +47,6 @@ void CSprites::CreateSpriteSheet(Type id)
 	int _id = static_cast<int>(id);
 	int spriteWidth = tex->getWidth() / tex->_col;
 	int spriteHeight = tex->getHeight() / tex->_row;
-
-	DebugLog("spriteWidth", spriteWidth);
-	DebugLog("spriteHeight", spriteHeight);
 	
 
 	for (int i = 0; i < tex->_row; ++i)
