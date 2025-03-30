@@ -4,16 +4,20 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="DuckingState.cpp" />
+    <ClCompile Include="FallingState.cpp" />
     <ClCompile Include="FishMan.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HurtingState.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="JumpingState.cpp" />
     <ClCompile Include="Leopard.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="Simon.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -25,22 +29,23 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="WalkingState.cpp" />
     <ClCompile Include="WalkkingOnStairState.cpp" />
-    <ClCompile Include="Zombie.cpp" />
-<<<<<<< HEAD
-    <ClCompile Include="HurtingState.cpp" />
-    <ClCompile Include="FallingState.cpp" />
     <ClCompile Include="Whip.cpp" />
-=======
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Zombie.cpp" />
+    <ClCompile Include="QuadTreeNode.h" />
+    <ClCompile Include="QuadTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="FallingState.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="FishMan.h" />
+    <ClInclude Include="HurtingState.h" />
     <ClInclude Include="Leopard.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="WalkingOnStairState.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="Game.h" />
@@ -59,11 +64,9 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="WalkingState.h" />
-    <ClInclude Include="Zombie.h" />
-    <ClInclude Include="HurtingState.h" />
-    <ClInclude Include="FallingState.h" />
     <ClInclude Include="Whip.h" />
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Zombie.h" />
+    <ClInclude Include="QuadTree.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Castlevania.rc" />

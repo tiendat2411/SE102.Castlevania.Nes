@@ -38,7 +38,7 @@
 
 
 #define SIMON_START_X 0.0f
-#define SIMON_START_Y 200.0f
+#define SIMON_START_Y 0.0f
 
 #define BRICK_X 0.0f
 #define BRICK_Y /*GROUND_Y* +*/ 480-51
