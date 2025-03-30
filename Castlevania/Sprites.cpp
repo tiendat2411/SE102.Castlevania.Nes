@@ -53,7 +53,7 @@ void CSprites::CreateSpriteSheet(Type id)
 		for (int j = 0; j < tex->_col; ++j) {
 			x = j * spriteWidth;
 			int offset = i * tex->_col + j;
-			CSprites::Add(_id,offset, x, y, spriteWidth, spriteHeight, tex);
+			CSprites::Add(_id,offset, x, y, spriteWidth-1, spriteHeight-1, tex);
 		}
 	}
 }

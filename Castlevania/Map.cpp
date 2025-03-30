@@ -18,7 +18,7 @@ void  CMap::DrawMap() {
 	CCamera* cam = CCamera::GetInstance();
 	float cx, cy;
 	cam->GetCameraPos(cx, cy);
-	int startIndxRow, startIndxCol, endIndxRow, endIndxCol;
+	float startIndxRow, startIndxCol, endIndxRow, endIndxCol;
 	int tileWidth = tilesTex->getWidth() / tilesTex->_col;
 	int tileHeight = tilesTex->getHeight() / tilesTex->_row;
 
@@ -30,7 +30,7 @@ void  CMap::DrawMap() {
 	
 	for (int i = startIndxRow; i <= endIndxRow; i++)
 		for (int j = startIndxCol; j <= endIndxCol; j++) {
-			CSprites::GetInstance()->Get(static_cast<int>(lv) + TileMap[i][j])->Draw(cx + (j - startIndxCol) * tileWidth, g->GetBackBufferHeight()-384+64 + (i - startIndxRow) * tileHeight);
+			CSprites::GetInstance()->Get(static_cast<int>(lv) + TileMap[i][j])->Draw(cx + (j - startIndxCol) * tileWidth, SCREEN_HEIGHT-384+32+(float)(i - startIndxRow) * tileHeight);
 		}
 	CSprites::GetInstance()->Get(static_cast<int>(Type::BLACKBOARD))->Draw(cx+320,47);
 }
