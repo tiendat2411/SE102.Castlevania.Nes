@@ -88,6 +88,11 @@
                  "name":"0",
                  "properties":[
                         {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
                          "name":"Node ID",
                          "type":"int",
                          "value":0
@@ -109,6 +114,11 @@
                  "id":16,
                  "name":"1",
                  "properties":[
+                        {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
                         {
                          "name":"Node ID",
                          "type":"int",
@@ -132,6 +142,11 @@
                  "name":"2",
                  "properties":[
                         {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
                          "name":"Node ID",
                          "type":"int",
                          "value":2
@@ -153,6 +168,11 @@
                  "id":18,
                  "name":"3",
                  "properties":[
+                        {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
                         {
                          "name":"Node ID",
                          "type":"int",
@@ -176,6 +196,11 @@
                  "name":"4",
                  "properties":[
                         {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
                          "name":"Node ID",
                          "type":"int",
                          "value":4
@@ -197,6 +222,11 @@
                  "id":28,
                  "name":"32",
                  "properties":[
+                        {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
                         {
                          "name":"Node ID",
                          "type":"int",
@@ -220,6 +250,11 @@
                  "name":"33",
                  "properties":[
                         {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
                          "name":"Node ID",
                          "type":"int",
                          "value":33
@@ -241,6 +276,11 @@
                  "id":31,
                  "name":"34",
                  "properties":[
+                        {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
                         {
                          "name":"Node ID",
                          "type":"int",
@@ -264,6 +304,11 @@
                  "name":"31",
                  "properties":[
                         {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
                          "name":"Node ID",
                          "type":"int",
                          "value":31
@@ -285,6 +330,11 @@
                  "id":36,
                  "name":"331",
                  "properties":[
+                        {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
                         {
                          "name":"Node ID",
                          "type":"int",
@@ -308,6 +358,11 @@
                  "name":"332",
                  "properties":[
                         {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":"1 2 3"
+                        }, 
+                        {
                          "name":"Node ID",
                          "type":"int",
                          "value":332
@@ -329,6 +384,11 @@
                  "id":38,
                  "name":"333",
                  "properties":[
+                        {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
                         {
                          "name":"Node ID",
                          "type":"int",
@@ -352,6 +412,11 @@
                  "name":"334",
                  "properties":[
                         {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":"5 6 7"
+                        }, 
+                        {
                          "name":"Node ID",
                          "type":"int",
                          "value":334
@@ -373,6 +438,11 @@
                  "id":44,
                  "name":"41",
                  "properties":[
+                        {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
                         {
                          "name":"Node ID",
                          "type":"int",
@@ -396,6 +466,11 @@
                  "name":"44",
                  "properties":[
                         {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
                          "name":"Node ID",
                          "type":"int",
                          "value":44
@@ -418,6 +493,11 @@
                  "name":"43",
                  "properties":[
                         {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
                          "name":"Node ID",
                          "type":"int",
                          "value":43
@@ -439,6 +519,11 @@
                  "id":47,
                  "name":"42",
                  "properties":[
+                        {
+                         "name":"Game objects",
+                         "type":"string",
+                         "value":""
+                        }, 
                         {
                          "name":"Node ID",
                          "type":"int",
@@ -483,6 +568,11 @@
                          "value":1010
                         }, 
                         {
+                         "name":"Game objects ID",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
                          "name":"Type",
                          "type":"int",
                          "value":1160
@@ -508,6 +598,11 @@
                          "name":"Boundary right",
                          "type":"int",
                          "value":1080
+                        }, 
+                        {
+                         "name":"Game objects ID",
+                         "type":"int",
+                         "value":2
                         }, 
                         {
                          "name":"Type",
@@ -537,6 +632,11 @@
                          "value":1142
                         }, 
                         {
+                         "name":"Game objects ID",
+                         "type":"int",
+                         "value":3
+                        }, 
+                        {
                          "name":"Type",
                          "type":"int",
                          "value":1160
@@ -546,33 +646,6 @@
                  "visible":true,
                  "width":34,
                  "x":842,
-                 "y":3232
-                }, 
-                {
-                 "height":64,
-                 "id":4,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"Boundary left",
-                         "type":"int",
-                         "value":865
-                        }, 
-                        {
-                         "name":"Boundary right",
-                         "type":"int",
-                         "value":1465
-                        }, 
-                        {
-                         "name":"Type",
-                         "type":"int",
-                         "value":1160
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":34,
-                 "x":1165,
                  "y":3232
                 }, 
                 {
@@ -589,6 +662,11 @@
                          "name":"Boundary right",
                          "type":"int",
                          "value":922
+                        }, 
+                        {
+                         "name":"Game objects ID",
+                         "type":"int",
+                         "value":5
                         }, 
                         {
                          "name":"Type",
@@ -618,6 +696,11 @@
                          "value":992
                         }, 
                         {
+                         "name":"Game objects ID",
+                         "type":"int",
+                         "value":6
+                        }, 
+                        {
                          "name":"Type",
                          "type":"int",
                          "value":1160
@@ -643,6 +726,11 @@
                          "name":"Boundary right",
                          "type":"int",
                          "value":1054
+                        }, 
+                        {
+                         "name":"Game objects ID",
+                         "type":"int",
+                         "value":7
                         }, 
                         {
                          "name":"Type",
