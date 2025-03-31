@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Game.h"
+#include "GameObject.h"
 
 #include <cstdlib>
 #include <vector>
 using namespace std;
 
-template <class T>
+
 class CQuadTreeNode {
 
 public:
@@ -18,8 +19,10 @@ public:
 	CQuadTreeNode* child[4];
 
 	// used by leaf nodes
-	vector <pair <D3DXVECTOR2, T> > bucket;
-	CQuadTreeNode <T>(D3DXVECTOR2 pos, D3DXVECTOR2 range, UINT id = 0) {
+	vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > bucket;
+
+
+	CQuadTreeNode(D3DXVECTOR2 pos, D3DXVECTOR2 range, UINT id = 0) {
 		child[0] = NULL;
 		child[1] = NULL;
 		child[2] = NULL;
