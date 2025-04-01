@@ -68,4 +68,5 @@ private:
 	LPCWSTR filePath;
 	vector<CQuadTreeObject*> dynamicObjects;
 
+
 };
