@@ -30,7 +30,7 @@ void  CMap::DrawMap() {
 	
 	for (int i = startIndxRow; i <= endIndxRow; i++)
 		for (int j = startIndxCol; j <= endIndxCol; j++) {
-			CSprites::GetInstance()->Get(static_cast<int>(lv) + TileMap[i][j])->Draw(cx + (j - startIndxCol) * tileWidth, BOARD_HEIGHT + (i - startIndxRow + 0.5f) * tileHeight);
+			CSprites::GetInstance()->Get(static_cast<int>(lv) + TileMap[i][j])->Draw(cx + (j - startIndxCol+0.5f) * tileWidth, BOARD_HEIGHT + (i - startIndxRow + 0.5f ) * tileHeight);
 		}
 	CSprites::GetInstance()->Get(static_cast<int>(Type::BLACKBOARD))->Draw(cx+ SCREEN_WIDTH/2 ,BOARD_HEIGHT/2);
 }

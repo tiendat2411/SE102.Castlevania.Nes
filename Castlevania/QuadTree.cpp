@@ -233,9 +233,9 @@ vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > CQuadTree::renderObjectsInRegion(D3DX
 					// check if this point is in the region
 					if (pointInRegion(top->bucket[i].first, minXY, maxXY)) {
 						LPGAMEOBJECT obj = top->bucket[i].second;
-						if (!obj->IsUpdated()) {
+						if (obj->IsUpdated()) {
 							obj->Render();
-							obj->SetUpdateState(true);
+							obj->SetUpdateState(false);
 							results.push_back(top->bucket[i]);
 						}
 					}
@@ -275,9 +275,9 @@ void CQuadTree::addAllObjectToResults(CQuadTreeNode* node, vector<pair <D3DXVECT
 	if (node->leaf) {
 		for (pair <D3DXVECTOR2, LPGAMEOBJECT> p : node->bucket) {
 			LPGAMEOBJECT obj = p.second;
-			if (!obj->IsUpdated()) {
+			if (obj->IsUpdated()) {
 				obj->Render();
-				obj->SetUpdateState(true);
+				obj->SetUpdateState(false);
 				results.push_back(p);
 			}
 		}
@@ -354,16 +354,10 @@ void CQuadTree::render(CQuadTreeNode* node)
 	CCamera* cam = CCamera::GetInstance();
 	CGame* g = CGame::GetInstance();
 	cam->GetCameraPos(cx, cy);
-	vector<std::pair<D3DXVECTOR2, LPGAMEOBJECT>> dataList = renderObjectsInRegion(
+	renderObjectsInRegion(
 		D3DXVECTOR2(cx, cy),
 		D3DXVECTOR2(cx + g->GetBackBufferWidth(), cy + g->GetBackBufferHeight())
 	);
-
-
-	for (int i = 0; i < dataList.size(); ++i)
-	{
-		dataList[i].second->SetUpdateState(true);
-	}
 }
 
 // Register a dynamic object with the Quadtree
