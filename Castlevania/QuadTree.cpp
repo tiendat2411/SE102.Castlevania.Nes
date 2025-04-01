@@ -371,3 +371,127 @@ void CQuadTree::render(CQuadTreeNode* node)
 	}
 }
 
+// Register a dynamic object with the Quadtree
+void CQuadTree::registerDynamicObject(CQuadTreeObject* object)
+{
+	dynamicObjects.push_back(object);
+
+	insert(object->position, object->obj);
+
+	object->currentNode = findNodeForPoint(object->position);
+}
+
+// Unregister a dynamic object
+void CQuadTree::unregisterDynamicObject(CQuadTreeObject* object)
+{
+	remove(object->position, object->obj);
+
+	for (auto it = dynamicObjects.begin(); it != dynamicObjects.end(); ++it) {
+		if (*it == object) {
+			dynamicObjects.erase(it);
+			break;
+		}
+	}
+
+	object->currentNode = nullptr;
+}
+
+// Update position of a dynamic object
+void CQuadTree::updateDynamicObject(CQuadTreeObject* object, D3DXVECTOR2 newPosition, bool force)
+{
+	if (object->position.x == newPosition.x && object->position.y == newPosition.y)
+		return;
+
+	CQuadTreeNode* newNode = findNodeForPoint(newPosition);
+
+	if (!force && newNode == object->currentNode) {
+		object->position = newPosition;
+		return;
+	}
+
+	remove(object->position, object->obj);
+	object->position = newPosition;
+	insert(object->position, object->obj);
+	object->currentNode = newNode;
+}
+
+// Update all dynamic objects
+void CQuadTree::updateAllDynamicObjects(float dt)
+{
+	float cx, cy;
+	CCamera::GetInstance()->GetCameraPos(cx, cy);
+
+	float updateMargin = 200.0f; 
+	D3DXVECTOR2 minXY(cx - updateMargin, cy - updateMargin);
+	D3DXVECTOR2 maxXY(cx + CGame::GetInstance()->GetBackBufferWidth() + updateMargin,
+		cy + CGame::GetInstance()->GetBackBufferHeight() + updateMargin);
+
+	for (auto object : dynamicObjects) {
+		float x, y;
+		object->obj->GetPosition(x, y);
+		D3DXVECTOR2 newPosition(x, y);
+
+		bool inUpdateRegion =
+			newPosition.x >= minXY.x && newPosition.x <= maxXY.x &&
+			newPosition.y >= minXY.y && newPosition.y <= maxXY.y;
+
+		object->timeSinceLastUpdate += dt;
+
+		if (inUpdateRegion || object->timeSinceLastUpdate >= object->updateInterval * 3) {
+			bool shouldUpdate = object->timeSinceLastUpdate >= object->updateInterval;
+
+			if (object->currentNode) {
+				D3DXVECTOR2 halfRange = object->currentNode->range * 0.5f;
+				bool stillInNode =
+					newPosition.x >= object->currentNode->pos.x - halfRange.x &&
+					newPosition.x <= object->currentNode->pos.x + halfRange.x &&
+					newPosition.y >= object->currentNode->pos.y - halfRange.y &&
+					newPosition.y <= object->currentNode->pos.y + halfRange.y;
+
+				shouldUpdate = shouldUpdate || !stillInNode;
+			}
+
+			if (shouldUpdate) {
+				updateDynamicObject(object, newPosition, true);
+				object->timeSinceLastUpdate = 0.0f;
+			}
+			else {
+				object->position = newPosition;
+			}
+		}
+		else {
+			object->position = newPosition;
+		}
+	}
+}
+
+// Find node containing a point
+CQuadTreeNode* CQuadTree::findNodeForPoint(D3DXVECTOR2 point)
+{
+	return findNodeForPoint(point, root);
+}
+
+// Recursive function to find node containing a point
+CQuadTreeNode* CQuadTree::findNodeForPoint(D3DXVECTOR2 point, CQuadTreeNode* startNode)
+{
+	D3DXVECTOR2 halfRange = startNode->range * 0.5f;
+	if (point.x < startNode->pos.x - halfRange.x ||
+		point.x > startNode->pos.x + halfRange.x ||
+		point.y < startNode->pos.y - halfRange.y ||
+		point.y > startNode->pos.y + halfRange.y) {
+		return nullptr; 
+	}
+
+	if (startNode->leaf) {
+		return startNode;
+	}
+
+	int dir = direction(point, startNode);
+	if (startNode->child[dir]) {
+		CQuadTreeNode* childResult = findNodeForPoint(point, startNode->child[dir]);
+		if (childResult) {
+			return childResult;
+		}
+	}
+	return startNode;
+}
