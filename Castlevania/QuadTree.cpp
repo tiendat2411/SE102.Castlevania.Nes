@@ -2,7 +2,7 @@
 #include "Camera.h"
 #include "Zombie.h"
 
-<<<<<<< HEAD
+
 #include <fstream>
 #include <string.h>
 
@@ -13,14 +13,6 @@ CQuadTree::CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range,LPCWSTR filePath)
 {
 	root = new CQuadTreeNode(pos, range);
 	this->filePath = filePath;
-=======
-
-
-
-CQuadTree::CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range)
-{
-	root = new CQuadTreeNode(pos, range);
->>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 }
 
 
@@ -29,7 +21,7 @@ CQuadTree::~CQuadTree()
 	delete root;
 }
 
-<<<<<<< HEAD
+
 vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> CQuadTree::LoadGameObjects() {
 	vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> fullBucket;
 	ifstream file(filePath, ios::in);
@@ -82,15 +74,6 @@ void CQuadTree::insertObjectIntoTree()
 	}
 }
 
-=======
-
-void CQuadTree::insert(D3DXVECTOR2 v, LPGAMEOBJECT data)
-{
-	insert(v, data, root);
-}
-
->>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
-
 int CQuadTree::direction(const D3DXVECTOR2& point, CQuadTreeNode* node)
 {
 	// get the quadrant that would contain the D3DXVECTOR2
@@ -102,11 +85,8 @@ int CQuadTree::direction(const D3DXVECTOR2& point, CQuadTreeNode* node)
 }
 
 
-<<<<<<< HEAD
+
 CQuadTreeNode* CQuadTree::childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id)
-=======
-CQuadTreeNode* CQuadTree::childNode(const D3DXVECTOR2& v, CQuadTreeNode* node,UINT id)
->>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 {
 	// get the next node that would contain the D3DXVECTOR2
 	// in reference to a given start node
@@ -162,20 +142,12 @@ void CQuadTree::insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node)
 	// current node is a stem node used for navigation
 	else
 	{
-<<<<<<< HEAD
 		insert(v, data, childNode(v, node, node->id));
-=======
-		insert(v, data, childNode(v, node,node->id));
->>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 	}
 }
 
 
-<<<<<<< HEAD
 bool  CQuadTree::remove(D3DXVECTOR2 v, LPGAMEOBJECT data)
-=======
-bool  CQuadTree::remove(D3DXVECTOR2 v,LPGAMEOBJECT data)
->>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 {
 	stack <CQuadTreeNode*> nodes;
 	nodes.push(root);
@@ -243,11 +215,8 @@ void  CQuadTree::reduce(stack <CQuadTreeNode*>& nodes)
 
 vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > CQuadTree::renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY)
 {
-<<<<<<< HEAD
+
 	vector<pair<D3DXVECTOR2, LPGAMEOBJECT>> results;
-=======
-	vector<pair<D3DXVECTOR2,LPGAMEOBJECT>> results;
->>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 	queue <CQuadTreeNode*> nodes;
 	nodes.push(root);
 
@@ -395,11 +364,8 @@ void CQuadTree::render(CQuadTreeNode* node)
 		D3DXVECTOR2(cx + g->GetBackBufferWidth(), cy + g->GetBackBufferHeight())
 	);
 
-<<<<<<< HEAD
+
 	for (int i = 0; i < dataList.size(); ++i)
-=======
-	for (int i=0;i<dataList.size();++i) 
->>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 	{
 		dataList[i].second->SetUpdateState(true);
 	}

@@ -38,26 +38,20 @@ class CQuadTree
 {
 public:
 
-	CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range);
+	CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range,LPCWSTR filePath);
 	~CQuadTree();
-
+	void	insertObjectIntoTree();
 	void 	insert(D3DXVECTOR2 v, LPGAMEOBJECT data);
-<<<<<<< HEAD
 	bool 	remove(D3DXVECTOR2 v, LPGAMEOBJECT  data);
-=======
-	bool 	remove(D3DXVECTOR2 v,LPGAMEOBJECT  data);
->>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 	void 	render();
 	vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY);
 
 private:
 
+	vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> LoadGameObjects();
+	LPGAMEOBJECT CreateGameObjectByType(int type, int x, int y);
 	CQuadTreeNode* childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id);
-<<<<<<< HEAD
 	D3DXVECTOR2 newPos(int direction, CQuadTreeNode* node);
-=======
-	D3DXVECTOR2 newPos(int direction, CQuadTreeNode*  node);
->>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 	int 	direction(const D3DXVECTOR2& point, CQuadTreeNode* node);
 	void 	insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node);
 	void	reduce(stack <CQuadTreeNode*>& node);
@@ -67,4 +61,5 @@ private:
 	enclosure_status getEnclosureStatus(const D3DXVECTOR2& pos, const D3DXVECTOR2& range, const D3DXVECTOR2& minXY, const D3DXVECTOR2& maxXY);
 
 	CQuadTreeNode* root;
+	LPCWSTR filePath;
 };
