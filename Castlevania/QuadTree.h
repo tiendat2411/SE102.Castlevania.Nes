@@ -38,11 +38,11 @@ class CQuadTree
 {
 public:
 
-	CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range);
+	CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range,LPCWSTR filePath);
 	~CQuadTree();
-
+	void	insertObjectIntoTree();
 	void 	insert(D3DXVECTOR2 v, LPGAMEOBJECT data);
-	bool 	remove(D3DXVECTOR2 v,LPGAMEOBJECT  data);
+	bool 	remove(D3DXVECTOR2 v, LPGAMEOBJECT  data);
 	void 	render();
 	vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY);
 	void registerDynamicObject(CQuadTreeObject* object);
@@ -53,8 +53,10 @@ public:
 
 private:
 
+	vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> LoadGameObjects();
+	LPGAMEOBJECT CreateGameObjectByType(int type, int x, int y);
 	CQuadTreeNode* childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id);
-	D3DXVECTOR2 newPos(int direction, CQuadTreeNode*  node);
+	D3DXVECTOR2 newPos(int direction, CQuadTreeNode* node);
 	int 	direction(const D3DXVECTOR2& point, CQuadTreeNode* node);
 	void 	insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node);
 	void	reduce(stack <CQuadTreeNode*>& node);
@@ -65,5 +67,9 @@ private:
 	CQuadTreeNode* findNodeForPoint(D3DXVECTOR2 point, CQuadTreeNode* startNode);
 
 	CQuadTreeNode* root;
+
 	vector<CQuadTreeObject*> dynamicObjects;
+
+	LPCWSTR filePath;
+
 };

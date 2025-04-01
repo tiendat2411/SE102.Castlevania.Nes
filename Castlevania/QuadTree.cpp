@@ -1,12 +1,18 @@
 #include "QuadTree.h"
 #include "Camera.h"
+#include "Zombie.h"
+
+
+#include <fstream>
+#include <string.h>
 
 
 
 
-CQuadTree::CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range)
+CQuadTree::CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range,LPCWSTR filePath)
 {
 	root = new CQuadTreeNode(pos, range);
+	this->filePath = filePath;
 }
 
 
@@ -16,11 +22,57 @@ CQuadTree::~CQuadTree()
 }
 
 
-void CQuadTree::insert(D3DXVECTOR2 v, LPGAMEOBJECT data)
-{
-	insert(v, data, root);
+vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> CQuadTree::LoadGameObjects() {
+	vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> fullBucket;
+	ifstream file(filePath, ios::in);
+
+	std::string line;
+	std::getline(file, line);
+	int id, type;
+	float x, y, w, h;
+	while (std::getline(file, line))
+	{
+		std::stringstream ss(line);
+		std::vector<std::string> tokens;
+		std::string token;
+
+		while (std::getline(ss, token, '|')) {
+			tokens.push_back(token);
+		}
+		int id = std::stoi(tokens[0]);
+		int type = std::stoi(tokens[1]);
+		float x = std::stof(tokens[2]);
+		float y = std::stof(tokens[3]);
+		float width = std::stof(tokens[4]);
+		float height = std::stof(tokens[5]);
+		float boundaryLeft = std::stof(tokens[6]);
+		float boundaryRight = std::stof(tokens[7]);
+
+		LPGAMEOBJECT obj = CreateGameObjectByType(type, x, y);
+		fullBucket.push_back({ D3DXVECTOR2(x,y),obj });
+	}
+	file.close();
+	return fullBucket;
 }
 
+//hinh nhu con thieu cai huong nen em de tam nhaa
+LPGAMEOBJECT  CQuadTree::CreateGameObjectByType(int type,int x,int y) {
+	switch (type)
+	{
+	case static_cast<int>(Type::ZOMBIE):
+		return new CZombie(x,y, DIRECTION_POSITIVE);
+		break;
+	}
+}
+
+
+void CQuadTree::insertObjectIntoTree()
+{
+	vector < pair <D3DXVECTOR2, LPGAMEOBJECT>> fullBucket = LoadGameObjects();
+	for (pair <D3DXVECTOR2, LPGAMEOBJECT> p : fullBucket) {
+		insert(p.first, p.second, root);
+	}
+}
 
 int CQuadTree::direction(const D3DXVECTOR2& point, CQuadTreeNode* node)
 {
@@ -33,7 +85,8 @@ int CQuadTree::direction(const D3DXVECTOR2& point, CQuadTreeNode* node)
 }
 
 
-CQuadTreeNode* CQuadTree::childNode(const D3DXVECTOR2& v, CQuadTreeNode* node,UINT id)
+
+CQuadTreeNode* CQuadTree::childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id)
 {
 	// get the next node that would contain the D3DXVECTOR2
 	// in reference to a given start node
@@ -87,14 +140,14 @@ void CQuadTree::insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node)
 		node->bucket.push_back({ v, data });
 	}
 	// current node is a stem node used for navigation
-	else 
+	else
 	{
-		insert(v, data, childNode(v, node,node->id));
+		insert(v, data, childNode(v, node, node->id));
 	}
 }
 
 
-bool  CQuadTree::remove(D3DXVECTOR2 v,LPGAMEOBJECT data)
+bool  CQuadTree::remove(D3DXVECTOR2 v, LPGAMEOBJECT data)
 {
 	stack <CQuadTreeNode*> nodes;
 	nodes.push(root);
@@ -144,16 +197,16 @@ void  CQuadTree::reduce(stack <CQuadTreeNode*>& nodes)
 		}
 		int emtyChild = 0;
 		for (int i = 0; i < 4; ++i) {
-			if (top->child[i] && top->child[i]->bucket.size()==0) {
+			if (top->child[i] && top->child[i]->bucket.size() == 0) {
 				delete top->child[i];
 				top->child[i] = NULL;
-	
+
 			}
-			if(!top->child[i])
+			if (!top->child[i])
 				emtyChild++;
 		}
 
-		if(emtyChild == 4)
+		if (emtyChild == 4)
 			top->leaf = true;
 		nodes.pop();
 	}
@@ -162,7 +215,8 @@ void  CQuadTree::reduce(stack <CQuadTreeNode*>& nodes)
 
 vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > CQuadTree::renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY)
 {
-	vector<pair<D3DXVECTOR2,LPGAMEOBJECT>> results;
+
+	vector<pair<D3DXVECTOR2, LPGAMEOBJECT>> results;
 	queue <CQuadTreeNode*> nodes;
 	nodes.push(root);
 
@@ -310,7 +364,8 @@ void CQuadTree::render(CQuadTreeNode* node)
 		D3DXVECTOR2(cx + g->GetBackBufferWidth(), cy + g->GetBackBufferHeight())
 	);
 
-	for (int i=0;i<dataList.size();++i) 
+
+	for (int i = 0; i < dataList.size(); ++i)
 	{
 		dataList[i].second->SetUpdateState(true);
 	}

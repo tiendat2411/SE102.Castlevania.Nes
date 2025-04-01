@@ -29,7 +29,7 @@ public:
 		child[3] = NULL;
 		this->pos = pos;
 		this->range = range;
-		this->id=id;
+		this->id = id;
 		leaf = true;
 	}
 	~CQuadTreeNode() { for (int i = 0; i < 4; ++i) if (child[i]) { delete child[i]; } }

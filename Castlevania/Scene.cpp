@@ -4,8 +4,8 @@
 #include "Simon.h"
 #include "GameDefines.h"
 
-#define SCREEN_WIDTH 648
-#define SCREEN_HEIGHT 506
+//#define SCREEN_WIDTH 648
+//#define SCREEN_HEIGHT 506
 #define TITLE_BAR_HEIGHT 38
 
 CScene::CScene(float w, float h, float speed, Type idTexture, CSimon* simon)
