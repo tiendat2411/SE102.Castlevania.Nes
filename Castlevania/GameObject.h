@@ -63,6 +63,9 @@ public:
 
 	CGameObject();
 	CGameObject(float x, float y):CGameObject() { this->x = x; this->y = y; }
+	bool operator < (const CGameObject& other) const {
+		return this->x < other.x || (this->x == other.x && y < other.y);
+	}
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {};
 	virtual void Render() = 0;

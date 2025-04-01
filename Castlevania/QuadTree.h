@@ -19,7 +19,7 @@
 #include <vector>
 #include <stdlib.h>
 
-using namespace std;
+using namespace std;		
 
 //region direction						/*----------------------*/
 #define LOWER_LEFT_QUAD 0				/*	   0	|	  2  	*/
@@ -42,14 +42,22 @@ public:
 	~CQuadTree();
 
 	void 	insert(D3DXVECTOR2 v, LPGAMEOBJECT data);
+<<<<<<< HEAD
 	bool 	remove(D3DXVECTOR2 v, LPGAMEOBJECT  data);
+=======
+	bool 	remove(D3DXVECTOR2 v,LPGAMEOBJECT  data);
+>>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 	void 	render();
 	vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY);
 
 private:
 
 	CQuadTreeNode* childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id);
+<<<<<<< HEAD
 	D3DXVECTOR2 newPos(int direction, CQuadTreeNode* node);
+=======
+	D3DXVECTOR2 newPos(int direction, CQuadTreeNode*  node);
+>>>>>>> 0791d15656a87c20a50adfa6d5930cedc2139f3a
 	int 	direction(const D3DXVECTOR2& point, CQuadTreeNode* node);
 	void 	insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node);
 	void	reduce(stack <CQuadTreeNode*>& node);
