@@ -17,6 +17,7 @@ CGameObject::CGameObject()
 	health = 1;
 
 	isDeleted = false;
+	isUpdated = false;
 }
 
 CGameObject::~CGameObject()

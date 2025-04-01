@@ -32,6 +32,7 @@ protected:
 
 	LPTEXTURE tex;
 	bool isDeleted;
+	bool isUpdated;
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
@@ -40,6 +41,8 @@ public:
 
 	virtual void Delete() { isDeleted = true; }
 	bool IsDeleted() { return isDeleted; }
+	bool IsUpdated() { return isUpdated; }
+	void SetUpdateState(bool state) { isUpdated = state; }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 

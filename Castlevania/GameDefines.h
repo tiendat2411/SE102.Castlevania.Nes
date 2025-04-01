@@ -9,8 +9,6 @@
 #define BOARD_WIDTH 640 
 #define BOARD_HEIGHT 98
 
-#define MAP1_TILE_WIDTH 64
-#define MAP1_TILE_HEIGHT 64
 
 #pragma region TEXTURE_PATHS
 
