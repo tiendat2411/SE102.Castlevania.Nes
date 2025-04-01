@@ -70,7 +70,8 @@ void CQuadTree::insertObjectIntoTree()
 {
 	vector < pair <D3DXVECTOR2, LPGAMEOBJECT>> fullBucket = LoadGameObjects();
 	for (pair <D3DXVECTOR2, LPGAMEOBJECT> p : fullBucket) {
-		insert(p.first, p.second, root);
+		CQuadTreeObject* object = new CQuadTreeObject(p.second, p.first);
+		registerDynamicObject(object, insert(p.first, p.second, root));
 	}
 }
 
@@ -83,8 +84,6 @@ int CQuadTree::direction(const D3DXVECTOR2& point, CQuadTreeNode* node)
 	Y |= ((point.y >= node->pos.y) << 0);
 	return (X | Y);
 }
-
-
 
 CQuadTreeNode* CQuadTree::childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id)
 {
@@ -103,7 +102,6 @@ CQuadTreeNode* CQuadTree::childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, U
 		return node->child[dir];
 	}
 }
-
 
 D3DXVECTOR2  CQuadTree::newPos(int direction, CQuadTreeNode* node)
 {
@@ -133,19 +131,19 @@ D3DXVECTOR2  CQuadTree::newPos(int direction, CQuadTreeNode* node)
 /*by design, gameObject are stored only in leaf nodes
 /newly created nodes are leaf nodes by default*/
 
-void CQuadTree::insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node)
+CQuadTreeNode* CQuadTree::insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node)
 {
 	// push gameObject in deepest node (leaf)
 	if (node->leaf) {
 		node->bucket.push_back({ v, data });
+		return node;
 	}
 	// current node is a stem node used for navigation
 	else
 	{
-		insert(v, data, childNode(v, node, node->id));
+		return insert(v, data, childNode(v, node, node->id));
 	}
 }
-
 
 bool  CQuadTree::remove(D3DXVECTOR2 v, LPGAMEOBJECT data)
 {
@@ -178,13 +176,10 @@ bool  CQuadTree::remove(D3DXVECTOR2 v, LPGAMEOBJECT data)
 }
 
 
-
-
 /*	once a gameObject is removed from a leaf node's bucket
 	check if there are any other gameobjects in that node (which is an empty node)
 	if not, remove it and do the same with its parent node.
 */
-
 void  CQuadTree::reduce(stack <CQuadTreeNode*>& nodes)
 {
 	nodes.pop();
@@ -372,13 +367,11 @@ void CQuadTree::render(CQuadTreeNode* node)
 }
 
 // Register a dynamic object with the Quadtree
-void CQuadTree::registerDynamicObject(CQuadTreeObject* object)
+void CQuadTree::registerDynamicObject(CQuadTreeObject* object, CQuadTreeNode* node)
 {
 	dynamicObjects.push_back(object);
-
-	insert(object->position, object->obj,root);
-
-	object->currentNode = findNodeForPoint(object->position);
+	//insert(object->position, object->obj,root);
+	object->currentNode =node;
 }
 
 // Unregister a dynamic object

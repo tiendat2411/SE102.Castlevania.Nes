@@ -44,7 +44,7 @@ public:
 	bool 	remove(D3DXVECTOR2 v, LPGAMEOBJECT  data);
 	void 	render();
 	vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY);
-	void registerDynamicObject(CQuadTreeObject* object);
+	void registerDynamicObject(CQuadTreeObject* object, CQuadTreeNode* node);
 	void unregisterDynamicObject(CQuadTreeObject* object);
 	void updateDynamicObject(CQuadTreeObject* object, D3DXVECTOR2 newPosition, bool force = false);
 	void updateAllDynamicObjects(float dt);
@@ -56,7 +56,7 @@ private:
 	CQuadTreeNode* childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id);
 	D3DXVECTOR2 newPos(int direction, CQuadTreeNode* node);
 	int 	direction(const D3DXVECTOR2& point, CQuadTreeNode* node);
-	void 	insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node);
+	CQuadTreeNode* insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node);
 	void	reduce(stack <CQuadTreeNode*>& node);
 	void 	render(CQuadTreeNode* node);
 	void	addAllObjectToResults(CQuadTreeNode* node, vector<pair <D3DXVECTOR2, LPGAMEOBJECT> >& results);
