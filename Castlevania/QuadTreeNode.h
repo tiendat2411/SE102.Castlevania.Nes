@@ -33,7 +33,18 @@ public:
 		leaf = true;
 	}
 	~CQuadTreeNode() { for (int i = 0; i < 4; ++i) if (child[i]) { delete child[i]; } }
+};
 
+class CQuadTreeObject {
+public:
+	LPGAMEOBJECT obj;          
+	D3DXVECTOR2 position;      
+	CQuadTreeNode* currentNode; 
+	bool isDynamic;             
+	float updateInterval;      
+	float timeSinceLastUpdate;  
 
-
+	CQuadTreeObject(LPGAMEOBJECT obj, D3DXVECTOR2 position, bool isDynamic = false, float updateInterval = 0.5f)
+		: obj(obj), position(position), currentNode(nullptr),
+		isDynamic(isDynamic), updateInterval(updateInterval), timeSinceLastUpdate(0.0f) {}
 };
