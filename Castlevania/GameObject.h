@@ -7,20 +7,20 @@
 #include"GameDefines.h"
 #include "Texture.h"
 #include "Collision.h"
-
-
+#include "QuadTree.h"
+class CQuadTreeNode;
 using namespace std;
 
 class CGameObject
 {
 protected:
-	float x; 
+	float x;
 	float y;
 
 	float vx;
 	float vy;
 
-	int directionX;	
+	int directionX;
 	int directionY;
 
 	int Width;
@@ -33,7 +33,9 @@ protected:
 	LPTEXTURE tex;
 	bool isDeleted;
 	bool isUpdated;
-public: 
+	bool isDynamic;
+	CQuadTreeNode* currentNode;
+public:
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
@@ -43,6 +45,12 @@ public:
 	bool IsDeleted() { return isDeleted; }
 	bool IsUpdated() { return isUpdated; }
 	void SetUpdateState(bool state) { isUpdated = state; }
+
+	bool IsDynamic() const { return isDynamic; }
+	void SetDynamic(bool dynamic) { isDynamic = dynamic; }
+
+	CQuadTreeNode* GetCurrentNode() const { return currentNode; }
+	void SetCurrentNode(CQuadTreeNode* node) { currentNode = node; }
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 
@@ -62,7 +70,7 @@ public:
 	Type GetType() { return type; }
 
 	CGameObject();
-	CGameObject(float x, float y):CGameObject() { this->x = x; this->y = y; }
+	CGameObject(float x, float y) :CGameObject() { this->x = x; this->y = y; }
 	bool operator < (const CGameObject& other) const {
 		return this->x < other.x || (this->x == other.x && y < other.y);
 	}

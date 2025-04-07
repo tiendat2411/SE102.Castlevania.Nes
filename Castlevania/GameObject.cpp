@@ -18,6 +18,8 @@ CGameObject::CGameObject()
 
 	isDeleted = false;
 	isUpdated = false;
+	isDynamic = false;
+	currentNode = nullptr;
 }
 
 CGameObject::~CGameObject()

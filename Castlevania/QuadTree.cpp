@@ -9,7 +9,7 @@
 
 
 
-CQuadTree::CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range,LPCWSTR filePath)
+CQuadTree::CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range, LPCWSTR filePath)
 {
 	root = new CQuadTreeNode(pos, range);
 	this->filePath = filePath;
@@ -22,14 +22,14 @@ CQuadTree::~CQuadTree()
 }
 
 
-vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> CQuadTree::LoadGameObjects() {
-	vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> fullBucket;
+vector<LPGAMEOBJECT> CQuadTree::LoadGameObjects() {
+	vector<LPGAMEOBJECT> objects;
 	ifstream file(filePath, ios::in);
 
 	std::string line;
 	std::getline(file, line);
-	int id, type;
-	float x, y, w, h;
+	/*int id, type;
+	float x, y, w, h;*/
 	while (std::getline(file, line))
 	{
 		std::stringstream ss(line);
@@ -49,18 +49,36 @@ vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> CQuadTree::LoadGameObjects() {
 		float boundaryRight = std::stof(tokens[7]);
 
 		LPGAMEOBJECT obj = CreateGameObjectByType(type, x, y);
-		fullBucket.push_back({ D3DXVECTOR2(x,y),obj });
+		SetObjectDynamicState(obj, type);
+		objects.push_back(obj);
 	}
 	file.close();
-	return fullBucket;
+	return objects;
 }
 
-//hinh nhu con thieu cai huong nen em de tam nhaa
-LPGAMEOBJECT  CQuadTree::CreateGameObjectByType(int type,int x,int y) {
+void CQuadTree::SetObjectDynamicState(LPGAMEOBJECT obj, int type)
+{
+	// Mark the types of dynamic objects.
 	switch (type)
 	{
 	case static_cast<int>(Type::ZOMBIE):
-		return new CZombie(x,y, DIRECTION_POSITIVE);
+	case static_cast<int>(Type::SIMON):
+	case static_cast<int>(Type::GHOST):
+		obj->SetDynamic(true);
+		break;
+	default:
+		obj->SetDynamic(false);
+		break;
+	}
+}
+
+
+//hinh nhu con thieu cai huong nen em de tam nhaa
+LPGAMEOBJECT  CQuadTree::CreateGameObjectByType(int type, int x, int y) {
+	switch (type)
+	{
+	case static_cast<int>(Type::ZOMBIE):
+		return new CZombie(x, y, DIRECTION_POSITIVE);
 		break;
 	}
 }
@@ -68,9 +86,9 @@ LPGAMEOBJECT  CQuadTree::CreateGameObjectByType(int type,int x,int y) {
 
 void CQuadTree::insertObjectIntoTree()
 {
-	vector < pair <D3DXVECTOR2, LPGAMEOBJECT>> fullBucket = LoadGameObjects();
-	for (pair <D3DXVECTOR2, LPGAMEOBJECT> p : fullBucket) {
-		insert(p.first, p.second, root);
+	vector<LPGAMEOBJECT> objects = LoadGameObjects();
+	for (LPGAMEOBJECT obj : objects) {
+		insert(obj);
 	}
 }
 
@@ -133,51 +151,146 @@ D3DXVECTOR2  CQuadTree::newPos(int direction, CQuadTreeNode* node)
 /*by design, gameObject are stored only in leaf nodes
 /newly created nodes are leaf nodes by default*/
 
-void CQuadTree::insert(D3DXVECTOR2 v, LPGAMEOBJECT data, CQuadTreeNode* node)
+void CQuadTree::insert(LPGAMEOBJECT data)
 {
+	float left, top, right, bottom;
+	data->GetBoundingBox(left, top, right, bottom);
+	RECT bounds = { (LONG)left, (LONG)top, (LONG)right, (LONG)bottom };
+
+	insert(data, bounds, root);
+}
+
+void CQuadTree::insert(LPGAMEOBJECT data, RECT bounds, CQuadTreeNode* node)
+{
+	// Check if the bounding box is within this node.
+	if (!RectInNode(bounds, node)) {
+		return;
+	}
+
 	// push gameObject in deepest node (leaf)
 	if (node->leaf) {
-		node->bucket.push_back({ v, data });
+		if (data->IsDynamic()) {
+			node->dynamicBucket.push_back({ bounds, data });
+		}
+		else {
+			node->staticBucket.push_back({ bounds, data });
+		}
+
+		data->SetCurrentNode(node);
 	}
 	// current node is a stem node used for navigation
 	else
 	{
-		insert(v, data, childNode(v, node, node->id));
+		// Check which child node completely contains the bounding box.
+		bool inserted = false;
+		for (int i = 0; i < 4; i++) {
+			if (node->child[i] && RectInNode(bounds, node->child[i])) {
+				insert(data, bounds, node->child[i]);
+				inserted = true;
+				break;
+			}
+		}
+
+		// If it doesn't completely fit within any child node, store it in the current node.
+		if (!inserted) {
+			if (data->IsDynamic()) {
+				node->dynamicBucket.push_back({ bounds, data });
+			}
+			else {
+				node->staticBucket.push_back({ bounds, data });
+			}
+
+			data->SetCurrentNode(node);
+		}
 	}
 }
 
-
-bool  CQuadTree::remove(D3DXVECTOR2 v, LPGAMEOBJECT data)
+bool CQuadTree::RectInNode(const RECT& rect, CQuadTreeNode* node)
 {
-	stack <CQuadTreeNode*> nodes;
-	nodes.push(root);
-	CQuadTreeNode* top = nodes.top();
-	unsigned dir;
+	float halfRangeX = node->range.x / 2.0f;
+	float halfRangeY = node->range.y / 2.0f;
 
-	// navigate to leaf node containing the gameObject to be deleted
-	while (!top->leaf) {
-		dir = direction(v, top);
-		if (top->child[dir]) {
-			nodes.push(top->child[dir]);
-			top = nodes.top();
-		}
-		else {
-			return false;
-		}
+	RECT nodeBounds = {
+		(LONG)(node->pos.x - halfRangeX),
+		(LONG)(node->pos.y - halfRangeY),
+		(LONG)(node->pos.x + halfRangeX),
+		(LONG)(node->pos.y + halfRangeY)
+	};
+
+	return (rect.left >= nodeBounds.left && rect.right <= nodeBounds.right &&
+		rect.top >= nodeBounds.top && rect.bottom <= nodeBounds.bottom);
+}
+
+bool CQuadTree::RectIntersectNode(const RECT& rect, CQuadTreeNode* node)
+{
+	float halfRangeX = node->range.x / 2.0f;
+	float halfRangeY = node->range.y / 2.0f;
+
+	RECT nodeBounds = {
+		(LONG)(node->pos.x - halfRangeX),
+		(LONG)(node->pos.y - halfRangeY),
+		(LONG)(node->pos.x + halfRangeX),
+		(LONG)(node->pos.y + halfRangeY)
+	};
+
+	return !(rect.left > nodeBounds.right || rect.right < nodeBounds.left ||
+		rect.top > nodeBounds.bottom || rect.bottom < nodeBounds.top);
+}
+
+bool CQuadTree::remove(LPGAMEOBJECT data)
+{
+	CQuadTreeNode* node = data->GetCurrentNode();
+	if (!node) {
+		return false;
 	}
-	// linearly search bucket for target  gameObject
-	for (int i = 0; i < top->bucket.size(); ++i) {
-		//  gameObject found, delete from bucket
-		if (top->bucket[i].first == v && top->bucket[i].second == data) {
-			top->bucket.erase(top->bucket.begin() + i);
-			reduce(nodes);
+
+	// Select the appropriate bucket (static or dynamic).
+	vector<pair<RECT, LPGAMEOBJECT>>& bucket =
+		data->IsDynamic() ? node->dynamicBucket : node->staticBucket;
+
+	for (auto it = bucket.begin(); it != bucket.end(); ++it) {
+		if (it->second == data) {
+			bucket.erase(it);
+			data->SetCurrentNode(nullptr);
 			return true;
 		}
 	}
+
 	return false;
 }
 
+void CQuadTree::UpdateDynamicObject(LPGAMEOBJECT object)
+{
+	if (!object->IsDynamic()) {
+		return;
+	}
 
+	CQuadTreeNode* currentNode = object->GetCurrentNode();
+	if (!currentNode) {
+		insert(object);
+		return;
+	}
+
+	float left, top, right, bottom;
+	object->GetBoundingBox(left, top, right, bottom);
+	RECT newBounds = { (LONG)left, (LONG)top, (LONG)right, (LONG)bottom };
+
+	// Check if the object is still within the current node.
+	if (RectInNode(newBounds, currentNode)) {
+		// Still within the current node, update the bounding box.
+		for (auto& pair : currentNode->dynamicBucket) {
+			if (pair.second == object) {
+				pair.first = newBounds;
+				break;
+			}
+		}
+		return;
+	}
+
+	remove(object);
+
+	insert(object);
+}
 
 
 /*	once a gameObject is removed from a leaf node's bucket
@@ -185,97 +298,98 @@ bool  CQuadTree::remove(D3DXVECTOR2 v, LPGAMEOBJECT data)
 	if not, remove it and do the same with its parent node.
 */
 
-void  CQuadTree::reduce(stack <CQuadTreeNode*>& nodes)
+//void  CQuadTree::reduce(stack <CQuadTreeNode*>& nodes)
+//{
+//	nodes.pop();
+//	while (!nodes.empty()) {
+//		CQuadTreeNode* top = nodes.top();
+//		for (int i = 0; i < 4; ++i) {
+//			if (top->child[i] && !top->child[i]->leaf) {
+//				return;
+//			}
+//		}
+//		int emtyChild = 0;
+//		for (int i = 0; i < 4; ++i) {
+//			if (top->child[i] && top->child[i]->bucket.size() == 0) {
+//				delete top->child[i];
+//				top->child[i] = NULL;
+//
+//			}
+//			if (!top->child[i])
+//				emtyChild++;
+//		}
+//
+//		if (emtyChild == 4)
+//			top->leaf = true;
+//		nodes.pop();
+//	}
+//	return;
+//}
+
+vector<LPGAMEOBJECT> CQuadTree::renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY)
 {
-	nodes.pop();
-	while (!nodes.empty()) {
-		CQuadTreeNode* top = nodes.top();
-		for (int i = 0; i < 4; ++i) {
-			if (top->child[i] && !top->child[i]->leaf) {
-				return;
-			}
-		}
-		int emtyChild = 0;
-		for (int i = 0; i < 4; ++i) {
-			if (top->child[i] && top->child[i]->bucket.size() == 0) {
-				delete top->child[i];
-				top->child[i] = NULL;
-
-			}
-			if (!top->child[i])
-				emtyChild++;
-		}
-
-		if (emtyChild == 4)
-			top->leaf = true;
-		nodes.pop();
-	}
-	return;
-}
-
-vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > CQuadTree::renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY)
-{
-
-	vector<pair<D3DXVECTOR2, LPGAMEOBJECT>> results;
-	queue <CQuadTreeNode*> nodes;
+	vector<LPGAMEOBJECT> results;
+	queue<CQuadTreeNode*> nodes;
 	nodes.push(root);
+
+	// Create RECT from minXY and maxXY.
+	RECT queryRegion = {
+		(LONG)minXY.x, (LONG)minXY.y,
+		(LONG)maxXY.x, (LONG)maxXY.y
+	};
 
 	while (!nodes.empty()) {
 		CQuadTreeNode* top = nodes.front();
+
+		// Check if the node intersects with the query region.
+		if (!RectIntersectNode(queryRegion, top)) {
+			nodes.pop();
+			continue;
+		}
+
 		if (top->leaf) {
-			enclosure_status status = getEnclosureStatus(top->pos, top->range, minXY, maxXY);
-			switch (status) {
-				// this node is completely contained within the search region
-			case NODE_CONTAINED_BY_REGION:
-				// add all elements to results
-				addAllObjectToResults(top, results);
-				break;
-
-				// this node is partially contained by the region
-			case  NODE_PARTIALLY_IN_REGION:
-				// search through this leaf node's bucket
-				for (int i = 0; i < top->bucket.size(); ++i) {
-					// check if this point is in the region
-					if (pointInRegion(top->bucket[i].first, minXY, maxXY)) {
-						LPGAMEOBJECT obj = top->bucket[i].second;
-						if (!obj->IsUpdated()) {
-							obj->Render();
-							obj->SetUpdateState(true);
-							results.push_back(top->bucket[i]);
-						}
-					}
-				}
-				break;
-
-				// this node definitely has no points in the region
-			case NODE_NOT_IN_REGION:
-				// do nothing
-				break;
-			}
+			processNodeObjects(top->staticBucket, queryRegion, results);
+			processNodeObjects(top->dynamicBucket, queryRegion, results);
 		}
 		else {
 			for (int i = 0; i < 4; ++i) {
 				if (top->child[i]) {
-					// check if this nodes children could have points in the region
-					enclosure_status status = getEnclosureStatus(top->child[i]->pos, top->child[i]->range, minXY, maxXY);
-					switch (status) {
-						// this node might contain points in the region
-					case NODE_PARTIALLY_IN_REGION:
-						nodes.push(top->child[i]);
-						break;
-						// no points in region, discontinue searching this branch
-					case NODE_NOT_IN_REGION:
-						break;
-					}
+					nodes.push(top->child[i]);
 				}
 			}
 		}
 		nodes.pop();
 	}
+
+	// Remove duplicates.
+	sort(results.begin(), results.end());
+	results.erase(unique(results.begin(), results.end()), results.end());
+
 	return results;
 }
 
-void CQuadTree::addAllObjectToResults(CQuadTreeNode* node, vector<pair <D3DXVECTOR2, LPGAMEOBJECT> >& results)
+void CQuadTree::processNodeObjects(const vector<pair<RECT, LPGAMEOBJECT>>& bucket, const RECT& queryRegion, vector<LPGAMEOBJECT>& results)
+{
+	for (const auto& pair : bucket) {
+		// Check if the object's bounding box intersects with the query region.
+		if (RectIntersectsRect(pair.first, queryRegion)) {
+			LPGAMEOBJECT obj = pair.second;
+			if (!obj->IsUpdated()) {
+				obj->SetUpdateState(true);
+				results.push_back(obj);
+			}
+		}
+	}
+}
+
+bool CQuadTree::RectIntersectsRect(const RECT& rect1, const RECT& rect2)
+{
+	return !(rect1.left > rect2.right || rect1.right < rect2.left ||
+		rect1.top > rect2.bottom || rect1.bottom < rect2.top);
+}
+
+
+/*void CQuadTree::addAllObjectToResults(CQuadTreeNode* node, vector<pair <D3DXVECTOR2, LPGAMEOBJECT> >& results)
 {
 	if (node->leaf) {
 		for (pair <D3DXVECTOR2, LPGAMEOBJECT> p : node->bucket) {
@@ -294,7 +408,7 @@ void CQuadTree::addAllObjectToResults(CQuadTreeNode* node, vector<pair <D3DXVECT
 			}
 		}
 	}
-}
+}*/
 
 
 bool CQuadTree::pointInRegion(const D3DXVECTOR2& point, const D3DXVECTOR2& minXY, const D3DXVECTOR2& maxXY)
@@ -346,152 +460,75 @@ enclosure_status CQuadTree::getEnclosureStatus(const D3DXVECTOR2& pos, const D3D
 
 void CQuadTree::render()
 {
-	if (root) {
-		render(root);
-	}
-}
-
-
-void CQuadTree::render(CQuadTreeNode* node)
-{
 	//Because all objects are stored in leaf nodes, only leaf nodes are drawn.
 	float cx, cy;
 	CCamera* cam = CCamera::GetInstance();
 	CGame* g = CGame::GetInstance();
 	cam->GetCameraPos(cx, cy);
-	vector<std::pair<D3DXVECTOR2, LPGAMEOBJECT>> dataList = renderObjectsInRegion(
-		D3DXVECTOR2(cx, cy),
-		D3DXVECTOR2(cx + g->GetBackBufferWidth(), cy + g->GetBackBufferHeight())
-	);
+
+	D3DXVECTOR2 minXY(cx, cy);
+	D3DXVECTOR2 maxXY(cx + g->GetBackBufferWidth(), cy + g->GetBackBufferHeight());
+
+	vector<LPGAMEOBJECT> dataList = renderObjectsInRegion(minXY, maxXY);
 
 
-	for (int i = 0; i < dataList.size(); ++i)
-	{
-		dataList[i].second->SetUpdateState(true);
+	for (auto obj : dataList) {
+		obj->Render();
 	}
 }
 
-// Register a dynamic object with the Quadtree
-void CQuadTree::registerDynamicObject(CQuadTreeObject* object)
+void CQuadTree::UpdateDynamicObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY, DWORD dt)
 {
-	dynamicObjects.push_back(object);
+	// Expand the update area to include objects around the viewport.
+	float margin = 100.0f;
+	D3DXVECTOR2 expandedMin(minXY.x - margin, minXY.y - margin);
+	D3DXVECTOR2 expandedMax(maxXY.x + margin, maxXY.y + margin);
 
-	insert(object->position, object->obj);
+	vector<LPGAMEOBJECT> dynamicObjects;
+	queue<CQuadTreeNode*> nodes;
+	nodes.push(root);
 
-	object->currentNode = findNodeForPoint(object->position);
-}
+	// Create RECT from the expanded area.
+	RECT expandedRegion = {
+		(LONG)expandedMin.x, (LONG)expandedMin.y,
+		(LONG)expandedMax.x, (LONG)expandedMax.y
+	};
 
-// Unregister a dynamic object
-void CQuadTree::unregisterDynamicObject(CQuadTreeObject* object)
-{
-	remove(object->position, object->obj);
+	while (!nodes.empty()) {
+		CQuadTreeNode* top = nodes.front();
 
-	for (auto it = dynamicObjects.begin(); it != dynamicObjects.end(); ++it) {
-		if (*it == object) {
-			dynamicObjects.erase(it);
-			break;
+		// Check if the node intersects with the update area.
+		if (!RectIntersectNode(expandedRegion, top)) {
+			nodes.pop();
+			continue;
 		}
-	}
 
-	object->currentNode = nullptr;
-}
-
-// Update position of a dynamic object
-void CQuadTree::updateDynamicObject(CQuadTreeObject* object, D3DXVECTOR2 newPosition, bool force)
-{
-	if (object->position.x == newPosition.x && object->position.y == newPosition.y)
-		return;
-
-	CQuadTreeNode* newNode = findNodeForPoint(newPosition);
-
-	if (!force && newNode == object->currentNode) {
-		object->position = newPosition;
-		return;
-	}
-
-	remove(object->position, object->obj);
-	object->position = newPosition;
-	insert(object->position, object->obj);
-	object->currentNode = newNode;
-}
-
-// Update all dynamic objects
-void CQuadTree::updateAllDynamicObjects(float dt)
-{
-	float cx, cy;
-	CCamera::GetInstance()->GetCameraPos(cx, cy);
-
-	float updateMargin = 200.0f; 
-	D3DXVECTOR2 minXY(cx - updateMargin, cy - updateMargin);
-	D3DXVECTOR2 maxXY(cx + CGame::GetInstance()->GetBackBufferWidth() + updateMargin,
-		cy + CGame::GetInstance()->GetBackBufferHeight() + updateMargin);
-
-	for (auto object : dynamicObjects) {
-		float x, y;
-		object->obj->GetPosition(x, y);
-		D3DXVECTOR2 newPosition(x, y);
-
-		bool inUpdateRegion =
-			newPosition.x >= minXY.x && newPosition.x <= maxXY.x &&
-			newPosition.y >= minXY.y && newPosition.y <= maxXY.y;
-
-		object->timeSinceLastUpdate += dt;
-
-		if (inUpdateRegion || object->timeSinceLastUpdate >= object->updateInterval * 3) {
-			bool shouldUpdate = object->timeSinceLastUpdate >= object->updateInterval;
-
-			if (object->currentNode) {
-				D3DXVECTOR2 halfRange = object->currentNode->range * 0.5f;
-				bool stillInNode =
-					newPosition.x >= object->currentNode->pos.x - halfRange.x &&
-					newPosition.x <= object->currentNode->pos.x + halfRange.x &&
-					newPosition.y >= object->currentNode->pos.y - halfRange.y &&
-					newPosition.y <= object->currentNode->pos.y + halfRange.y;
-
-				shouldUpdate = shouldUpdate || !stillInNode;
-			}
-
-			if (shouldUpdate) {
-				updateDynamicObject(object, newPosition, true);
-				object->timeSinceLastUpdate = 0.0f;
-			}
-			else {
-				object->position = newPosition;
+		if (top->leaf) {
+			for (const auto& pair : top->dynamicBucket) {
+				LPGAMEOBJECT obj = pair.second;
+				if (!obj->IsUpdated() && RectIntersectsRect(pair.first, expandedRegion)) {
+					obj->SetUpdateState(true);
+					dynamicObjects.push_back(obj);
+				}
 			}
 		}
 		else {
-			object->position = newPosition;
+			for (int i = 0; i < 4; ++i) {
+				if (top->child[i]) {
+					nodes.push(top->child[i]);
+				}
+			}
 		}
-	}
-}
-
-// Find node containing a point
-CQuadTreeNode* CQuadTree::findNodeForPoint(D3DXVECTOR2 point)
-{
-	return findNodeForPoint(point, root);
-}
-
-// Recursive function to find node containing a point
-CQuadTreeNode* CQuadTree::findNodeForPoint(D3DXVECTOR2 point, CQuadTreeNode* startNode)
-{
-	D3DXVECTOR2 halfRange = startNode->range * 0.5f;
-	if (point.x < startNode->pos.x - halfRange.x ||
-		point.x > startNode->pos.x + halfRange.x ||
-		point.y < startNode->pos.y - halfRange.y ||
-		point.y > startNode->pos.y + halfRange.y) {
-		return nullptr; 
+		nodes.pop();
 	}
 
-	if (startNode->leaf) {
-		return startNode;
-	}
+	// Remove duplicates.
+	sort(dynamicObjects.begin(), dynamicObjects.end());
+	dynamicObjects.erase(unique(dynamicObjects.begin(), dynamicObjects.end()), dynamicObjects.end());
 
-	int dir = direction(point, startNode);
-	if (startNode->child[dir]) {
-		CQuadTreeNode* childResult = findNodeForPoint(point, startNode->child[dir]);
-		if (childResult) {
-			return childResult;
-		}
+	for (auto obj : dynamicObjects) {
+		obj->Update(dt);
+
+		UpdateDynamicObject(obj);
 	}
-	return startNode;
 }

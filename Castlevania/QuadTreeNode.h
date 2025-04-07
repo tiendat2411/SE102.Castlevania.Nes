@@ -19,7 +19,8 @@ public:
 	CQuadTreeNode* child[4];
 
 	// used by leaf nodes
-	vector <pair <D3DXVECTOR2, LPGAMEOBJECT> > bucket;
+	vector<pair<RECT, LPGAMEOBJECT>> staticBucket;
+	vector<pair<RECT, LPGAMEOBJECT>> dynamicBucket;
 
 
 	CQuadTreeNode(D3DXVECTOR2 pos, D3DXVECTOR2 range, UINT id = 0) {
@@ -33,18 +34,14 @@ public:
 		leaf = true;
 	}
 	~CQuadTreeNode() { for (int i = 0; i < 4; ++i) if (child[i]) { delete child[i]; } }
+
+	vector<pair<RECT, LPGAMEOBJECT>> GetAllObjects() {
+		vector<pair<RECT, LPGAMEOBJECT>> allObjects;
+		allObjects.insert(allObjects.end(), staticBucket.begin(), staticBucket.end());
+		allObjects.insert(allObjects.end(), dynamicBucket.begin(), dynamicBucket.end());
+		return allObjects;
+	}
+
 };
 
-class CQuadTreeObject {
-public:
-	LPGAMEOBJECT obj;          
-	D3DXVECTOR2 position;      
-	CQuadTreeNode* currentNode; 
-	bool isDynamic;             
-	float updateInterval;      
-	float timeSinceLastUpdate;  
-
-	CQuadTreeObject(LPGAMEOBJECT obj, D3DXVECTOR2 position, bool isDynamic = false, float updateInterval = 0.5f)
-		: obj(obj), position(position), currentNode(nullptr),
-		isDynamic(isDynamic), updateInterval(updateInterval), timeSinceLastUpdate(0.0f) {}
-};
+typedef CQuadTreeNode* LPQUADTREENODE;
