@@ -34,7 +34,7 @@ protected:
 	bool isDeleted;
 	bool isUpdated;
 	bool isDynamic;
-	CQuadTreeNode* currentNode;
+	vector<CQuadTreeNode*> nodeList;
 public:
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
@@ -49,8 +49,18 @@ public:
 	bool IsDynamic() const { return isDynamic; }
 	void SetDynamic(bool dynamic) { isDynamic = dynamic; }
 
-	CQuadTreeNode* GetCurrentNode() const { return currentNode; }
-	void SetCurrentNode(CQuadTreeNode* node) { currentNode = node; }
+	vector<CQuadTreeNode*>& GetNodeList() { return nodeList; }
+
+	void AddToNode(CQuadTreeNode* node) {
+		if (!IsInNode(node))
+			nodeList.push_back(node);
+	}
+
+	void ClearNodeList() { nodeList.clear(); }
+
+	bool IsInNode(CQuadTreeNode* node) {
+		return find(nodeList.begin(), nodeList.end(), node) != nodeList.end();
+	}
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 

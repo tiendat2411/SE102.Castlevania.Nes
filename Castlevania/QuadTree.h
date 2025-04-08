@@ -47,12 +47,12 @@ public:
 	void	UpdateDynamicObject(LPGAMEOBJECT object);
 	vector <LPGAMEOBJECT> renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY);
 	void	UpdateDynamicObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY, DWORD dt);
-	//void	ResetUpdateState();
+	void	ResetUpdateState();
 
 private:
 
 	vector<LPGAMEOBJECT> LoadGameObjects();
-	LPGAMEOBJECT CreateGameObjectByType(int type, int x, int y);
+	LPGAMEOBJECT CreateGameObjectByType(int type, float x, float y);
 	void SetObjectDynamicState(LPGAMEOBJECT obj, int type);
 	CQuadTreeNode* childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id);
 	D3DXVECTOR2 newPos(int direction, CQuadTreeNode* node);
@@ -66,6 +66,7 @@ private:
 	bool RectIntersectNode(const RECT& rect, CQuadTreeNode* node);
 	void processNodeObjects(const vector<pair<RECT, LPGAMEOBJECT>>& bucket, const RECT& queryRegion, vector<LPGAMEOBJECT>& results);
 	bool RectIntersectsRect(const RECT& rect1, const RECT& rect2);
+	void CheckAndAddToNewLeafNodes(CQuadTreeNode* node, const RECT& bounds, LPGAMEOBJECT object, vector<CQuadTreeNode*>& nodeList, bool& addedToNewNode);
 	CQuadTreeNode* root;
 	LPCWSTR filePath;
 };
