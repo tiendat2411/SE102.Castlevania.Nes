@@ -22,6 +22,7 @@
 #include "Brick.h"
 #include "Whip.h"
 #include "Map.h"
+#include "Axe.h"
 
 
 #include "SampleKeyEventHandler.h"
@@ -100,7 +101,7 @@ void LoadResources()
 
 	CZombie* zom = new CZombie(SIMON_START_X, 200, DIRECTION_POSITIVE);
 	objects.push_back(zom);
-	objects.push_back(new CWhip(0,0,simon));
+	objects.push_back(new CAxe(0,0,simon));
 
 
 	for (int i = 7; i < 10; i++)

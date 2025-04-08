@@ -1,38 +1,26 @@
 #pragma once
 #include "GameObject.h"
 #include "Simon.h"
-class CWhip :public CGameObject
+#include "Weapon.h"
+class CWhip :public CWeapon
 {
-private:
-	CSimon* simon;
 public:
 
-	CWhip(float x, float y ,CSimon* simon) : CGameObject(x, y)
+	CWhip(float x, float y ,CSimon* simon) : CWeapon(x, y,simon)
 	{
-		directionX = DIRECTION_POSITIVE;
-		directionY = DIRECTION_POSITIVE;
-
 		aniState = WHIP_ANI_ATTACKING_BEGIN;
-		type = Type::SIMON;
-		this->simon = simon;
-
+		type = Type::WHIP;
 		tex = CTextures::GetInstance()->Get(Type::WHIP);
 
 	}
-
-
+	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		directionX = simon->GetDirectionX();
-		x = simon->GetPosX()+ simon->GetDirectionX()*10; 
-		y = simon->GetPosY();
-	};	
-	void Render();
+		CCollision::GetInstance()->Process(this, dt, coObjects);
 
-	
+	};
 	int IsCollidable();
-
-	void OnNoCollision(DWORD dt) {};
-	void OnCollisionWith(LPCOLLISIONEVENT e) {};
+	void OnNoCollision(DWORD dt);
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	
 };

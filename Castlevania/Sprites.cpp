@@ -32,6 +32,7 @@ void CSprites::LoadResource(){
 	CreateSpriteSheet(Type::BAT);
 	CreateSpriteSheet(Type::ZOMBIE);
 	CreateSpriteSheet(Type::WHIP);
+	CreateSpriteSheet(Type::AXE);
 
 	CreateSpriteSheet(Type::TILESET_LEVEL1);
 	CreateSpriteSheet(Type::BLACKBOARD);

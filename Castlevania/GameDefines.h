@@ -36,6 +36,7 @@
 #define TEXTURE_PATH_ZOMBIE TEXTURES_DIR ENEMYSTEX_DIR "\\Zombie.png"
 
 #define TEXTURE_PATH_WHIP TEXTURES_DIR  "\\Whip.png"
+#define TEXTURE_PATH_AXE TEXTURES_DIR  "\\Axe.png"
 
 #define TEXTURE_PATH_TILESET1 TEXTURES_DIR  "\\tileset_map1.png"
 #define TEXTURE_PATH_BLACKBOARD TEXTURES_DIR  "\\blackboard.png"
@@ -138,8 +139,12 @@
 #pragma endregion
 
 #pragma region WEAPON_ANIMATION_
+
 #define WHIP_ANI_ATTACKING_BEGIN 4000
 #define WHIP_ANI_ATTACKING_END 4002
+
+#define AXE_ANI_ATTACKING_BEGIN 4010
+#define AXE_ANI_ATTACKING_END 4013	
 #pragma endregion
 
 
@@ -185,6 +190,7 @@ enum class Type {
 
 	//WEAPON
 	WHIP = 4000,
+	AXE = 4010,
 
 
 };

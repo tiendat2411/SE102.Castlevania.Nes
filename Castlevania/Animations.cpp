@@ -60,12 +60,19 @@ void CAnimations::LoadResource() {
 	ani->CreateNewAnimation(ZOMBIE_ANI_BEGIN,ZOMBIE_ANI_END);
 	Add(ZOMBIE_ANI_BEGIN, ani);
 
+	#pragma endregion
+
+	#pragma region CREATE_WEAPON_ANIMATION
 	ani = new CAnimation(100);
-	ani->CreateNewAnimation(WHIP_ANI_ATTACKING_BEGIN,WHIP_ANI_ATTACKING_END);
+	ani->CreateNewAnimation(WHIP_ANI_ATTACKING_BEGIN, WHIP_ANI_ATTACKING_END);
 	Add(WHIP_ANI_ATTACKING_BEGIN, ani);
 
-	
+	ani = new CAnimation(100);
+	ani->CreateNewAnimation(AXE_ANI_ATTACKING_BEGIN, AXE_ANI_ATTACKING_END);
+	Add(AXE_ANI_ATTACKING_BEGIN, ani);
+
 	#pragma endregion
+
 	
 
 
