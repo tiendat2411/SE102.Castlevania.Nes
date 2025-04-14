@@ -5,16 +5,17 @@
 
 void CAxe::OnNoCollision(DWORD dt) {
 	if (!isActivate ) {
-		x = simon->GetPosX();
+		x = targetObject->GetPosX();
+		y = targetObject->GetPosY() ;
 	}
 	else {
 		x += AXE_SPEED * directionX * dt;
 	}
-	y = simon->GetPosY()- 15;
+
 }
 
 void CAxe::Render() {
-	if (simon->isAttacking) isActivate = true;
+	if (targetObject->GetCurrentState() == sType::ATTACKING)  isActivate = true;
 	if (isActivate)
 		CWeapon::Render();
 }

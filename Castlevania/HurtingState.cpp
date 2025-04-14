@@ -3,15 +3,15 @@
 
 
 
-BOOLEAN CHurtingState::StateTransition(CSimon* simon, sType prevState)
+BOOLEAN CHurtingState::CanTransition(LPGAMEOBJECT targetObject, sType newState, CharStateConditions* conditions)
 {
 		return true;
 }
 
-void CHurtingState::Enter(CSimon* simon)
+void CHurtingState::Enter(LPGAMEOBJECT targetGameobject)
 {
 
-	simon->SetSpeed(-SIMON_WALKING_SPEED *  simon->GetDirectionX(), -SIMON_JUMP_HURT_SPEED_Y);
+	targetGameobject->SetSpeed(-0.10f * targetGameobject->GetDirectionX(), -SIMON_JUMP_HURT_SPEED_Y);
 
-	simon->SetAniState(SIMON_ANI_HURTING);
+	targetGameobject->SetAniState(SIMON_ANI_HURTING);
 }

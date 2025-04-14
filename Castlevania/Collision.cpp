@@ -211,10 +211,11 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 			min_tx = c->t; min_ix = i;
 		}
 
+
 		if (c->t < min_ty && c->ny != 0 && filterY == 1) {
 			min_ty = c->t; min_iy = i;
 		}
-	}
+	}        
 
 	if (min_ix >= 0) colX = coEvents[min_ix];
 	if (min_iy >= 0) colY = coEvents[min_iy];

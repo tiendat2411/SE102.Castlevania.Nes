@@ -7,9 +7,19 @@
 #include"GameDefines.h"
 #include "Texture.h"
 #include "Collision.h"
+#include<map>
+#include<string.h>
 
 
 using namespace std;
+
+
+struct CharStateConditions {
+	BOOLEAN isOnPlatform = false;
+	BOOLEAN isDucking = false;
+	BOOLEAN isDead = false;
+	BOOLEAN isHurting = false;
+};
 
 class CGameObject
 {
@@ -33,11 +43,19 @@ protected:
 	LPTEXTURE tex;
 	bool isDeleted;
 	bool isUpdated;
+	
+	CharStateConditions* stateConditions;
+	sType currentState;
 public: 
+
+	std::vector<sType> transferableStates;
+
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float& x, float& y) { x = this->x; y = this->y; }
 	void GetSpeed(float& vx, float& vy) { vx = this->vx; vy = this->vy; }
+	CharStateConditions* GetStateConditions() { return this->stateConditions; }
+	sType GetCurrentState() { return currentState; }
 
 	virtual void Delete() { isDeleted = true; }
 	bool IsDeleted() { return isDeleted; }

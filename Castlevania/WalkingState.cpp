@@ -1,21 +1,15 @@
 #include "WalkingState.h"
-#include "StateMachine.h"
 
 
-BOOLEAN  CWalkingState::StateTransition(CSimon* simon, sType prevState) {
-	if (prevState == sType::SIMON_STATE_DUCKING || !simon->IsOnPlatform() || simon->isHurting)
-	{
-		return false;
-	}
+
+BOOLEAN  CSimonWalkingState::CanTransition(sType newState, CharStateConditions* conditions) {
+
 	return true;
 }
 
-void CWalkingState::Enter(CSimon* simon) {
-	if (simon->isAttacking) 
-		SetStaticState(simon);
-	else {
-		simon->SetAcceleration(simon->GetDirectionX() * SIMON_ACCEL_WALK_X);
+void CSimonWalkingState::Enter(LPGAMEOBJECT targetObject) {
+
+	targetObject->SetSpeed(SIMON_WALKING_SPEED * targetObject->GetDirectionX(), 0);
 		//simon->SetSpeed(SIMON_WALKING_SPEED*simon->GetDirectionX(),0);
-	}
-	simon->SetAniState((simon->isAttacking) ? SIMON_ANI_STANDING_ATTACKING_BEGIN : SIMON_ANI_WALKING_BEGIN);
+	targetObject->SetAniState(SIMON_ANI_WALKING_BEGIN);
 }

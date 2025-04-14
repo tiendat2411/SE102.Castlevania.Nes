@@ -12,12 +12,12 @@ private:
 	bool isActivate;
 public:
 
-	CAxe(float x, float y, CSimon* simon) : CWeapon(x, y, simon)
+	CAxe(float x, float y, LPGAMEOBJECT target) : CWeapon(x, y, target)
 	{
 		aniState = AXE_ANI_ATTACKING_BEGIN;
 		type = Type::AXE;
 		tex = CTextures::GetInstance()->Get(Type::AXE);
-		x = simon->GetPosX();
+		x = targetObject->GetPosX();
 		accumulatedTime = 0;
 		isActivate = false;
 
@@ -25,7 +25,7 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		CCollision::GetInstance()->Process(this, dt, coObjects);
 		if (!isActivate) {
-			directionX = simon->GetDirectionX();
+			directionX = targetObject->GetDirectionX();
 			return;
 		}
 		accumulatedTime += dt;

@@ -144,6 +144,7 @@
     <ClInclude Include="Leopard.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="SimonAttackingState.h" />
     <ClInclude Include="WalkingOnStairState.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="Game.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Simon.cpp" />
+    <ClCompile Include="SimonAttackingState.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="StandingOnStairsState.cpp" />

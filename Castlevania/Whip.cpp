@@ -1,6 +1,6 @@
 #include "Whip.h"
 #include "Simon.h"
-#include "StateMachine.h"
+#include "Animations.h"
 
 
 void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -14,13 +14,13 @@ void CWhip::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 }
 
 void CWhip::OnNoCollision(DWORD dt) {
-	x = simon->GetPosX() + simon->GetDirectionX() * 10;
-	y = simon->GetPosY();
+	x = targetObject->GetPosX() + targetObject->GetDirectionX() * 10;
+	y = targetObject->GetPosY();
 }
-void CWhip::Render()
+void CWhip::Render()	
 {
-	if (!simon->isAttacking) return;
-	CWeapon::Render();
+	if (targetObject->GetCurrentState() == sType::ATTACKING) 
+		CWeapon::Render();
 }
 
 int CWhip::IsCollidable()

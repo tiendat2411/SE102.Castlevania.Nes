@@ -18,6 +18,7 @@ CGameObject::CGameObject()
 
 	isDeleted = false;
 	isUpdated = false;
+	stateConditions = new CharStateConditions();
 }
 
 CGameObject::~CGameObject()

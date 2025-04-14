@@ -5,14 +5,14 @@ class CWeapon :public CGameObject
 {
 protected:
 	ULONGLONG lastTimeAttacking;
-	CSimon* simon;
+	LPGAMEOBJECT targetObject;
 public:
 
-	CWeapon(float x, float y, CSimon* simon) : CGameObject(x, y)
+	CWeapon(float x, float y, LPGAMEOBJECT target) : CGameObject(x, y)
 	{
 		directionX = DIRECTION_POSITIVE;
 		directionY = DIRECTION_POSITIVE;
-		this->simon = simon;
+		targetObject = target;
 	}
 
 

@@ -43,7 +43,7 @@
 #define SIMON_START_Y 0.0f
 
 #define BRICK_X 0.0f
-#define BRICK_Y /*GROUND_Y* +*/ 480-51
+#define BRICK_Y /*GROUND_Y* +*/ 240-44
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
@@ -290,7 +290,7 @@ int WINAPI WinMain(
 	keyHandler = new CSampleKeyHandler();
 	game->InitKeyboard(keyHandler);
 
-	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH  , SCREEN_HEIGHT , SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	LoadResources();
 

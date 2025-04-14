@@ -6,8 +6,8 @@
 #define DIRECTION_DEFAULT 0    //using current direction of obj
 #define DIRECTION_NEGATIVE -1	//left,up
 
-#define BOARD_WIDTH 640 
-#define BOARD_HEIGHT 98
+#define BOARD_WIDTH 320	
+#define BOARD_HEIGHT 43
 
 
 #pragma region TEXTURE_PATHS
@@ -47,7 +47,7 @@
 
 #pragma region SIMON_ANIMATION_
 
-#define SIMON_HEIGHT_ADJUST  16.0f // adjust simon y position when sitting or jumping, avoid overlaping .
+#define SIMON_HEIGHT_ADJUST  6.0f // adjust simon y position when sitting or jumping, avoid overlaping .
 
 // aniID  = objectID + index of sprite in spriteSheet
 #define SIMON_ANI_IDLE 1000
@@ -148,6 +148,26 @@
 #pragma endregion
 
 
+
+
+#define SIMON_GRAVITY 0.002f 
+
+#define SIMON_WALKING_SPEED 0.08f 
+
+#define SIMON_SPEED_ONSTAIR 0.045f 
+#define SIMON_ACCEL_WALK_X	0.00025f
+#define SIMON_JUMP_SPEED_Y 0.4f
+#define SIMON_JUMP_HURT_SPEED_Y 0.20f
+
+
+
+#define SIMON_DEFAULT_HEALTH 16
+#define SIMON_DEFAULT_HEARTCOLLECT 5
+#define SIMON_DEFAULT_SCORE 0
+#define SIMON_DEFAULT_LIVES 3
+
+
+
 /*******GAME OBJECT ID**********/
 enum class Type {
 
@@ -196,18 +216,16 @@ enum class Type {
 };
 
 enum class sType {
-	SIMON_STATE_IDLE = 100,
-	SIMON_STATE_JUMPING = 101,
-	SIMON_STATE_DUCKING = 102,
-	SIMON_STATE_WALKING = 103,
-	SIMON_STATE_ONSTAIRS = 104,
-	SIMON_STATE_WALKING_ONSTAIRS = 105,
-	SIMON_STATE_DIE = 106,
+	IDLE = 100,
+	JUMPING = 101,
+	DUCKING = 102,
+	WALKING = 103,
+	ONSTAIRS = 104,
+	WALKING_ONSTAIRS = 105,
+	DIE = 106,
 
-	SIMON_STATE_FALLING = 107,
-	SIMON_STATE_HURTING = 108,
-
-	DEFAULT_STATE = 0,
+	FALLING = 107,
+	HURTING = 108,
+	ATTACKING = 109
 
 };
-
