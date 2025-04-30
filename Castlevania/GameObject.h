@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <d3dx10.h>
 #include <vector>
+#include<map>
+#include<string.h>
 
 #include"GameDefines.h"
 #include "Texture.h"

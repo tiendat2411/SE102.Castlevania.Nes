@@ -202,7 +202,7 @@ bool CQuadTree::RectIntersectNode(const RECT& rect, CQuadTreeNode* node)
 	return RectIntersectsRect(rect, nodeBounds);
 }
 
-bool CQuadTree::RectIntersectNode(const RECT& rect, CQuadTreeNode* node)
+/*bool CQuadTree::RectIntersectNode(const RECT& rect, CQuadTreeNode* node)
 {
 	float halfRangeX = node->range.x / 2.0f;
 	float halfRangeY = node->range.y / 2.0f;
@@ -216,7 +216,7 @@ bool CQuadTree::RectIntersectNode(const RECT& rect, CQuadTreeNode* node)
 
 	return !(rect.left > nodeBounds.right || rect.right < nodeBounds.left ||
 		rect.top > nodeBounds.bottom || rect.bottom < nodeBounds.top);
-}
+}*/
 
 
 bool CQuadTree::RectIntersectsRect(const RECT& rect1, const RECT& rect2)
