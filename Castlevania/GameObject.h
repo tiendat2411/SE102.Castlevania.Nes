@@ -9,7 +9,7 @@
 #include"GameDefines.h"
 #include "Texture.h"
 #include "Collision.h"
-#include "QuadTree.h"
+//#include "QuadTree.h"
 class CQuadTreeNode;
 using namespace std;
 
