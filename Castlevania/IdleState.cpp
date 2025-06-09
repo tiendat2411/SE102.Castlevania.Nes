@@ -4,6 +4,7 @@
 
 
 BOOLEAN CSimonIdleState::CanTransition( sType newState, CharStateConditions* conditions) {
+	if (conditions->isHurting) return false;
 	return true;
 }
 

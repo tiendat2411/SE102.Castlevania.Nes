@@ -37,6 +37,8 @@
     <ClCompile Include="Axe.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="SimonAttackingState.cpp" />
+    <ClCompile Include="Torch.cpp" />
+    <ClCompile Include="DeathState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -74,6 +76,8 @@
     <ClInclude Include="Axe.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="SimonAttackingState.h" />
+    <ClInclude Include="Torch.h" />
+    <ClInclude Include="DeathState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Castlevania.rc" />

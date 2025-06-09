@@ -5,12 +5,25 @@
 
 using namespace std;
 
-void CMap::LoadMapFromFile(LPCWSTR filename) {	
+void CMap::LoadMapFromFile(LPCWSTR filename) {
 	ifstream inp(filename, ios::in);
+	if (!inp.is_open()) {
+		DebugOut(L"[ERROR] Cannot open map file: %s", filename);
+		return;
+	}
+
 	inp >> RowMap >> ColumnMap;
-	for (int i = 0; i < RowMap; i++)
-		for (int j = 0; j < ColumnMap; j++)
+
+	TileMap = new int* [RowMap];
+
+	for (int i = 0; i < RowMap; i++) {
+		TileMap[i] = new int[ColumnMap];
+		for (int j = 0; j < ColumnMap; j++) {
 			inp >> TileMap[i][j];
+			DebugOut(L"TileMap[%d][%d] = %d \n",i,j, TileMap[i][j]);
+		}
+	}
+
 	inp.close();
 }
 void  CMap::DrawMap() {
@@ -25,9 +38,14 @@ void  CMap::DrawMap() {
 
 	startIndxRow = cy / tileHeight ;
 	startIndxCol = cx / tileWidth ;
-	endIndxRow = (cy + ch)/ tileHeight + 1;
-	endIndxCol = (cx + cw )/ tileWidth + 1;
+	endIndxRow = startIndxRow + ch/ tileHeight +1 ;
+	endIndxCol = startIndxCol + cw / tileWidth  +1;
 
+	if (endIndxCol >= ColumnMap) {
+		endIndxCol = ColumnMap - 1;
+	}
+	if (endIndxRow >= RowMap)
+		endIndxRow = RowMap - 1;
 	
 	for (int i = startIndxRow; i <= endIndxRow; i++)
 		for (int j = startIndxCol; j <= endIndxCol; j++) {
@@ -35,3 +53,4 @@ void  CMap::DrawMap() {
 		}
 	CSprites::GetInstance()->Get(static_cast<int>(Type::BLACKBOARD))->Draw(cx+ SCREEN_WIDTH/2 ,BOARD_HEIGHT/2);
 }
+

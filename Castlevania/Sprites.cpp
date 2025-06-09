@@ -36,6 +36,8 @@ void CSprites::LoadResource(){
 
 	CreateSpriteSheet(Type::TILESET_LEVEL1);
 	CreateSpriteSheet(Type::BLACKBOARD);
+	CreateSpriteSheet(Type::BLACKBOARD);
+	CreateSpriteSheet(Type::TORCH);
 
 
 }

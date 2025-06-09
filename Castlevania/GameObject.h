@@ -15,9 +15,7 @@ using namespace std;
 
 
 struct CharStateConditions {
-	BOOLEAN isOnPlatform = false;
 	BOOLEAN isDucking = false;
-	BOOLEAN isDead = false;
 	BOOLEAN isHurting = false;
 };
 

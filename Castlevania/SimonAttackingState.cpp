@@ -2,10 +2,13 @@
 
 
 BOOLEAN CSimonAttackingState::CanTransition( sType newState, CharStateConditions* conditions) {
+	if (newState == sType::ATTACKING) return false;
 	return true;
 }
 void CSimonAttackingState::Enter(LPGAMEOBJECT targetObject) {
-	if(targetObject->GetStateConditions()->isOnPlatform)
+	float vx, vy;
+	targetObject->GetSpeed(vx, vy);
+	if(vy==0)
 		SetStaticState(targetObject);
 	if(targetObject->GetStateConditions()->isDucking)
 		targetObject->SetAniState(SIMON_ANI_DUCKING_ATTACKING_BEGIN);

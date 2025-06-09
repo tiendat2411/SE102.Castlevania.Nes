@@ -10,11 +10,19 @@ private:
 	Type lv;
 	LPTEXTURE tilesTex;
 	int ColumnMap, RowMap;
-	std::vector<std::vector<int>> TileMap;
+	int** TileMap;
 public:
-	CMap(Type level, LPTEXTURE tex)	: lv(level), tilesTex(tex), TileMap(500, std::vector<int>(500, 0)){}
+	CMap(Type level, LPTEXTURE tex)	: lv(level), tilesTex(tex){}
 	void LoadMapFromFile(LPCWSTR filename);
 	void DrawMap();
-	~CMap() {};
+	float GetMapWidth() { return tilesTex->getWidth() / tilesTex->_col * ColumnMap; }
+	float GetMapHeight() { return tilesTex->getHeight() / tilesTex->_row * RowMap; }
+	~CMap() { 
+		for (int i = 0; i < RowMap; ++i) 
+			{
+			delete[] TileMap[i];
+		}
+		delete[] TileMap;
+	};
 };
 

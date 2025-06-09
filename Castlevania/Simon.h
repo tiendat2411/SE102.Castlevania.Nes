@@ -8,13 +8,14 @@
 
 
 
-
+#define SIMON_HURTING_TIME 2000
 
 
 class CSimon : public CGameObject
 {
 	float maxVx, maxVy;
 	float ax, ay;
+	ULONGLONG startHurtingTime;
 	std::unordered_map<sType, LPSTATE> states;
 
 public:
@@ -30,8 +31,9 @@ public:
 		maxVy = SIMON_JUMP_SPEED_Y;
 		ay = SIMON_GRAVITY;
 		type = Type::SIMON;
-
+		health = 3;
 		tex = CTextures::GetInstance()->Get(Type::SIMON);
+		startHurtingTime = 0;
 
 	}
 	float GetAccelerationX() { return ax; }

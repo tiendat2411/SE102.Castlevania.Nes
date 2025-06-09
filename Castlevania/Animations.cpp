@@ -37,14 +37,18 @@ void CAnimations::LoadResource() {
 	ani = new CAnimation(100);
 	ani->CreateNewAnimation(SIMON_ANI_HURTING, SIMON_ANI_HURTING);
 	Add(SIMON_ANI_HURTING, ani);
-	/******************ATTAKING********************/
 
 	ani = new CAnimation(100);
+	ani->CreateNewAnimation(SIMON_ANI_DEADTH, SIMON_ANI_DEADTH);
+	Add(SIMON_ANI_DEADTH, ani);
+	/******************ATTAKING********************/
+
+	ani = new CAnimation(200);
 	ani->CreateNewAnimation(SIMON_ANI_DUCKING_ATTACKING_BEGIN, SIMON_ANI_DUCKING_ATTACKING_END);
 	Add(SIMON_ANI_DUCKING_ATTACKING_BEGIN, ani);
 
 
-	ani = new CAnimation(100);
+	ani = new CAnimation(200);
 	ani->CreateNewAnimation(SIMON_ANI_STANDING_ATTACKING_BEGIN, SIMON_ANI_STANDING_ATTACKING_END);
 	Add(SIMON_ANI_STANDING_ATTACKING_BEGIN, ani);
 
@@ -63,17 +67,19 @@ void CAnimations::LoadResource() {
 	#pragma endregion
 
 	#pragma region CREATE_WEAPON_ANIMATION
-	ani = new CAnimation(100);
+	ani = new CAnimation(200);
 	ani->CreateNewAnimation(WHIP_ANI_ATTACKING_BEGIN, WHIP_ANI_ATTACKING_END);
 	Add(WHIP_ANI_ATTACKING_BEGIN, ani);
 
-	ani = new CAnimation(100);
+	ani = new CAnimation(200);
 	ani->CreateNewAnimation(AXE_ANI_ATTACKING_BEGIN, AXE_ANI_ATTACKING_END);
 	Add(AXE_ANI_ATTACKING_BEGIN, ani);
 
 	#pragma endregion
 
-	
+	ani = new CAnimation(120);
+	ani->CreateNewAnimation(TORCH_ANI_BEGIN, TORCH_ANI_END);
+	Add(TORCH_ANI_BEGIN, ani);
 
 
 

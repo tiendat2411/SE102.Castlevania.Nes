@@ -25,7 +25,9 @@ void CTextures::LoadResource()
 {
 	Add(Type::BRICK, TEXTURE_PATH_MISC, 1, 1, 1);
 
-	Add(Type::SIMON, TEXTURE_PATH_SIMON, 8, 3, 24);
+	Add(Type::SIMON, TEXTURE_PATH_SIMON, 8, 4, 25);
+
+
 	Add(Type::FISHMAN, TEXTURE_PATH_FISHMAN, 4, 1, 4);
 	Add(Type::EAGLE, TEXTURE_PATH_EAGLE, 2, 1, 2);
 	Add(Type::CANON, TEXTURE_PATH_CANON, 1, 2, 2);
@@ -41,9 +43,12 @@ void CTextures::LoadResource()
 	Add(Type::ZOMBIE, TEXTURE_PATH_ZOMBIE, 2, 1, 2);
 	Add(Type::WHIP, TEXTURE_PATH_WHIP, 3, 3, 9);
 	Add(Type::AXE, TEXTURE_PATH_AXE, 4, 1, 4);
+
+
 	
 	Add(Type::TILESET_LEVEL1, TEXTURE_PATH_TILESET1, 8, 4, 32);
 	Add(Type::BLACKBOARD, TEXTURE_PATH_BLACKBOARD);
+	Add(Type::TORCH, TEXTURE_PATH_TORCH,2,1,2);
 
 	
 }

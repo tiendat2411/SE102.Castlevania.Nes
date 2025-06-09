@@ -33,6 +33,7 @@ void CSprite::Draw(float x, float y)
 	float worldX, worldY;
 	cam->Transform(x, y, worldX, worldY);
 	
+
 	D3DXMATRIX matTranslation;
 	D3DXMatrixTranslation(&matTranslation, worldX, worldY, 0.1f);
 	this->sprite.matWorld = (this->matScaling * matTranslation);

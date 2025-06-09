@@ -14,7 +14,7 @@ CGameObject::CGameObject()
 
 	directionX = DIRECTION_POSITIVE;
 	directionY = DIRECTION_POSITIVE;
-	health = 1;
+	health = 0;
 
 	isDeleted = false;
 	isUpdated = false;

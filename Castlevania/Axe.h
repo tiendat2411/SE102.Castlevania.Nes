@@ -4,7 +4,7 @@
 #include "Weapon.h"
 
 
-#define AXE_SPEED 0.4f
+#define AXE_SPEED 0.2f
 class CAxe :public CWeapon
 {
 private:
@@ -22,8 +22,9 @@ public:
 		isActivate = false;
 
 	}
+	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-		CCollision::GetInstance()->Process(this, dt, coObjects);
+		
 		if (!isActivate) {
 			directionX = targetObject->GetDirectionX();
 			return;
@@ -33,12 +34,13 @@ public:
 			accumulatedTime = 0;
 			isActivate = false;
 		}
-
+		CCollision::GetInstance()->Process(this, dt, coObjects);
 
 	};
 	void OnNoCollision(DWORD dt);
 	void Render();
 	int IsCollidable();
+	int isBlocking() { return 0; };
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 };
