@@ -3,11 +3,10 @@
 
 
 
-BOOLEAN CFallingState::StateTransition(CSimon* simon, sType prevState) {
-	if (simon->isHurting) return false;
+BOOLEAN CSimonFallingState::CanTransition( sType newState, CharStateConditions* conditions) {
 	return true;
 }
 
-void CFallingState::Enter(CSimon* simon) {
-	simon->SetAniState((simon->isAttacking) ? SIMON_ANI_STANDING_ATTACKING_BEGIN : SIMON_ANI_FALLING);
+void CSimonFallingState::Enter(LPGAMEOBJECT targetObject) {
+		targetObject->SetAniState(SIMON_ANI_FALLING);
 }

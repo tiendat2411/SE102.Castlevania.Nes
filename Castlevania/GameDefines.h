@@ -6,8 +6,8 @@
 #define DIRECTION_DEFAULT 0    //using current direction of obj
 #define DIRECTION_NEGATIVE -1	//left,up
 
-#define BOARD_WIDTH 640 
-#define BOARD_HEIGHT 98
+#define BOARD_WIDTH 320	
+#define BOARD_HEIGHT 43
 
 
 #pragma region TEXTURE_PATHS
@@ -16,9 +16,12 @@
 #define ENEMYSTEX_DIR L"\\enemy"
 
 
-#define TEXTURE_PATH_SIMON TEXTURES_DIR "\\simon.png"
+#define TEXTURE_PATH_SIMON TEXTURES_DIR "\\Simon.png"
 
 #define TEXTURE_PATH_MAP1 TEXTURES_DIR "\\map1.png"
+
+#define TEXTURE_PATH_TORCH TEXTURES_DIR  "\\Torch.png"
+
 
 
 #define TEXTURE_PATH_FISHMAN TEXTURES_DIR ENEMYSTEX_DIR  "\\FishMan.png"
@@ -39,7 +42,7 @@
 #define TEXTURE_PATH_AXE TEXTURES_DIR  "\\Axe.png"
 
 #define TEXTURE_PATH_TILESET1 TEXTURES_DIR  "\\tileset_map1.png"
-#define TEXTURE_PATH_BLACKBOARD TEXTURES_DIR  "\\blackboard.png"
+#define TEXTURE_PATH_BLACKBOARD TEXTURES_DIR  "\\Blackboard.png"
 #define TEXTURE_PATH_MISC TEXTURES_DIR "\\2.png"
 
 
@@ -47,7 +50,7 @@
 
 #pragma region SIMON_ANIMATION_
 
-#define SIMON_HEIGHT_ADJUST  16.0f // adjust simon y position when sitting or jumping, avoid overlaping .
+#define SIMON_HEIGHT_ADJUST  6.0f // adjust simon y position when sitting or jumping, avoid overlaping .
 
 // aniID  = objectID + index of sprite in spriteSheet
 #define SIMON_ANI_IDLE 1000
@@ -84,6 +87,7 @@
 /*******************************************/
 
 #define SIMON_ANI_HURTING 1008
+#define SIMON_ANI_DEADTH 1024
 
 #define SIMON_ANI_HIDE_FACE 1009
 
@@ -148,6 +152,32 @@
 #pragma endregion
 
 
+
+#define TORCH_ANI_BEGIN 5000
+#define TORCH_ANI_END 5001
+
+    
+#pragma region SIMON_PARAMETERS
+
+#define SIMON_GRAVITY 0.0018f 
+
+#define SIMON_WALKING_SPEED 0.1f
+#define SIMON_JUMPING_WALKING_SPEED 0.2f
+
+#define SIMON_SPEED_ONSTAIR 0.045f 
+#define SIMON_ACCEL_WALK_X	0.00025f
+#define SIMON_JUMP_SPEED_Y 0.4f
+#define SIMON_JUMP_HURT_SPEED_Y 0.40f
+
+
+
+#define SIMON_DEFAULT_HEALTH 16
+#define SIMON_DEFAULT_HEARTCOLLECT 5
+#define SIMON_DEFAULT_SCORE 0
+#define SIMON_DEFAULT_LIVES 3
+#pragma endregion
+
+
 /*******GAME OBJECT ID**********/
 enum class Type {
 
@@ -156,6 +186,7 @@ enum class Type {
 	BLACKBOARD = 900,
 
 	SIMON = 1000,
+
 
 	// Enemy
 	GHOST = 1100,
@@ -193,21 +224,23 @@ enum class Type {
 	AXE = 4010,
 
 
+
+	TORCH = 5000
+
+
 };
 
 enum class sType {
-	SIMON_STATE_IDLE = 100,
-	SIMON_STATE_JUMPING = 101,
-	SIMON_STATE_DUCKING = 102,
-	SIMON_STATE_WALKING = 103,
-	SIMON_STATE_ONSTAIRS = 104,
-	SIMON_STATE_WALKING_ONSTAIRS = 105,
-	SIMON_STATE_DIE = 106,
+	IDLE = 100,
+	JUMPING = 101,
+	DUCKING = 102,
+	WALKING = 103,
+	ONSTAIRS = 104,
+	WALKING_ONSTAIRS = 105,
+	DIE = 106,
 
-	SIMON_STATE_FALLING = 107,
-	SIMON_STATE_HURTING = 108,
-
-	DEFAULT_STATE = 0,
+	FALLING = 107,
+	HURTING = 108,
+	ATTACKING = 109
 
 };
-

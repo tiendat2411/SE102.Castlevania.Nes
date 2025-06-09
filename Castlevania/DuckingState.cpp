@@ -2,16 +2,14 @@
 #include "StateMachine.h"
 
 
-BOOLEAN CDuckingState::StateTransition(CSimon* simon, sType prevState) {
+BOOLEAN CSimonDuckingState::CanTransition( sType newState, CharStateConditions* conditions) {
 
-
-	if (prevState == sType::SIMON_STATE_JUMPING || prevState == sType::SIMON_STATE_ONSTAIRS || simon->isHurting) {
-		return false;
+	if (newState == sType::IDLE || newState == sType::ATTACKING) {
+		return true;
 	}
-	return true;
+	return false;
 }
-
-void CDuckingState::Enter(CSimon* simon) {
-	SetStaticState(simon);
-	simon->SetAniState((simon->isAttacking) ? SIMON_ANI_DUCKING_ATTACKING_BEGIN : SIMON_ANI_DUCKING);
+void CSimonDuckingState::Enter(LPGAMEOBJECT targetObject) {
+	SetStaticState(targetObject);
+	targetObject->SetAniState(SIMON_ANI_DUCKING);
 }

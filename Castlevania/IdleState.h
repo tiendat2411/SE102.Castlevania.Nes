@@ -2,10 +2,10 @@
 
 #include "State.h"
 #include "Simon.h"
-class CIdleState : public CState
+class CSimonIdleState : public CState
 {
 public:
-	virtual  BOOLEAN StateTransition(CSimon* simon, sType state) ;
-	virtual void Enter(CSimon* simon) ;
+	virtual BOOLEAN CanTransition( sType newState, CharStateConditions* conditions);
+	virtual void Enter(LPGAMEOBJECT targetObject);
 
 };

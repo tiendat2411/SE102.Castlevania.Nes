@@ -23,6 +23,7 @@
 #include "Whip.h"
 #include "Map.h"
 #include "Axe.h"
+#include "Torch.h"
 
 
 #include "SampleKeyEventHandler.h"
@@ -39,11 +40,11 @@
 
 
 
-#define SIMON_START_X 0.0f
+#define SIMON_START_X 500.0f
 #define SIMON_START_Y 0.0f
 
 #define BRICK_X 0.0f
-#define BRICK_Y /*GROUND_Y* +*/ 480-51
+#define BRICK_Y /*GROUND_Y* +*/ 240-44
 #define NUM_BRICKS 50
 
 CSimon* simon = NULL;
@@ -78,9 +79,6 @@ void LoadResources()
 	animations->LoadResource();
 
 
-	simon = new CSimon(SIMON_START_X, SIMON_START_Y);
-	objects.push_back(simon);
-
 	for (int i = 0; i < NUM_BRICKS; i++)
 	{
 		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y);
@@ -95,22 +93,29 @@ void LoadResources()
 
 	for (int i = 0; i < 5; i++)
 	{
-		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y-200);
+		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y-100);
 		objects.push_back(b);
 	}
-
-	CZombie* zom = new CZombie(SIMON_START_X, 200, DIRECTION_POSITIVE);
-	objects.push_back(zom);
-	objects.push_back(new CAxe(0,0,simon));
 
 
 	for (int i = 7; i < 10; i++)
 	{
-		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y - 200);
+		CBrick* b = new CBrick(i * BRICK_WIDTH * 1.0f, BRICK_Y - 100);
 		objects.push_back(b);
 	}
 	 map1 = new CMap(Type::TILESET_LEVEL1, textures->Get(Type::TILESET_LEVEL1));
 	 map1->LoadMapFromFile(L"textures/readfile_map_1.txt");
+	 CCamera::GetInstance()->SetRange(map1->GetMapWidth(), map1->GetMapHeight());
+
+
+	 simon = new CSimon(SIMON_START_X, SIMON_START_Y);
+	 objects.push_back(new CWhip(simon->GetPosX(),simon->GetPosY(), simon));
+	 objects.push_back(simon);
+
+
+	 CZombie* zom = new CZombie(SIMON_START_X, 150, -simon->GetDirectionX());
+	 objects.push_back(zom);
+	 objects.push_back(new CTorch(100, BRICK_Y - 24));
 
 
 }
@@ -167,7 +172,7 @@ void Render()
 	CGame* g = CGame::GetInstance();
 
 	ID3D10Device* pD3DDevice = g->GetDirect3DDevice();
-	IDXGISwapChain* pSwapChain = g->GetSwapChain();
+		IDXGISwapChain* pSwapChain = g->GetSwapChain();
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
@@ -183,6 +188,8 @@ void Render()
 	map1->DrawMap();
 	for (i = objects.begin(); i != objects.end(); ++i)
 	{
+		if ((*i) == NULL)
+			DebugOut(L"zull");
 		(*i)->Render();
 	}
 
@@ -290,7 +297,7 @@ int WINAPI WinMain(
 	keyHandler = new CSampleKeyHandler();
 	game->InitKeyboard(keyHandler);
 
-	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH  , SCREEN_HEIGHT , SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	LoadResources();
 

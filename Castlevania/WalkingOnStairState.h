@@ -2,11 +2,12 @@
 
 #include "State.h"
 
-class CWalkingOnStairState : public CState
+class CSimonWalkingOnStairState : public CState
 {
 public:
 
-	virtual void Enter(CSimon* simon);
+	virtual BOOLEAN CanTransition(sType newState, CharStateConditions* conditions);
+	virtual void Enter(LPGAMEOBJECT targetObject);
 
 };
 

@@ -5,24 +5,18 @@
 
 #include"GameDefines.h"
 #include"Animations.h"
-#include "Simon.h"
 
+#include "GameObject.h"
 
 
 class CState { 
+
 public:
-	virtual  BOOLEAN StateTransition(CSimon* simon, sType prevState) = 0;
-	virtual void Enter(CSimon* simon) = 0;
-
-
-protected: 
-
-	void SetStaticState(CSimon* simon) 
+	virtual  BOOLEAN CanTransition(sType newState, CharStateConditions* conditions) =0;
+	virtual void Enter(LPGAMEOBJECT targetObject) =0;
+	void SetStaticState(LPGAMEOBJECT targetObject)
 	{
-		simon->SetSpeed(0, 0);
-		simon->SetAcceleration(0);
+		targetObject->SetSpeed(0, 0);
 	}
-
 };
 typedef CState* LPSTATE;
-

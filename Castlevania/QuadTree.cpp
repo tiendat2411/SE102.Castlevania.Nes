@@ -55,7 +55,7 @@ vector <pair<D3DXVECTOR2, LPGAMEOBJECT>> CQuadTree::LoadGameObjects() {
 	return fullBucket;
 }
 
-//hinh nhu con thieu cai huong nen em de tam nhaa
+
 LPGAMEOBJECT  CQuadTree::CreateGameObjectByType(int type,int x,int y) {
 	switch (type)
 	{

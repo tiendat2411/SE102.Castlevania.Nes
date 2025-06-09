@@ -42,7 +42,7 @@ void CBrick::Render()
 //	}
 //}
 
-void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
+void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)	
 {
 	Width = tex->getWidth() / tex->_col;
 	Height = tex->getHeight() / tex->_row;
@@ -50,4 +50,5 @@ void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y - Height / 2;
 	r = l + Width;
 	b = t + Height;
+	//DebugOut(L" brick :%0.3f %0.3f %0.3f %0.3f \n", l, r, t, b);
 }

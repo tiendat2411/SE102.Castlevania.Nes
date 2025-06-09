@@ -20,8 +20,8 @@ void CAnimation::Add(int spriteId, DWORD time)
 	frames.push_back(frame);
 }
 
-void CAnimation::SetCurrentFrame(int curFrame) {
-	currentFrame = curFrame;
+void CAnimation::ReSetCurrentFrame() {
+	currentFrame = -1;
 }
 void CAnimation::SetDefaultFrameTime(int startIdx, int endIdx, int time) {
 	for (int i = startIdx; i < endIdx; ++i) {
@@ -57,7 +57,10 @@ void CAnimation::Render(float x, float y,int direction)
 		frames[currentFrame]->GetSprite()->FlipXDraw(x, y);
 }
 BOOLEAN CAnimation::isAniFinished() {
-	if (currentFrame == frames.size() - 1)
-		return true;
-	return false;
+	if (currentFrame != frames.size() - 1) return false;
+	DWORD t = frames[currentFrame]->GetTime();
+	ULONGLONG now = GetTickCount64();
+	if( now - lastFrameTime < t)
+		return false;
+	return true;
 }

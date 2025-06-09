@@ -17,10 +17,10 @@ void CZombie::OnCollisionWith(LPCOLLISIONEVENT e)
 		vy = 0;
 	}
 	
-		if (e->nx != 0 && e->obj->IsBlocking())
-		{
-			directionX = -directionX;
-		}
+	if (e->nx != 0 && e->obj->IsBlocking())
+	{
+		directionX = -directionX;
+	}
 }
 
 
@@ -28,11 +28,12 @@ int CZombie::IsCollidable()
 {
 	return 1;
 }
-CZombie::CZombie(float x, float y, int directionX) : CGameObject(x, y) 
+CZombie::CZombie(float x, float y, int directionX) : CGameObject(x, y)
 { 
 	this->directionX = directionX;
 	aniState = ZOMBIE_ANI_BEGIN; 
-	type = Type::SIMON;
+	health = 1;
+	type = Type::ZOMBIE;
 	tex = CTextures::GetInstance()->Get(Type::ZOMBIE);
 }
 
@@ -64,5 +65,6 @@ void CZombie::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 }
 void CZombie::Render() {
+	//DebugOut(L"isDelete zombie: %d\n",isDeleted);
 	CAnimations::GetInstance()->Get(aniState)->Render(x, y , directionX);
 }

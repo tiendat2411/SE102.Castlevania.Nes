@@ -1,10 +1,9 @@
 #pragma once
 #include "State.h"
 
-class CHurtingState : public CState
+class CSimonHurtingState : public CState
 {
 public:
-	virtual  BOOLEAN StateTransition(CSimon* simon, sType state);
-	virtual void Enter(CSimon* simon);
-
+	virtual BOOLEAN CanTransition( sType newState, CharStateConditions* conditions);
+	virtual void Enter(LPGAMEOBJECT targetObject);
 };

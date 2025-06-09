@@ -2,11 +2,11 @@
 
 #include "State.h"
 
-class CJumpingState : public CState
+class CSimonJumpingState : public CState
 {
 public:
-	virtual  BOOLEAN StateTransition(CSimon* simon, sType state);
-	virtual void Enter(CSimon* simon);
+	virtual BOOLEAN CanTransition( sType newState, CharStateConditions* conditions);
+	virtual void Enter(LPGAMEOBJECT targetObject);
 
 };
 

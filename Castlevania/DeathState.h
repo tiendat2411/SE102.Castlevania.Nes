@@ -6,9 +6,9 @@
 #include "GameDefines.h"
 #include "State.h"
 
-class CSimonDuckingState:public CState {
+class CSimonDeathState :public CState {
 public:
-	virtual BOOLEAN CanTransition( sType newState, CharStateConditions* conditions);
+	virtual BOOLEAN CanTransition(sType newState, CharStateConditions* conditions);
 	virtual void Enter(LPGAMEOBJECT targetObject);
 
 };

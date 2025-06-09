@@ -28,14 +28,13 @@ void CCollision::SweptAABB(
 	float sl, float st, float sr, float sb,
 	float& t, float& nx, float& ny)
 {
-
 	float dx_entry, dx_exit, tx_entry, tx_exit;
 	float dy_entry, dy_exit, ty_entry, ty_exit;
 
 	float t_entry;
 	float t_exit;
 
-	t = -1.0f;			// no collision
+	t = -1.0f;         // no collision
 	nx = ny = 0;
 
 	//
@@ -47,38 +46,58 @@ void CCollision::SweptAABB(
 	float br = dx > 0 ? mr + dx : mr;
 	float bb = dy > 0 ? mb + dy : mb;
 
-	if (br < sl || bl > sr || bb < st || bt > sb) return;
+	// Broad-phase check
+	if (br < sl || bl > sr || bb < st || bt > sb)
+		return;
 
+	//
+	// Overlapping check (static collision)
+	//
+	if (ml < sr && mr > sl && mt < sb && mb > st)
+	{
+		t = 0.0f;
+		nx = ny = 0.0f;
+		return;
+	}
 
-	if (dx == 0 && dy == 0) return;		// moving object is not moving > obvious no collision
+	//
+	// No movement
+	//
+	if (dx == 0 && dy == 0)
+		return;
 
+	//
+	// Calculate entry and exit distances
+	//
 	if (dx > 0)
 	{
 		dx_entry = sl - mr;
 		dx_exit = sr - ml;
 	}
-	else if (dx < 0)
+	else
 	{
 		dx_entry = sr - ml;
 		dx_exit = sl - mr;
 	}
-
 
 	if (dy > 0)
 	{
 		dy_entry = st - mb;
 		dy_exit = sb - mt;
 	}
-	else if (dy < 0)
+	else
 	{
 		dy_entry = sb - mt;
 		dy_exit = st - mb;
 	}
 
+	//
+	// Calculate entry and exit times
+	//
 	if (dx == 0)
 	{
-		tx_entry = -9999999.0f;
-		tx_exit = 99999999.0f;
+		tx_entry = -INFINITY;
+		tx_exit = INFINITY;
 	}
 	else
 	{
@@ -88,8 +107,8 @@ void CCollision::SweptAABB(
 
 	if (dy == 0)
 	{
-		ty_entry = -99999999999.0f;
-		ty_exit = 99999999999.0f;
+		ty_entry = -INFINITY;
+		ty_exit = INFINITY;
 	}
 	else
 	{
@@ -97,28 +116,29 @@ void CCollision::SweptAABB(
 		ty_exit = dy_exit / dy;
 	}
 
-
-	if ((tx_entry < 0.0f && ty_entry < 0.0f) || tx_entry > 1.0f || ty_entry > 1.0f) return;
-
+	//
+	// Earliest/latest time of collision
+	//
 	t_entry = max(tx_entry, ty_entry);
 	t_exit = min(tx_exit, ty_exit);
 
 	if (t_entry > t_exit) return;
+	if (t_entry < 0.0f || t_entry > 1.0f) return;
 
 	t = t_entry;
 
 	if (tx_entry > ty_entry)
 	{
 		ny = 0.0f;
-		dx > 0 ? nx = -1.0f : nx = 1.0f;
+		nx = (dx > 0) ? -1.0f : 1.0f;
 	}
 	else
 	{
 		nx = 0.0f;
-		dy > 0 ? ny = -1.0f : ny = 1.0f;
+		ny = (dy > 0) ? -1.0f : 1.0f;
 	}
-
 }
+
 
 /*
 	Extension of original SweptAABB to deal with two moving objects
@@ -211,10 +231,11 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 			min_tx = c->t; min_ix = i;
 		}
 
+
 		if (c->t < min_ty && c->ny != 0 && filterY == 1) {
 			min_ty = c->t; min_iy = i;
 		}
-	}
+	}        
 
 	if (min_ix >= 0) colX = coEvents[min_ix];
 	if (min_iy >= 0) colY = coEvents[min_iy];
@@ -227,7 +248,7 @@ void CCollision::Filter(LPGAMEOBJECT objSrc,
 void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
-	LPCOLLISIONEVENT colX = NULL;
+	LPCOLLISIONEVENT colX = NULL; 
 	LPCOLLISIONEVENT colY = NULL;
 
 	coEvents.clear();
