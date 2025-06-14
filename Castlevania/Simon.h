@@ -1,11 +1,11 @@
-﻿#pragma once
-#include "GameObject.h"
+﻿/*#pragma once
+//#include "GameObject.h"
 
 #include "Animation.h"
 #include "debug.h"
 
 
-
+#define INVINCIBLE_TIME 2
 
 #define SIMON_GRAVITY 0.002f 
 	
@@ -23,14 +23,40 @@
 #define SIMON_DEFAULT_SCORE 0
 #define SIMON_DEFAULT_LIVES 3
 
-
+class CGameObject;
 class CSimon : public CGameObject
 {
+	int hp;
+	int prevHP;
 	float maxVx, maxVy;
 	float ax, ay;
+	bool isLeft;
+	bool isGrounded;
+	D3DXVECTOR2 velocity;
+	int action;
+	bool isInvincible;
+	float invincibleTime;
+	bool canControlKeyboard;
+	int noSubWeapon = 1;
 	
+
 	BOOLEAN isOnPlatform;
 public:
+	int score = 0;
+	int energy = 0;
+	int life = 3;
+	int currentWeapon;
+	bool nextStage;
+	bool isGravity;
+
+	bool isCollideLeftWall;
+	bool isCollideRightWall;
+
+	D3DXVECTOR2 stairCollidePos;
+	bool isCollideWith25; // 25 la tag cua chan cau thang
+	bool isCollideWith_25; // -25 la tag cua chan cau thang tu phai qua trai
+	bool isCollideWith22; // 22 la tag cua top cau thang LTR
+	bool isCollideWith_22; 
 
 	BOOLEAN  isAttacking, isOnStair,isHurting;
 
@@ -61,7 +87,7 @@ public:
 	float GetAccelerationY() { return ay; }
 	void SetAcceleration(float ax, float ay = SIMON_GRAVITY) { this->ax = ax, this->ay = ay; }
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	void Render();
+	void Render(CCamera* camera);
 
 	//Trả về 0 nếu nhân vật không thể va chạm (state = SIMON_STATE_DIE...)
 	int IsCollidable();
@@ -70,7 +96,18 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	BOOLEAN IsOnPlatform() { return isOnPlatform; }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	bool IsColliderWithCheckPoint(float gameTime, std::vector<CGameObject*>* listGameObject);
+	void Reset(D3DXVECTOR2 pos);
 
 	void SetState(sType state,int _directionX, int _directionY =DIRECTION_POSITIVE);
+	virtual void SetHP(int hp) { this->hp = hp; }
+	int GetScore();
 
+	int GetHP() { return this->hp; }
+	int GetEnergy() { return this->energy; }
+	int GetLife() { return life; }
+	int GetNoSubWeapon() { return noSubWeapon; }
+	D3DXVECTOR2 GetVelocity();
+	void Reload();
 }; 
+*/

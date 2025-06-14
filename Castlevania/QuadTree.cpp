@@ -1,606 +1,397 @@
 #include "QuadTree.h"
-#include "Camera.h"
-#include "Zombie.h"
 
-#include <algorithm>
-#include <fstream>
-#include <string.h>
-#include <unordered_set>
-
-
-
-
-CQuadTree::CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range, LPCWSTR filePath)
+QuadTree::QuadTree( ViewPort* viewPort)
 {
-	root = new CQuadTreeNode(pos, range);
-	this->filePath = filePath;
+	this->node = NULL;
+	this->viewPort = viewPort;
+	this->region = new RECT();
 }
 
-
-CQuadTree::~CQuadTree()
+QuadTree::~QuadTree(void)
 {
-	delete root;
-}
-
-
-vector<LPGAMEOBJECT> CQuadTree::LoadGameObjects() {
-	vector<LPGAMEOBJECT> objects;
-	ifstream file(filePath, ios::in);
-
-	std::string line;
-	std::getline(file, line);
-	/*int id, type;
-	float x, y, w, h;*/
-	while (std::getline(file, line))
+	for (std::vector<GameObjectDem*>::iterator i = listObject->begin(); i != listObject->end(); i++)
 	{
-		std::stringstream ss(line);
-		std::vector<std::string> tokens;
-		std::string token;
-
-		while (std::getline(ss, token, '|')) {
-			tokens.push_back(token);
-		}
-		int id = std::stoi(tokens[0]);
-		int type = std::stoi(tokens[1]);
-		float x = std::stof(tokens[2]);
-		float y = std::stof(tokens[3]);
-		float width = std::stof(tokens[4]);
-		float height = std::stof(tokens[5]);
-		float boundaryLeft = std::stof(tokens[6]);
-		float boundaryRight = std::stof(tokens[7]);
-
-		LPGAMEOBJECT obj = CreateGameObjectByType(type, x, y);
-		SetObjectDynamicState(obj, type);
-		objects.push_back(obj);
+		delete[](*i);
 	}
-	file.close();
-	return objects;
+
+	delete[] listObject;
 }
 
-void CQuadTree::SetObjectDynamicState(LPGAMEOBJECT obj, int type)
+std::map<int, GameObjectDem*> QuadTree::mapObject;
+
+void QuadTree::Load(std::string file)
 {
-	// Mark the types of dynamic objects.
-	switch (type)
+	std::ifstream input;
+	input.open(file, std::ifstream::in);
+
+	std::string checkEnd;
+	std::string trace;
+
+	int id;
+	int type;
+	float x;
+	float y;
+	int width;
+	int height;
+
+	float left;
+	float top;
+	float right;
+	float bottom;
+	int n;
+	int objectID;
+
+	int count = 0;
+
+	while (input >> checkEnd)
 	{
-	case static_cast<int>(Type::ZOMBIE):
-	case static_cast<int>(Type::SIMON):
-	case static_cast<int>(Type::GHOST):
-		obj->SetDynamic(true);
-		break;
-	default:
-		obj->SetDynamic(false);
-		break;
+		if (checkEnd == "END")
+		{
+			count++;
+			continue;
+		}
+
+		if (count == 0)
+		{
+			id = atoi(checkEnd.c_str());
+			input >> type >> x >> y >> width >> height;
+			LoadObject(id, type, x, y, width, height);
+		}
+		else if (count == 1)
+		{
+			id = atoi(checkEnd.c_str());
+			input >> left >> top >> right >> bottom >> n;
+
+			std::vector<GameObjectDem*>* list = new std::vector<GameObjectDem*>();
+			for (int i = 0; i < n; i++)
+			{
+				input >> objectID;
+				list->push_back(mapObject[objectID]);
+			}
+
+			trace.clear();
+
+			while (true)
+			{
+				id--;
+				if (id < 0)
+					break;
+				else
+				{
+					trace = std::to_string(id % 4) + trace;
+					id = id / 4;
+				}
+			}
+
+			trace = trace + "e";
+
+			LoadQuad(trace, 0, left, top, right, bottom, list);
+		}
 	}
 }
 
-
-//hinh nhu con thieu cai huong nen em de tam nhaa
-LPGAMEOBJECT  CQuadTree::CreateGameObjectByType(int type, float x, float y) {
-	switch (type)
+void QuadTree::LoadQuad(std::string trace, int pos, float left, float top, float right, float bottom, std::vector<GameObjectDem*>* list)
+{
+	if (trace[pos] == 'e')
 	{
-	case static_cast<int>(Type::ZOMBIE):
-		return new CZombie(x, y, DIRECTION_POSITIVE);
-		break;
+		SetRect(this->region, left, top, right, bottom);
+		this->listObject = list;
 	}
-}
-
-
-void CQuadTree::insertObjectIntoTree()
-{
-	vector<LPGAMEOBJECT> objects = LoadGameObjects();
-	for (LPGAMEOBJECT obj : objects) {
-		insert(obj);
-	}
-}
-
-int CQuadTree::direction(const D3DXVECTOR2& point, CQuadTreeNode* node)
-{
-	// get the quadrant that would contain the D3DXVECTOR2
-	// in reference to a given start node
-	unsigned X = 0, Y = 0;
-	X |= ((point.x >= node->pos.x) << 1);
-	Y |= ((point.y >= node->pos.y) << 0);
-	return (X | Y);
-}
-
-
-
-CQuadTreeNode* CQuadTree::childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id)
-{
-	// get the next node that would contain the D3DXVECTOR2
-	// in reference to a given start node
-	unsigned dir = direction(v, node);
-	if (node->child[dir]) {
-		return node->child[dir];
-	}
-	// node not found, so create it 
-	else {
-		D3DXVECTOR2 r(node->range.x / 2.0, node->range.y / 2.0);
-		node->child[dir] = new CQuadTreeNode(newPos(dir, node), r, 8 * id + dir);
-		if (node->child[dir]->range.x > (FLOAT)CGame::GetInstance()->GetBackBufferWidth() / 2)
-			node->child[dir]->leaf = false;
-		return node->child[dir];
-	}
-}
-
-
-D3DXVECTOR2  CQuadTree::newPos(int direction, CQuadTreeNode* node)
-{
-	D3DXVECTOR2 v(node->pos.x, node->pos.y);
-	switch (direction) {
-	case LOWER_LEFT_QUAD:
-		v.x -= node->range.x / 4.0;
-		v.y -= node->range.y / 4.0;
-		break;
-	case UPPER_LEFT_QUAD:
-		v.x -= node->range.x / 4.0;
-		v.y += node->range.y / 4.0;
-		break;
-	case LOWER_RIGHT_QUAD:
-		v.x += node->range.x / 4.0;
-		v.y -= node->range.y / 4.0;
-		break;
-	case UPPER_RIGHT_QUAD:
-		v.x += node->range.x / 4.0;
-		v.y += node->range.y / 4.0;
-		break;
-	}
-	return v;
-}
-
-
-/*by design, gameObject are stored only in leaf nodes
-/newly created nodes are leaf nodes by default*/
-
-void CQuadTree::insert(LPGAMEOBJECT data)
-{
-	float left, top, right, bottom;
-	data->GetBoundingBox(left, top, right, bottom);
-	RECT bounds = { (LONG)left, (LONG)top, (LONG)right, (LONG)bottom };
-
-	insert(data, bounds, root);
-}
-
-void CQuadTree::insert(LPGAMEOBJECT data, RECT bounds, CQuadTreeNode* node)
-{
-	// Check if the bounding box is intersect with this node.
-	if (!RectIntersectNode(bounds, node)) {
-		return;
-	}
-
-	if (node->leaf) {
-		if (data->IsDynamic()) {
-			node->dynamicBucket.push_back({ bounds, data });
-		}
-		else {
-			node->staticBucket.push_back({ bounds, data });
+	else
+	{
+		if (!this->node)
+		{
+			node = new QuadTree * [4];
+			node[0] = new QuadTree(viewPort);
+			node[1] = new QuadTree(viewPort);
+			node[2] = new QuadTree(viewPort);
+			node[3] = new QuadTree(viewPort);
 		}
 
-		data->AddToNode(node);
-	}
-	else {
-		for (int i = 0; i < 4; i++) {
-			if (node->child[i] && RectIntersectNode(bounds, node->child[i])) {
-				insert(data, bounds, node->child[i]);
-			}
-		}
+		if (trace[pos] == '0')
+			node[0]->LoadQuad(trace, pos + 1, left, top, right, bottom, list);
+		else if (trace[pos] == '1')
+			node[1]->LoadQuad(trace, pos + 1, left, top, right, bottom, list);
+		else if (trace[pos] == '2')
+			node[2]->LoadQuad(trace, pos + 1, left, top, right, bottom, list);
+		else if (trace[pos] == '3')
+			node[3]->LoadQuad(trace, pos + 1, left, top, right, bottom, list);
 	}
 }
 
-bool CQuadTree::RectIntersectNode(const RECT& rect, CQuadTreeNode* node)
+void QuadTree::LoadObject(int id, int type, float x, float y, int width, int height)
 {
-	float halfRangeX = node->range.x / 2.0f;
-	float halfRangeY = node->range.y / 2.0f;
-
-	RECT nodeBounds = {
-		(LONG)(node->pos.x - halfRangeX),
-		(LONG)(node->pos.y - halfRangeY),
-		(LONG)(node->pos.x + halfRangeX),
-		(LONG)(node->pos.y + halfRangeY)
-	};
-
-	return RectIntersectsRect(rect, nodeBounds);
+	if (type == 10)
+	{
+		GameObjectDem* object;
+		object = new LargeCandle();
+		object->Initialize(TEXTURE_PATH_LARGE_CANDLE, x, y, type, 666);
+		object->SetID(id);
+		object->SetSize(width, height);
+		object->SetRegion(0, width, 0, -height);
+		mapObject[id] = object;
+	}
+	else if (type == TAG_GROUND)
+	{
+		GameObjectDem* object;
+		object = new Ground(width, height);
+		object->Initialize(TEXTURE_PATH_GROUND, x, y, TAG_GROUND, 730);
+		object->SetID(id);
+		object->SetSize(width, height);
+		object->SetRegion(0, width, 0, -height);
+		object->SetBox(x, y, width, height, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
+	else if (type == TAG_GROUND_LEVEL_TWO)
+	{
+		GameObjectDem* object;
+		object = new Ground(width, height);
+		object->Initialize(TEXTURE_PATH_GROUND_TWO, x, y, TAG_GROUND, 732);
+		object->SetID(id);
+		object->SetSize(width, height);
+		object->SetRegion(0, width, 0, -height);
+		object->SetBox(x, y, width, height, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
+	else if (type == TAG_STAIR)
+	{
+		GameObjectDem* object;
+		object = new Stair();
+		object->Initialize(TEXTURE_PATH_STAIR, x, y, type, 734);
+		object->SetID(id);
+		object->SetBox(x, y, 32, 32, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
+	else if (type == TAG_STAIR_)
+	{
+		GameObjectDem* object;
+		object = new Stair();
+		object->Initialize(TEXTURE_PATH_STAIR_THREE, x, y, type, 736);
+		object->SetID(id);
+		object->SetBox(x, y, 32, 32, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
+	else if (type == TAG_STAIR_TOP_)
+	{
+		GameObjectDem* object;
+		object = new Stair();
+		object->Initialize(TEXTURE_PATH_STAIR_TOP_TWO, x, y, TAG_STAIR_TOP, 738);
+		object->SetID(id);
+		object->SetBox(x, y, 32, 32, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
+	else if (type == TAG_CANDLE)
+	{
+		GameObjectDem* object;
+		object = new Candle();
+		object->Initialize(TEXTURE_PATH_SMALL_CANDLE, x, y, type, 740);
+		object->SetID(id);
+		object->SetBox(x, y, 32, 32, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
+	else if (type == 22 || type == -22) // O tren cau thang di xuong
+	{
+		GameObjectDem* object;
+		object = new GameObjectDem();
+		object->Initialize(TEXTURE_PATH_STAIR_TOP_THREE, x, y, type, 742);
+		object->SetID(id);
+		object->SetBox(x, y, 32, 32, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
+	else if (type == 25 || type == -25) // O duong dat di len cau thang
+	{
+		GameObjectDem* object;
+		object = new GameObjectDem();
+		object->Initialize(TEXTURE_PATH_STAIR_BOTTOM, x, y, type, 744);
+		object->SetID(id);
+		object->SetBox(x, y, 32, 32, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
+	else if (type == TAG_CHECK_STAIR)
+	{
+		GameObjectDem* object;
+		object = new SceneCheck();
+		object->Initialize(TEXTURE_PATH_CHECK_STAIR, x, y, type, 746);
+		object->SetID(id);
+		object->SetBox(x - 15, y, 96, 32 - 30, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
+	else if (type == TAG_DOOR)
+	{
+		GameObjectDem* object;
+		object = new Door();
+		object->Initialize(TEXTURE_PATH_SMALL_DOOR, x, y, type, 750);
+		object->SetID(id);
+		mapObject[id] = object;
+	}
+	else if (type == TAG_CHECK_POINT)
+	{
+		GameObjectDem* object;
+		object = new CheckPoint();
+		object->Initialize(TEXTURE_PATH_CHECK_POINT, x, y, type, 755);
+		object->SetID(id);
+		object->SetBox(x, y, 32, 64, 0.0f, 0.0f);
+		mapObject[id] = object;
+	}
 }
 
-/*bool CQuadTree::RectIntersectNode(const RECT& rect, CQuadTreeNode* node)
+void QuadTree::Remove(GameObjectDem* object)
 {
-	float halfRangeX = node->range.x / 2.0f;
-	float halfRangeY = node->range.y / 2.0f;
+	if (this->node)
+	{
+		if (this->node[0]->IsContain(object))
+			this->node[0]->Remove(object);
 
-	RECT nodeBounds = {
-		(LONG)(node->pos.x - halfRangeX),
-		(LONG)(node->pos.y - halfRangeY),
-		(LONG)(node->pos.x + halfRangeX),
-		(LONG)(node->pos.y + halfRangeY)
-	};
+		if (this->node[1]->IsContain(object))
+			this->node[1]->Remove(object);
 
-	return !(rect.left > nodeBounds.right || rect.right < nodeBounds.left ||
-		rect.top > nodeBounds.bottom || rect.bottom < nodeBounds.top);
-}*/
+		if (this->node[2]->IsContain(object))
+			this->node[2]->Remove(object);
 
-
-bool CQuadTree::RectIntersectsRect(const RECT& rect1, const RECT& rect2)
-{
-	return !(rect1.left > rect2.right || rect1.right < rect2.left ||
-		rect1.top > rect2.bottom || rect1.bottom < rect2.top);
-}
-
-
-bool CQuadTree::remove(LPGAMEOBJECT data)
-{
-	bool found = false;
-
-	vector<CQuadTreeNode*>& nodeList = data->GetNodeList();
-
-	for (CQuadTreeNode* node : nodeList) {
-		for (auto it = node->dynamicBucket.begin(); it != node->dynamicBucket.end();) {
-			if (it->second == data) {
-				it = node->dynamicBucket.erase(it);
-				found = true;
-			}
-			else {
-				++it;
-			}
-		}
-
-		for (auto it = node->staticBucket.begin(); it != node->staticBucket.end();) {
-			if (it->second == data) {
-				it = node->staticBucket.erase(it);
-				found = true;
-			}
-			else {
-				++it;
-			}
-		}
+		if (this->node[3]->IsContain(object))
+			this->node[3]->Remove(object);
 	}
-
-	data->ClearNodeList();
-
-	return found;
-}
-
-void CQuadTree::UpdateDynamicObject(LPGAMEOBJECT object)
-{
-	if (!object->IsDynamic()) {
-		return;
-	}
-
-	float left, top, right, bottom;
-	object->GetBoundingBox(left, top, right, bottom);
-	RECT newBounds = { (LONG)left, (LONG)top, (LONG)right, (LONG)bottom };
-
-	vector<CQuadTreeNode*>& nodeList = object->GetNodeList();
-
-	// Case 1: The object is not yet in the tree.
-	if (nodeList.empty()) {
-		insert(object);
-		return;
-	}
-
-	// Case 2: Check if the object is still in the current nodes.
-	bool stillInAllNodes = true;
-	for (CQuadTreeNode* node : nodeList) {
-		if (!RectIntersectNode(newBounds, node)) {
-			stillInAllNodes = false;
-			break;
-		}
-
-		// Update bounding box
-		for (auto& pair : node->dynamicBucket) {
-			if (pair.second == object) {
-				pair.first = newBounds;
+	else if (this->IsContain(object))
+	{
+		for (std::vector<GameObjectDem*>::iterator i = this->listObject->begin(); i != this->listObject->end(); i++)
+		{
+			if ((*i) == object)
+			{
+				this->listObject->erase(i);
 				break;
 			}
 		}
 	}
+}
 
-	// If the object is no longer in current nodes.
-	if (!stillInAllNodes) {
-		remove(object);
-		insert(object);
-		return;
-	}
-
-	// Case 3: The object is still in all current nodes.
-	bool addedToNewNode = false;
-	CheckAndAddToNewLeafNodes(root, newBounds, object, nodeList, addedToNewNode);
-
-	if (addedToNewNode) {
-		return;
+void QuadTree::Update(float gameTime)
+{
+	for (std::vector<GameObjectDem*>::iterator i = listObject->begin(); i != listObject->end(); i++)
+	{
+		(*i)->Update(gameTime);
 	}
 
 }
 
-void CQuadTree::CheckAndAddToNewLeafNodes(CQuadTreeNode* node, const RECT& bounds, LPGAMEOBJECT object, vector<CQuadTreeNode*>& nodeList, bool& addedToNewNode)
+void QuadTree::Render()
 {
-	if (addedToNewNode || !RectIntersectNode(bounds, node)) {
-		return;
-	}
-
-	if (node->leaf) {
-		if (find(nodeList.begin(), nodeList.end(), node) == nodeList.end()) {
-			node->dynamicBucket.push_back({ bounds, object });
-			object->AddToNode(node);
-			addedToNewNode = true;
-		}
-		return;
-	}
-
-	for (int i = 0; i < 4; i++) {
-		if (node->child[i]) {
-			CheckAndAddToNewLeafNodes(node->child[i], bounds, object, nodeList, addedToNewNode);
-		}
+	for (std::vector<GameObjectDem*>::iterator i = listObject->begin(); i != listObject->end(); i++)
+	{
+		if ((*i)->IsEnable())
+			(*i)->Render(this->viewPort);
 	}
 }
 
-/*	once a gameObject is removed from a leaf node's bucket
-	check if there are any other gameobjects in that node (which is an empty node)
-	if not, remove it and do the same with its parent node.
-*/
 
-//void  CQuadTree::reduce(stack <CQuadTreeNode*>& nodes)
-//{
-//	nodes.pop();
-//	while (!nodes.empty()) {
-//		CQuadTreeNode* top = nodes.top();
-//		for (int i = 0; i < 4; ++i) {
-//			if (top->child[i] && !top->child[i]->leaf) {
-//				return;
-//			}
-//		}
-//		int emtyChild = 0;
-//		for (int i = 0; i < 4; ++i) {
-//			if (top->child[i] && top->child[i]->bucket.size() == 0) {
-//				delete top->child[i];
-//				top->child[i] = NULL;
-//
-//			}
-//			if (!top->child[i])
-//				emtyChild++;
-//		}
-//
-//		if (emtyChild == 4)
-//			top->leaf = true;
-//		nodes.pop();
-//	}
-//	return;
-//}
-
-vector<LPGAMEOBJECT> CQuadTree::renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY)
+bool QuadTree::IsContain(GameObjectDem* object)
 {
-	vector<LPGAMEOBJECT> results;
-	unordered_set<LPGAMEOBJECT> processedObjects; //Track processed objects
-	queue<CQuadTreeNode*> nodes;
-	nodes.push(root);
-
-	// Create RECT from minXY and maxXY
-	RECT queryRegion = {
-		(LONG)minXY.x, (LONG)minXY.y,
-		(LONG)maxXY.x, (LONG)maxXY.y
-	};
-
-	while (!nodes.empty()) {
-		CQuadTreeNode* top = nodes.front();
-		nodes.pop();
-
-		// Check if the node intersects with the query region.
-		if (!RectIntersectNode(queryRegion, top)) {
-			continue;
-		}
-
-		if (top->leaf) {
-			for (const auto& pair : top->staticBucket) {
-				if (RectIntersectsRect(pair.first, queryRegion)) {
-					LPGAMEOBJECT obj = pair.second;
-					if (processedObjects.find(obj) == processedObjects.end()) {
-						obj->SetUpdateState(true);
-						results.push_back(obj);
-						processedObjects.insert(obj);
-					}
-				}
-			}
-
-			for (const auto& pair : top->dynamicBucket) {
-				if (RectIntersectsRect(pair.first, queryRegion)) {
-					LPGAMEOBJECT obj = pair.second;
-					if (processedObjects.find(obj) == processedObjects.end()) {
-						obj->SetUpdateState(true);
-						results.push_back(obj);
-						processedObjects.insert(obj);
-					}
-				}
-			}
-		}
-		else {
-			for (int i = 0; i < 4; i++) {
-				if (top->child[i]) {
-					nodes.push(top->child[i]);
-				}
-			}
-		}
-	}
-
-	return results;
+	return object->IsInRegion(this->region);
 }
 
-
-/*void CQuadTree::addAllObjectToResults(CQuadTreeNode* node, vector<pair <D3DXVECTOR2, LPGAMEOBJECT> >& results)
+bool QuadTree::IsContain(RECT* region)
 {
-	if (node->leaf) {
-		for (pair <D3DXVECTOR2, LPGAMEOBJECT> p : node->bucket) {
-			LPGAMEOBJECT obj = p.second;
-			if (!obj->IsUpdated()) {
-				obj->Render();
-				obj->SetUpdateState(true);
-				results.push_back(p);
-			}
-		}
-	}
-	else {
-		for (int i = 0; i < 4; ++i) {
-			if (node->child[i]) {
-				addAllObjectToResults(node->child[i], results);
-			}
-		}
-	}
-}*/
-
-
-bool CQuadTree::pointInRegion(const D3DXVECTOR2& point, const D3DXVECTOR2& minXY, const D3DXVECTOR2& maxXY)
-{
-	if ((point.x >= minXY.x) && (point.x < maxXY.x) && (point.y >= minXY.y) && (point.y < maxXY.y)) {
-		return true;
-	}
-	else {
+	if (this->region->right < region->left || this->region->left > region->right ||
+		this->region->bottom > region->top || this->region->top < region->bottom)
 		return false;
-	}
+	return true;
 }
 
-
-enclosure_status CQuadTree::getEnclosureStatus(const D3DXVECTOR2& pos, const D3DXVECTOR2& range, const D3DXVECTOR2& minXY, const D3DXVECTOR2& maxXY)
+void QuadTree::GetObjectList(std::vector<GameObjectDem*>* staticList, std::vector<GameObjectDem*>* moveList, RECT* region)
 {
-	int enclosedPts = 0;
-	D3DXVECTOR2 halfRange = range * 0.5f;
+	if (this->node)
+	{
+		if (this->node[0]->IsContain(region))
+			this->node[0]->GetObjectList(staticList, moveList, region);
 
-	enclosedPts += pointInRegion({ pos.x - halfRange.x, pos.y - halfRange.y }, minXY, maxXY);
-	enclosedPts += pointInRegion({ pos.x - halfRange.x, pos.y + halfRange.y }, minXY, maxXY);
-	enclosedPts += pointInRegion({ pos.x + halfRange.x, pos.y - halfRange.y }, minXY, maxXY);
-	enclosedPts += pointInRegion({ pos.x + halfRange.x, pos.y + halfRange.y }, minXY, maxXY);
+		if (this->node[1]->IsContain(region))
+			this->node[1]->GetObjectList(staticList, moveList, region);
 
-	if (enclosedPts == 4) {
+		if (this->node[2]->IsContain(region))
+			this->node[2]->GetObjectList(staticList, moveList, region);
 
-		//so just return NODE_CONTAINED_BY_REGION; 
-		// when size of the region is larger than the size of the node
-
-		return NODE_CONTAINED_BY_REGION;
+		if (this->node[3]->IsContain(region))
+			this->node[3]->GetObjectList(staticList, moveList, region);
 	}
-	else if (enclosedPts > 0) {
-		return NODE_PARTIALLY_IN_REGION;
-	}
-	else {
-		D3DXVECTOR2 nodeMin(pos.x - halfRange.x, pos.y - halfRange.y);
-		D3DXVECTOR2 nodeMax(pos.x + halfRange.x, pos.y + halfRange.y);
-
-		enclosedPts += pointInRegion(minXY, nodeMin, nodeMax);
-		enclosedPts += pointInRegion({ minXY.x, maxXY.y }, nodeMin, nodeMax);
-		enclosedPts += pointInRegion(maxXY, nodeMin, nodeMax);
-		enclosedPts += pointInRegion({ maxXY.x, minXY.y }, nodeMin, nodeMax);
-		if (enclosedPts > 0) {
-			return NODE_PARTIALLY_IN_REGION;
-		}
-	}
-	return NODE_NOT_IN_REGION;
-}
-
-
-void CQuadTree::render()
-{
-	//Because all objects are stored in leaf nodes, only leaf nodes are drawn.
-	float cx, cy;
-	CCamera* cam = CCamera::GetInstance();
-	CGame* g = CGame::GetInstance();
-	cam->GetCameraPos(cx, cy);
-
-	D3DXVECTOR2 minXY(cx, cy);
-	D3DXVECTOR2 maxXY(cx + g->GetBackBufferWidth(), cy + g->GetBackBufferHeight());
-
-	vector<LPGAMEOBJECT> dataList = renderObjectsInRegion(minXY, maxXY);
-
-
-	for (auto obj : dataList) {
-		obj->Render();
-	}
-}
-
-void CQuadTree::UpdateDynamicObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY, DWORD dt)
-{
-	// Expand the update area to include objects around the viewport.
-	float margin = 100.0f;
-	D3DXVECTOR2 expandedMin(minXY.x - margin, minXY.y - margin);
-	D3DXVECTOR2 expandedMax(maxXY.x + margin, maxXY.y + margin);
-
-	vector<LPGAMEOBJECT> dynamicObjects;
-	queue<CQuadTreeNode*> nodes;
-	nodes.push(root);
-
-	// Create RECT from the expanded area.
-	RECT expandedRegion = {
-		(LONG)expandedMin.x, (LONG)expandedMin.y,
-		(LONG)expandedMax.x, (LONG)expandedMax.y
-	};
-
-	while (!nodes.empty()) {
-		CQuadTreeNode* top = nodes.front();
-
-		// Check if the node intersects with the update area.
-		if (!RectIntersectNode(expandedRegion, top)) {
-			nodes.pop();
-			continue;
-		}
-
-		if (top->leaf) {
-			for (const auto& pair : top->dynamicBucket) {
-				LPGAMEOBJECT obj = pair.second;
-				if (!obj->IsUpdated() && RectIntersectsRect(pair.first, expandedRegion)) {
-					obj->SetUpdateState(true);
-					dynamicObjects.push_back(obj);
+	else if (this->IsContain(region))
+	{
+		for (std::vector<GameObjectDem*>::iterator i = this->listObject->begin(); i != this->listObject->end(); i++)
+		{
+			if ((*i)->IsMoveable() == true)
+			{
+				if (((Enemy*)(*i))->isIn == false && (*i)->IsEnable() == false)
+				{
+					(*i)->SetEnable(true);
+					moveList->push_back(*i);
+					((Enemy*)(*i))->isIn = true;
 				}
 			}
+			else
+				staticList->push_back(*i);
 		}
-		else {
-			for (int i = 0; i < 4; ++i) {
-				if (top->child[i]) {
-					nodes.push(top->child[i]);
-				}
-			}
-		}
-		nodes.pop();
-	}
-
-	// Remove duplicates.
-	sort(dynamicObjects.begin(), dynamicObjects.end());
-	dynamicObjects.erase(unique(dynamicObjects.begin(), dynamicObjects.end()), dynamicObjects.end());
-
-	for (auto obj : dynamicObjects) {
-		obj->Update(dt);
-
-		UpdateDynamicObject(obj);
 	}
 }
 
-void CQuadTree::ResetUpdateState()
+void QuadTree::GetObjectList(std::vector<GameObjectDem*>* staticList, std::vector<GameObjectDem*>* moveList, RECT* region, GameObjectDem* camera)
 {
-	// Use a set to track objects that have had their state reset.
-	unordered_set<LPGAMEOBJECT> processedObjects;
-	queue<CQuadTreeNode*> nodes;
-	nodes.push(root);
+	if (this->node)
+	{
+		if (this->node[0]->IsContain(region))
+			this->node[0]->GetObjectList(staticList, moveList, region);
 
-	while (!nodes.empty()) {
-		CQuadTreeNode* node = nodes.front();
-		nodes.pop();
+		if (this->node[1]->IsContain(region))
+			this->node[1]->GetObjectList(staticList, moveList, region);
 
-		for (auto& pair : node->staticBucket) {
-			LPGAMEOBJECT obj = pair.second;
-			if (processedObjects.find(obj) == processedObjects.end()) {
-				obj->SetUpdateState(false);
-				processedObjects.insert(obj);
-			}
-		}
+		if (this->node[2]->IsContain(region))
+			this->node[2]->GetObjectList(staticList, moveList, region);
 
-		for (auto& pair : node->dynamicBucket) {
-			LPGAMEOBJECT obj = pair.second;
-			if (processedObjects.find(obj) == processedObjects.end()) {
-				obj->SetUpdateState(false);
-				processedObjects.insert(obj);
-			}
-		}
-
-		if (!node->leaf) {
-			for (int i = 0; i < 4; i++) {
-				if (node->child[i]) {
-					nodes.push(node->child[i]);
+		if (this->node[3]->IsContain(region))
+			this->node[3]->GetObjectList(staticList, moveList, region);
+	}
+	else if (this->IsContain(region))
+	{
+		for (std::vector<GameObjectDem*>::iterator i = this->listObject->begin(); i != this->listObject->end(); i++)
+		{
+			if ((*i)->IsMoveable() == true)
+			{
+				if (((Enemy*)(*i))->isIn == false && (*i)->IsEnable() == false)
+				{
+					if ((*i)->IsInRegion(camera->GetRegion()))
+					{
+						(*i)->SetEnable(true);
+						moveList->push_back(*i);
+						((Enemy*)(*i))->isIn = true;
+					}
 				}
 			}
+			else
+				staticList->push_back(*i);
 		}
+	}
+}
+
+
+void QuadTree::GetObjectList(std::vector<GameObjectDem*>* returnList, RECT* region)
+{
+	if (this->node)
+	{
+		if (this->node[0]->IsContain(region))
+			this->node[0]->GetObjectList(returnList, region);
+
+		if (this->node[1]->IsContain(region))
+			this->node[1]->GetObjectList(returnList, region);
+
+		if (this->node[2]->IsContain(region))
+			this->node[2]->GetObjectList(returnList, region);
+
+		if (this->node[3]->IsContain(region))
+			this->node[3]->GetObjectList(returnList, region);
+	}
+	else if (this->IsContain(region))
+	{
+		for (std::vector<GameObjectDem*>::iterator i = this->listObject->begin(); i != this->listObject->end(); i++)
+			/*if ((*i)->isAdded == false) {*/
+			returnList->push_back(*i);
+		/*(*i)->isAdded = true;
+	}*/
 	}
 }

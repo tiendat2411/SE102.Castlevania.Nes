@@ -135,6 +135,18 @@ void CGame::Init(HWND hWnd, HINSTANCE hInstance)
 	pD3DDevice->CreateRasterizerState(&rasterizerDesc, &pRasterState);
 	pD3DDevice->RSSetState(pRasterState);
 
+	gameTime = new GameTime();
+	if (!gameTime->Initialize())
+		return;
+
+	stateManager = new StateManager();
+
+	//timeStart = GetTickCount();
+	if (!stateManager->Initialize(hWnd))
+		return;
+
+	stateManager->LoadState(GAME_PLAY_STATE_ONE);
+
 	return;
 }
 
@@ -389,10 +401,42 @@ CGame::~CGame()
 	pSwapChain->Release();
 	pD3DDevice->Release();
 	pRasterState->Release();
+	SAFE_DELETE(gDevice);
+	SAFE_DELETE(viewPort);
+	SAFE_DELETE(gameTime);
 }
 
 CGame* CGame::GetInstance()
 {
 	if (__instance == NULL) __instance = new CGame();
 	return __instance;
+}
+
+CGame::CGame()
+{
+	gDevice = NULL;
+	gameTime = NULL;
+}
+
+void CGame::Run()
+{
+	//this->TimeHandle();
+
+	gameTime->Update();
+
+	Update(gameTime->m_elapsedGameTime);
+	Draw();
+}
+
+// Update our sprites and other game logics
+void CGame::Update(float _gameTime)
+{
+	PollKeyboard();
+
+	stateManager->Update(_gameTime);
+}
+
+void CGame::Draw()
+{
+	stateManager->Render();
 }

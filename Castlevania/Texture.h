@@ -14,6 +14,7 @@ protected:
 	int _width,_height;
 public:	
 	int _row, _col;
+	int _frame_width, _frame_height;
 	int _totalSprites;
 	CTexture()
 	{
@@ -37,6 +38,8 @@ public:
 		this->_height = desc.Height;
 		this->_col = col;
 		this->_row = row;
+		this->_frame_width = desc.Width / col;
+		this->_frame_height = desc.Height / row;
 		this->_totalSprites = totalSprites;
 	}
 
@@ -44,6 +47,14 @@ public:
 
 	int getWidth() { return this->_width; }
 	int getHeight() { return this->_height; }
+
+	int getFrameWidth() { return this->_frame_width; }
+	int getFrameHeight() { return this->_frame_height; }
+
+	int getCol() { return this->_col; }
+	int getRow() { return this->_row; }
+
+	ID3D10Texture2D* getTexture() { return this->_tex; }
 
 	~CTexture()
 	{

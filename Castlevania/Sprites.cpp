@@ -14,6 +14,7 @@ CSprites* CSprites::GetInstance()
 }
 void CSprites::LoadResource(){
 	CreateSpriteSheet(Type::SIMON);
+	CreateSpriteSheet(Type::SIMON_EDIT);
 
 	//CreateSpriteSheet(Type::MAP1);
 	CreateSpriteSheet(Type::BRICK);
@@ -32,9 +33,13 @@ void CSprites::LoadResource(){
 	CreateSpriteSheet(Type::BAT);
 	CreateSpriteSheet(Type::ZOMBIE);
 	CreateSpriteSheet(Type::WHIP);
+	CreateSpriteSheet(Type::WHIP_EDIT);
 
 	CreateSpriteSheet(Type::TILESET_LEVEL1);
 	CreateSpriteSheet(Type::BLACKBOARD);
+	CreateSpriteSheet(Type::LARGE_CANDLE);
+	CreateSpriteSheet(Type::SMALL_CANDLE);
+	CreateSpriteSheet(Type::CHECK_POINT);
 
 
 }

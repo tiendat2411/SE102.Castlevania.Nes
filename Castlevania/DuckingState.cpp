@@ -1,3 +1,4 @@
+/*
 #include "DuckingState.h"
 #include "StateMachine.h"
 
@@ -15,3 +16,4 @@ void CDuckingState::Enter(CSimon* simon) {
 	SetStaticState(simon);
 	simon->SetAniState((simon->isAttacking) ? SIMON_ANI_DUCKING_ATTACKING_BEGIN : SIMON_ANI_DUCKING);
 }
+*/

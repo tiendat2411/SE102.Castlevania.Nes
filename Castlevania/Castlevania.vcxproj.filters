@@ -23,50 +23,257 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="StandingOnStairsState.cpp" />
-    <ClCompile Include="StandingOnStairsState.h" />
-    <ClCompile Include="State.h" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="WalkingState.cpp" />
     <ClCompile Include="WalkkingOnStairState.cpp" />
     <ClCompile Include="Whip.cpp" />
     <ClCompile Include="Zombie.cpp" />
-    <ClCompile Include="QuadTreeNode.h" />
     <ClCompile Include="QuadTree.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="State.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StandingOnStairsState.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick1.cpp">
+      <Filter>StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ColliderEffect.cpp" />
+    <ClCompile Include="GameTime.cpp">
+      <Filter>GameTime</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="StateManager.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewPort.cpp">
+      <Filter>ViewPort</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Ground.cpp">
+      <Filter>StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Candle.cpp">
+      <Filter>StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationDemo.cpp">
+      <Filter>Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectDem.cpp">
+      <Filter>Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="SimonDemo.cpp">
+      <Filter>Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="WhipDemo.cpp">
+      <Filter>Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="Stair.cpp">
+      <Filter>StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneCheck.cpp">
+      <Filter>StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="LargeCandle.cpp">
+      <Filter>StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckPoint.cpp">
+      <Filter>StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePlayStateOne.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="AnimationFrame.h" />
-    <ClInclude Include="Animations.h" />
-    <ClInclude Include="Brick.h" />
-    <ClInclude Include="FallingState.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="FishMan.h" />
-    <ClInclude Include="HurtingState.h" />
-    <ClInclude Include="Leopard.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="WalkingOnStairState.h" />
-    <ClInclude Include="debug.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameDefines.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="IdleState.h" />
-    <ClInclude Include="JumpingState.h" />
-    <ClInclude Include="KeyEventHandler.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="SampleKeyEventHandler.h" />
-    <ClInclude Include="Simon.h" />
-    <ClInclude Include="DuckingState.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Sprites.h" />
-    <ClInclude Include="StateMachine.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Textures.h" />
-    <ClInclude Include="WalkingState.h" />
-    <ClInclude Include="Whip.h" />
-    <ClInclude Include="Zombie.h" />
-    <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DuckingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FishMan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HurtingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Leopard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleKeyEventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Simon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WalkingOnStairState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WalkingState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Whip.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick1.h">
+      <Filter>StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CamGameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTime.h">
+      <Filter>GameTime</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateManager.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewPort.h">
+      <Filter>ViewPort</Filter>
+    </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePlayStateOne.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Candle.h">
+      <Filter>StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationDemo.h">
+      <Filter>Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectDem.h">
+      <Filter>Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="SimonDemo.h">
+      <Filter>Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="WhipDemo.h">
+      <Filter>Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="Stair.h">
+      <Filter>StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneCheck.h">
+      <Filter>StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="LargeCandle.h">
+      <Filter>StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>StaticObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckPoint.h">
+      <Filter>StaticObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Castlevania.rc" />
@@ -77,5 +284,28 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{2c4093c4-712d-40fd-8fb7-f0df903bbe55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameTime">
+      <UniqueIdentifier>{ca43c900-9388-41f4-a2ec-19e640829663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameState">
+      <UniqueIdentifier>{333bb00a-e7f9-40c9-855f-031707921b0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewPort">
+      <UniqueIdentifier>{304b769d-aa51-499a-b8b9-b694cc9fa6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StaticObject">
+      <UniqueIdentifier>{527c06ce-a814-44c0-9c83-8e8ac11d142e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{ded4c248-60a0-4d8b-958a-078bb0b2e7e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo">
+      <UniqueIdentifier>{6093a44a-310f-455e-a3a4-ee12457c4418}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

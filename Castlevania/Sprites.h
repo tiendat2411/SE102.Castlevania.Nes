@@ -5,8 +5,10 @@
 #include <d3dx10.h>
 
 #include "Texture.h"
-#include "Sprite.h"
 #include"GameDefines.h"
+
+class CSprite;
+typedef CSprite* LPSPRITE;
 
 using namespace std;
 
@@ -17,7 +19,7 @@ class CSprites
 {
 	static CSprites* __instance;
 	unordered_map<int, LPSPRITE> sprites;
-	void Add(int id, int offset, int left, int top, int right, int bottom, LPTEXTURE tex);
+	
 public:
 
 	LPSPRITE Get(int id);
@@ -25,5 +27,6 @@ public:
 	void LoadResource();
 	static CSprites* GetInstance();
 	void CreateSpriteSheet(Type id);
+	void Add(int id, int offset, int left, int top, int right, int bottom, LPTEXTURE tex);
 };
 

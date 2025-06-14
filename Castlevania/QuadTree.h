@@ -1,73 +1,64 @@
 #pragma once
+#ifndef QUADTREE_H
+#define QUADTREE_H
 
-/**
-	QuadTree.h
-
-	QTNode: the recursive building block of a quad tree
-
-	Quadtree: a dynamic 2d space partitioning structure
-
-**/
-#include "QuadTreeNode.h"
-#include "GameObject.h"
-
-#include <cstdlib>
-#include <queue>
-#include <sstream>
-#include <stack>
-#include <string>
+//#include"GameObjectDem.h"
+#include "ViewPort.h"
+#include <fstream>
 #include <vector>
-#include <stdlib.h>
-class CQuadTreeNode;
-using namespace std;
+#include <string>
+#include <iostream>
+#include <map>
+#include "Enemy.h"
 
-//region direction						/*----------------------*/
-#define LOWER_LEFT_QUAD 0				/*	   0	|	  2  	*/
-#define UPPER_LEFT_QUAD 1				/*----------|-----------*/
-#define LOWER_RIGHT_QUAD 2				/*	   1	|	  3		*/
-#define UPPER_RIGHT_QUAD 3				/*----------------------*/
+#include "Ground.h"
+#include "Candle.h"
+#include "ViewPort.h"
+#include "LargeCandle.h"
+#include "Stair.h"
+#include "SceneCheck.h"
+#include "Door.h"
+#include "CheckPoint.h"
 
-enum enclosure_status
+#define MAX_OBJECT_IN_REGION 1
+#define MAX_LEVEL 2
+
+class GameObjectDem;
+
+class QuadTree
 {
-	NODE_NOT_IN_REGION,
-	NODE_PARTIALLY_IN_REGION,
-	NODE_CONTAINED_BY_REGION
-};
+protected:
+	ViewPort* viewPort;
+	std::vector<GameObjectDem*>* listObject;
 
-class CQuadTree
-{
+	//////////////////////////////////
+	int id;
+	RECT* region;
+	QuadTree** node;
+
 public:
+	static std::map<int, GameObjectDem*> mapObject;
 
-	CQuadTree(D3DXVECTOR2 pos, D3DXVECTOR2 range, LPCWSTR filePath);
-	~CQuadTree();
-	void	insertObjectIntoTree();
-	void	insert(LPGAMEOBJECT data);
-	bool	remove(LPGAMEOBJECT data);
-	void 	render();
-	void	UpdateDynamicObject(LPGAMEOBJECT object);
-	vector <LPGAMEOBJECT> renderObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY);
-	void	UpdateDynamicObjectsInRegion(D3DXVECTOR2 minXY, D3DXVECTOR2 maxXY, DWORD dt);
-	void	ResetUpdateState();
+	QuadTree( ViewPort* viewPort);
+	~QuadTree(void);
 
-private:
+	void Load(std::string file);
+	void LoadQuad(std::string trace, int pos, float left, float top, float right, float bottom, std::vector<GameObjectDem*>* list);
+	void LoadObject(int id, int type, float x, float y, int width, int height);
 
-	vector<LPGAMEOBJECT> LoadGameObjects();
-	LPGAMEOBJECT CreateGameObjectByType(int type, float x, float y);
-	void SetObjectDynamicState(LPGAMEOBJECT obj, int type);
-	CQuadTreeNode* childNode(const D3DXVECTOR2& v, CQuadTreeNode* node, UINT id);
-	D3DXVECTOR2 newPos(int direction, CQuadTreeNode* node);
-	void	insert(LPGAMEOBJECT data, RECT bounds, CQuadTreeNode* node);
-	int 	direction(const D3DXVECTOR2& point, CQuadTreeNode* node);
-	//void	reduce(stack <CQuadTreeNode*>& node);
-	//void	addAllObjectToResults(CQuadTreeNode* node, vector<pair <D3DXVECTOR2, LPGAMEOBJECT> >& results);
-	bool	pointInRegion(const D3DXVECTOR2& point, const D3DXVECTOR2& minXY, const D3DXVECTOR2& maxXY);
-	enclosure_status getEnclosureStatus(const D3DXVECTOR2& pos, const D3DXVECTOR2& range, const D3DXVECTOR2& minXY, const D3DXVECTOR2& maxXY);
-	bool RectInNode(const RECT& rect, CQuadTreeNode* node);
-	bool RectIntersectNode(const RECT& rect, CQuadTreeNode* node);
-	void processNodeObjects(const vector<pair<RECT, LPGAMEOBJECT>>& bucket, const RECT& queryRegion, vector<LPGAMEOBJECT>& results);
-	bool RectIntersectsRect(const RECT& rect1, const RECT& rect2);
-	void CheckAndAddToNewLeafNodes(CQuadTreeNode* node, const RECT& bounds, LPGAMEOBJECT object, vector<CQuadTreeNode*>& nodeList, bool& addedToNewNode);
-	CQuadTreeNode* root;
-	LPCWSTR filePath;
+	void Update(float gameTime);
+	void Render();
+
+	std::vector<GameObjectDem*>* GetListObject() { return listObject; }
+
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	void Remove(GameObjectDem* object);
+	bool IsContain(GameObjectDem* object);
+	bool IsContain(RECT* region);
+	void GetObjectList(std::vector<GameObjectDem*>* returnList, RECT* region);
+	void GetObjectList(std::vector<GameObjectDem*>* staticList, std::vector<GameObjectDem*>* moveList, RECT* region);
+	void GetObjectList(std::vector<GameObjectDem*>* staticList, std::vector<GameObjectDem*>* moveList, RECT* region, GameObjectDem* camera);
 };
 
+#endif

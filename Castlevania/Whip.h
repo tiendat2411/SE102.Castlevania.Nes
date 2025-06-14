@@ -1,3 +1,4 @@
+/*
 #pragma once
 #include "GameObject.h"
 #include "Simon.h"
@@ -26,7 +27,7 @@ public:
 		x = simon->GetPosX()+ simon->GetDirectionX()*10; 
 		y = simon->GetPosY();
 	};	
-	void Render();
+	void Render(CCamera* camera);
 
 	
 	int IsCollidable();
@@ -37,3 +38,4 @@ public:
 	
 };
 
+*/

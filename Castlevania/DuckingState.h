@@ -1,3 +1,4 @@
+/*
 #pragma once
 
 #include <d3dx10.h>
@@ -12,3 +13,4 @@ public:
 	virtual void Enter(CSimon* simon);
 
 };
+*/

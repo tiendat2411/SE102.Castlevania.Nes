@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Animation.h"
+//#include "Animation.h"
 #include "Sprite.h"
-
+class CAnimation;
+typedef CAnimation* LPANIMATION;
 class CAnimations
 {
 	static CAnimations* __instance;

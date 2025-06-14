@@ -1,10 +1,13 @@
 #pragma once
 
-#include "SPRITE.h"
+//#include "Sprite.h"
 
 /*
 	Sprite animation
 */
+class CSprite;
+typedef CSprite* LPSPRITE;
+
 class CAnimationFrame
 {
 	LPSPRITE sprite;

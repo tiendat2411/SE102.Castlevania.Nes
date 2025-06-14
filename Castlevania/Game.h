@@ -8,6 +8,9 @@
 
 #include "Texture.h"
 #include "KeyEventHandler.h"
+#include "Graphics.h"
+#include "StateManager.h"
+#include "GameTime.h"
 
 #define MAX_FRAME_RATE 60
 #define KEYBOARD_BUFFER_SIZE 1024
@@ -47,6 +50,17 @@ class CGame
 
 	HINSTANCE hInstance;
 
+	CGraphics* gDevice;
+	ViewPort* viewPort;
+
+	DWORD timeStart;
+	DWORD timeNow;
+	//float gameTime;
+	GameTime* gameTime;
+	//void TimeHandle();
+
+	StateManager* stateManager;
+
 public:
 	// Init DirectX, Sprite Handler
 	void Init(HWND hWnd,HINSTANCE hInstance);
@@ -84,8 +98,12 @@ public:
 
 	int GetBackBufferWidth() { return backBufferWidth; }
 	int GetBackBufferHeight() { return backBufferHeight; }
+	void Run(); // will call update and draw
+	void Update(float _gameTime);
+	void Draw();
 
 	static CGame* GetInstance();
 
+	CGame();
 	~CGame();
 };
